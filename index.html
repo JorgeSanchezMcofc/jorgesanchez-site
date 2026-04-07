@@ -31,8 +31,8 @@
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; background: var(--deep); color: var(--off); overflow-x: hidden; }
-
+body { font-family: 'DM Sans', sans-serif; font-size: 16px; background: var(--deep); color: var(--off); overflow-x: hidden; }
+  
 /* ══════════════════════════════════════
    NAVIGATION
 ══════════════════════════════════════ */
@@ -109,7 +109,7 @@ nav {
 .hero-h1 .outline { -webkit-text-stroke: 1.5px var(--off); color: transparent; }
 
 .hero-bio {
-  font-size: 14px; font-weight: 300; color: var(--muted-l);
+  font-size: 16px; font-weight: 300; color: var(--muted-l);
   line-height: 1.8; max-width: 460px; margin-bottom: 28px;
   opacity: 0; animation: fadeUp 0.5s 0.3s ease forwards;
 }
@@ -123,7 +123,7 @@ nav {
 .hero-stat { flex: 1; padding: 12px 14px; border-right: 0.5px solid rgba(212,168,67,0.12); background: rgba(212,168,67,0.03); }
 .hero-stat:last-child { border-right: none; }
 .hero-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--gold); line-height: 1; }
-.hero-stat-label { font-size: 9px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.hero-stat-label { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
 
 .hero-badges {
   display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px;
@@ -133,7 +133,7 @@ nav {
   display: flex; align-items: center; gap: 7px;
   background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
   border-radius: 2px; padding: 5px 11px;
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
   color: var(--muted-l); letter-spacing: 0.07em; text-transform: uppercase;
 }
 .badge-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
@@ -195,7 +195,7 @@ nav {
 .stat { padding: 20px 24px; border-right: 1px solid rgba(30,30,30,0.15); }
 .stat:last-child { border-right: none; }
 .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 0.02em; color: var(--deep); line-height: 1; }
-.stat-label { font-size: 10px; color: var(--gold-dim); margin-top: 4px; line-height: 1.5; }
+.stat-label { font-size: 12px; color: var(--gold-dim); margin-top: 4px; line-height: 1.5; }
 
 /* ECONOMIC PULSE SECTION */
 .section-dark { background: var(--deep); padding: 80px 48px; border-bottom: 1px solid rgba(212,168,67,0.08); }
@@ -204,8 +204,8 @@ nav {
 
 .section-h-dark { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 0.95; letter-spacing: 0.02em; color: var(--off); margin-bottom: 16px; }
 .section-h-light { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 0.95; letter-spacing: 0.02em; color: var(--deep); margin-bottom: 16px; }
-.section-body-dark { font-size: 15px; font-weight: 300; color: var(--muted-l); line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
-.section-body-light { font-size: 15px; font-weight: 300; color: #555; line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
+.section-body-dark { font-size: 16px; font-weight: 300; color: var(--muted-l); line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
+.section-body-light { font-size: 16px; font-weight: 300; color: #555; line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
 
 /* PULSE PREVIEW */
 .pulse-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
@@ -236,8 +236,8 @@ nav {
 .badge-cobalt { background: var(--cobalt-pale); color: var(--cobalt); }
 .badge-gold { background: #FBF0D0; color: var(--gold-dim); }
 .badge-silver { background: #F0F0F0; color: #555; }
-.impact-title { font-size: 15px; font-weight: 500; color: var(--deep); margin-bottom: 6px; line-height: 1.35; }
-.impact-org { font-size: 11px; color: #999; font-weight: 300; line-height: 1.5; }
+.impact-title { font-size: 16px; font-weight: 500; color: var(--deep); margin-bottom: 6px; line-height: 1.35; }
+.impact-org { font-size: 12px; color: #999; font-weight: 300; line-height: 1.5; }
 .impact-link { position: absolute; bottom: 16px; right: 16px; font-size: 11px; color: #CCC; transition: color 0.2s; }
 .impact-card:hover .impact-link { color: var(--cobalt); }
 .impact-card.gold-hover:hover .impact-link { color: var(--gold-dim); }
@@ -247,7 +247,7 @@ nav {
 .blog-card { border-top: 2px solid var(--cobalt); padding-top: 20px; }
 .blog-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--cobalt); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
 .blog-title { font-size: 16px; font-weight: 400; color: var(--deep); line-height: 1.4; margin-bottom: 12px; }
-.blog-meta { font-size: 11px; color: #999; display: flex; gap: 12px; }
+.blog-meta { font-size: 12px; color: #999; display: flex; gap: 12px; }
 .blog-read { font-size: 11px; color: var(--cobalt); text-decoration: none; display: flex; align-items: center; gap: 4px; margin-top: 14px; font-weight: 500; }
 
 /* MAIN CTA */
@@ -377,8 +377,8 @@ nav {
 .bp-cat:nth-child(even) .bp-card { background: var(--white); }
 .bp-card:hover { border-top-color: var(--gold); box-shadow: 0 4px 20px rgba(20,20,20,0.06); }
 .bp-card-num { font-family: 'DM Mono', monospace; font-size: 9px; color: #CCC; letter-spacing: 0.1em; margin-bottom: 10px; }
-.bp-card-title { font-size: 14px; font-weight: 500; color: var(--deep); margin-bottom: 8px; line-height: 1.35; }
-.bp-card-body { font-size: 13px; font-weight: 300; color: #777; line-height: 1.75; }
+.bp-card-title { font-size: 15px; font-weight: 500; color: var(--deep); margin-bottom: 8px; line-height: 1.35; }
+.bp-card-body { font-size: 15px; font-weight: 300; color: #777; line-height: 1.75; }
 .bp-card-body strong { color: var(--deep); font-weight: 500; }
 .bp-card-body em { color: var(--cobalt); font-style: normal; font-weight: 500; }
 .bp-submit-section { background: var(--deep); padding: 72px 48px; }
@@ -387,10 +387,10 @@ nav {
 .bp-submit-h span { color: var(--gold); }
 .bp-submit-p { font-size: 14px; font-weight: 300; color: #888; line-height: 1.8; max-width: 360px; }
 .f-field { margin-bottom: 16px; }
-.f-label { font-family: 'DM Mono', monospace; font-size: 9px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.f-label { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
 .f-input, .f-select, .f-textarea {
   width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 2px;
-  padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px;
   color: var(--off); outline: none; transition: border-color 0.15s; appearance: none; -webkit-appearance: none;
 }
 .f-input::placeholder, .f-textarea::placeholder { color: rgba(255,255,255,0.2); }
@@ -414,9 +414,9 @@ footer {
   background: var(--deep); border-top: 1px solid rgba(255,255,255,0.06);
   padding: 20px 48px; display: flex; justify-content: space-between; align-items: center;
 }
-.footer-left { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.06em; }
+.footer-left { font-family: 'DM Mono', monospace; font-size: 12px; color: #444; letter-spacing: 0.06em; }
 .footer-right { display: flex; gap: 24px; }
-.footer-right a { font-size: 11px; color: #444; text-decoration: none; transition: color 0.2s; cursor: pointer; }
+.footer-right a { font-size: 12px; color: #444; text-decoration: none; transition: color 0.2s; cursor: pointer; }
 .footer-right a:hover { color: var(--gold); }
 
 /* ══════════════════════════════════════
@@ -435,6 +435,7 @@ footer {
 <nav>
   <a class="nav-logo" onclick="showPage('home')">Jorge <span>Sanchez</span></a>
   <div class="nav-links">
+    <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('pulse')">Economic Pulse</a>
     <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100)">Impact</a>
     <a onclick="showPage('practices')">1MC</a>
@@ -459,7 +460,7 @@ footer {
         the people<br>who build them.
       </h1>
       <p class="hero-bio">
-        <strong>12+ years. $5.5M deployed. 285 companies launched or landed.</strong><br>
+        <strong>12+ years in chamber experience. $5.5M deployed. 285 companies launched or landed.</strong><br>
         I turn economic data into decisions and entrepreneurial communities into self-sustaining ecosystems. Based in McAllen, TX — working nationally.
       </p>
       <div class="hero-stats">
