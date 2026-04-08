@@ -31,8 +31,8 @@
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; font-size: 16px; background: var(--deep); color: var(--off); overflow-x: hidden; }
-  
+body { font-family: 'DM Sans', sans-serif; background: var(--deep); color: var(--off); overflow-x: hidden; }
+
 /* ══════════════════════════════════════
    NAVIGATION
 ══════════════════════════════════════ */
@@ -109,7 +109,7 @@ nav {
 .hero-h1 .outline { -webkit-text-stroke: 1.5px var(--off); color: transparent; }
 
 .hero-bio {
-  font-size: 16px; font-weight: 300; color: var(--muted-l);
+  font-size: 14px; font-weight: 300; color: var(--muted-l);
   line-height: 1.8; max-width: 460px; margin-bottom: 28px;
   opacity: 0; animation: fadeUp 0.5s 0.3s ease forwards;
 }
@@ -123,7 +123,7 @@ nav {
 .hero-stat { flex: 1; padding: 12px 14px; border-right: 0.5px solid rgba(212,168,67,0.12); background: rgba(212,168,67,0.03); }
 .hero-stat:last-child { border-right: none; }
 .hero-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--gold); line-height: 1; }
-.hero-stat-label { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.hero-stat-label { font-size: 9px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
 
 .hero-badges {
   display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px;
@@ -133,7 +133,7 @@ nav {
   display: flex; align-items: center; gap: 7px;
   background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
   border-radius: 2px; padding: 5px 11px;
-  font-family: 'DM Mono', monospace; font-size: 11px;
+  font-family: 'DM Mono', monospace; font-size: 9px;
   color: var(--muted-l); letter-spacing: 0.07em; text-transform: uppercase;
 }
 .badge-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
@@ -195,7 +195,7 @@ nav {
 .stat { padding: 20px 24px; border-right: 1px solid rgba(30,30,30,0.15); }
 .stat:last-child { border-right: none; }
 .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 0.02em; color: var(--deep); line-height: 1; }
-.stat-label { font-size: 12px; color: var(--gold-dim); margin-top: 4px; line-height: 1.5; }
+.stat-label { font-size: 10px; color: var(--gold-dim); margin-top: 4px; line-height: 1.5; }
 
 /* ECONOMIC PULSE SECTION */
 .section-dark { background: var(--deep); padding: 80px 48px; border-bottom: 1px solid rgba(212,168,67,0.08); }
@@ -204,8 +204,8 @@ nav {
 
 .section-h-dark { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 0.95; letter-spacing: 0.02em; color: var(--off); margin-bottom: 16px; }
 .section-h-light { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 0.95; letter-spacing: 0.02em; color: var(--deep); margin-bottom: 16px; }
-.section-body-dark { font-size: 16px; font-weight: 300; color: var(--muted-l); line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
-.section-body-light { font-size: 16px; font-weight: 300; color: #555; line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
+.section-body-dark { font-size: 15px; font-weight: 300; color: var(--muted-l); line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
+.section-body-light { font-size: 15px; font-weight: 300; color: #555; line-height: 1.8; max-width: 540px; margin-bottom: 40px; }
 
 /* PULSE PREVIEW */
 .pulse-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
@@ -236,8 +236,8 @@ nav {
 .badge-cobalt { background: var(--cobalt-pale); color: var(--cobalt); }
 .badge-gold { background: #FBF0D0; color: var(--gold-dim); }
 .badge-silver { background: #F0F0F0; color: #555; }
-.impact-title { font-size: 16px; font-weight: 500; color: var(--deep); margin-bottom: 6px; line-height: 1.35; }
-.impact-org { font-size: 12px; color: #999; font-weight: 300; line-height: 1.5; }
+.impact-title { font-size: 15px; font-weight: 500; color: var(--deep); margin-bottom: 6px; line-height: 1.35; }
+.impact-org { font-size: 11px; color: #999; font-weight: 300; line-height: 1.5; }
 .impact-link { position: absolute; bottom: 16px; right: 16px; font-size: 11px; color: #CCC; transition: color 0.2s; }
 .impact-card:hover .impact-link { color: var(--cobalt); }
 .impact-card.gold-hover:hover .impact-link { color: var(--gold-dim); }
@@ -247,7 +247,7 @@ nav {
 .blog-card { border-top: 2px solid var(--cobalt); padding-top: 20px; }
 .blog-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--cobalt); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
 .blog-title { font-size: 16px; font-weight: 400; color: var(--deep); line-height: 1.4; margin-bottom: 12px; }
-.blog-meta { font-size: 12px; color: #999; display: flex; gap: 12px; }
+.blog-meta { font-size: 11px; color: #999; display: flex; gap: 12px; }
 .blog-read { font-size: 11px; color: var(--cobalt); text-decoration: none; display: flex; align-items: center; gap: 4px; margin-top: 14px; font-weight: 500; }
 
 /* MAIN CTA */
@@ -318,7 +318,7 @@ nav {
 .what-card { border: 0.5px solid #E8E8E8; border-radius: 4px; padding: 24px; position: relative; overflow: hidden; }
 .what-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--cobalt); }
 .what-card.gold-l::before { background: var(--gold); }
-.what-num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #F0F0F0; line-height: 1; position: absolute; right: 16px; top: 12px; }
+.what-num { font-family: 'DM Mono', sans-serif; font-size: 11px; color: var(--cobalt); line-height: 1; letter-spacing: 0.1em; margin-bottom: 10px; position: static; }
 .what-title { font-size: 14px; font-weight: 500; color: var(--deep); margin-bottom: 8px; line-height: 1.3; }
 .what-desc { font-size: 13px; font-weight: 300; color: #666; line-height: 1.7; }
 .how-section { background: var(--off); padding: 80px 48px; border-top: 1px solid #E0DFDB; }
@@ -338,72 +338,72 @@ nav {
    1MC BEST PRACTICES PAGE
 ══════════════════════════════════════ */
 .bp-hero {
-  background: var(--deep); padding: 64px 48px 56px;
-  border-bottom: 1px solid rgba(212,168,67,0.15);
+  background: #ffffff; padding: 64px 48px 56px;
+  border-bottom: 3px solid #F76B1C;
   position: relative; overflow: hidden;
 }
 .bp-hero::before {
   content: '1MC'; font-family: 'Bebas Neue', sans-serif; font-size: 260px;
-  color: rgba(212,168,67,0.04); position: absolute; right: -20px; top: -40px;
+  color: rgba(247,107,28,0.05); position: absolute; right: -20px; top: -40px;
   line-height: 1; pointer-events: none;
 }
-.bp-hero-h1 { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 0.93; letter-spacing: 0.02em; color: var(--off); margin-bottom: 20px; }
-.bp-hero-h1 .gold { color: var(--gold); }
-.bp-hero-h1 .outline { -webkit-text-stroke: 1.5px var(--off); color: transparent; }
+.bp-hero-h1 { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 0.93; letter-spacing: 0.02em; color: #141414; margin-bottom: 20px; }
+.bp-hero-h1 .gold { color: #F76B1C; }
+.bp-hero-h1 .outline { -webkit-text-stroke: 1.5px #141414; color: transparent; }
 .bp-hero-stats { display: flex; gap: 32px; margin-bottom: 0; }
-.bp-hstat { border-left: 2px solid var(--gold); padding-left: 14px; }
-.bp-hstat-num { font-family: 'Bebas Neue', sans-serif; font-size: 34px; color: var(--gold); line-height: 1; }
-.bp-hstat-label { font-size: 10px; color: #888; margin-top: 3px; line-height: 1.4; }
-.bp-index-bar { background: var(--off); padding: 16px 48px; border-bottom: 1px solid #E0DFDB; position: sticky; top: 60px; z-index: 50; }
+.bp-hstat { border-left: 2px solid #F76B1C; padding-left: 14px; }
+.bp-hstat-num { font-family: 'Bebas Neue', sans-serif; font-size: 34px; color: #F76B1C; line-height: 1; }
+.bp-hstat-label { font-size: 10px; color: #666; margin-top: 3px; line-height: 1.4; }
+.bp-index-bar { background: #F5F5F5; padding: 16px 48px; border-bottom: 1px solid #E0DFDB; position: sticky; top: 60px; z-index: 50; }
 .bp-index-label { font-family: 'DM Mono', monospace; font-size: 9px; color: #999; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
 .bp-pills { display: flex; flex-wrap: wrap; gap: 7px; }
 .bp-pill {
-  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 2px; cursor: pointer;
-  border: 0.5px solid rgba(20,20,20,0.2); background: var(--white); color: var(--deep);
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 8px 18px; border-radius: 2px; cursor: pointer;
+  border: 1px solid #DDD; background: #fff; color: #555;
   transition: all 0.15s; outline: none; appearance: none;
 }
-.bp-pill:hover { background: var(--deep); color: var(--gold); border-color: var(--deep); }
-.bp-pill.highlight { background: var(--gold); color: var(--deep); border-color: var(--gold); }
-.bp-cat { padding: 64px 48px; border-bottom: 1px solid var(--border); scroll-margin-top: 120px; }
-.bp-cat:nth-child(even) { background: var(--pale); }
+.bp-pill:hover { background: #F76B1C; color: #fff; border-color: #F76B1C; }
+.bp-pill.highlight { background: #F76B1C; color: #fff; border-color: #F76B1C; }
+.bp-cat { padding: 64px 48px; border-bottom: 1px solid #F0D5C0; scroll-margin-top: 120px; background: #fff; }
+.bp-cat:nth-child(even) { background: #FEF0E7; }
 .bp-cat-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 36px; }
-.bp-cat-icon { width: 48px; height: 48px; background: var(--deep); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 0.5px solid rgba(212,168,67,0.2); }
-.bp-cat-title { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 0.02em; color: var(--deep); line-height: 1; }
-.bp-cat-goal { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--cobalt); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
-.bp-cat-count { font-family: 'DM Mono', monospace; font-size: 9px; color: #AAA; letter-spacing: 0.06em; margin-top: 2px; }
+.bp-cat-icon { display: none; }
+.bp-cat-title { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 0.02em; color: #F76B1C; line-height: 1; }
+.bp-cat-goal { font-family: 'DM Mono', monospace; font-size: 13px; color: #666; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 8px; }
+.bp-cat-count { font-family: 'DM Mono', monospace; font-size: 12px; color: #AAA; letter-spacing: 0.06em; margin-top: 4px; }
 .bp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.bp-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 4px; padding: 22px 20px; border-top: 2px solid transparent; transition: border-top-color 0.2s, box-shadow 0.2s; }
-.bp-cat:nth-child(even) .bp-card { background: var(--white); }
-.bp-card:hover { border-top-color: var(--gold); box-shadow: 0 4px 20px rgba(20,20,20,0.06); }
-.bp-card-num { font-family: 'DM Mono', monospace; font-size: 9px; color: #CCC; letter-spacing: 0.1em; margin-bottom: 10px; }
-.bp-card-title { font-size: 15px; font-weight: 500; color: var(--deep); margin-bottom: 8px; line-height: 1.35; }
+.bp-card { background: #fff; border: 0.5px solid #E8E8E8; border-radius: 4px; padding: 22px 20px; border-top: 2px solid transparent; transition: border-top-color 0.2s, box-shadow 0.2s; }
+.bp-cat:nth-child(even) .bp-card { background: #fff; border-color: #F0D5C0; }
+.bp-card:hover { border-top-color: #F76B1C; box-shadow: 0 4px 20px rgba(20,20,20,0.06); }
+.bp-card-num { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; margin-bottom: 10px; }
+.bp-card-title { font-size: 16px; font-weight: 500; color: #141414; margin-bottom: 8px; line-height: 1.35; }
 .bp-card-body { font-size: 15px; font-weight: 300; color: #777; line-height: 1.75; }
 .bp-card-body strong { color: var(--deep); font-weight: 500; }
-.bp-card-body em { color: var(--cobalt); font-style: normal; font-weight: 500; }
-.bp-submit-section { background: var(--deep); padding: 72px 48px; }
-.bp-submit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-.bp-submit-h { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--off); line-height: 0.95; margin-bottom: 16px; }
-.bp-submit-h span { color: var(--gold); }
-.bp-submit-p { font-size: 14px; font-weight: 300; color: #888; line-height: 1.8; max-width: 360px; }
+.bp-card-body em { color: #F76B1C; font-style: normal; font-weight: 500; }
+.bp-submit-section { background: #141414; padding: 56px 48px; }
+.bp-submit-grid { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.bp-submit-h { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #fff; line-height: 0.95; margin-bottom: 10px; }
+.bp-submit-h span { color: #F76B1C; }
+.bp-submit-p { font-size: 13px; font-weight: 300; color: #666; line-height: 1.7; max-width: 360px; }
 .f-field { margin-bottom: 16px; }
-.f-label { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.f-label { font-family: 'DM Mono', monospace; font-size: 9px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
 .f-input, .f-select, .f-textarea {
   width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 2px;
-  padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+  padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px;
   color: var(--off); outline: none; transition: border-color 0.15s; appearance: none; -webkit-appearance: none;
 }
 .f-input::placeholder, .f-textarea::placeholder { color: rgba(255,255,255,0.2); }
-.f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--gold); }
+.f-input:focus, .f-select:focus, .f-textarea:focus { border-color: #F76B1C; }
 .f-select option { color: var(--deep); background: #fff; }
 .f-textarea { resize: vertical; min-height: 100px; }
 .f-btn {
-  background: var(--gold); color: var(--deep);
+  background: #F76B1C; color: #fff;
   font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
   padding: 12px 28px; border-radius: 2px; border: none; cursor: pointer;
   font-family: 'DM Sans', sans-serif; transition: background 0.2s; margin-top: 8px;
 }
-.f-btn:hover { background: var(--gold-pale); color: var(--deep); }
+.f-btn:hover { background: #C4520F; color: #fff; }
 .f-success { display: none; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(212,168,67,0.3); border-radius: 4px; padding: 24px; color: #AAA; font-size: 14px; font-weight: 300; line-height: 1.7; }
 .f-success strong { color: var(--gold); font-weight: 400; }
 
@@ -414,9 +414,9 @@ footer {
   background: var(--deep); border-top: 1px solid rgba(255,255,255,0.06);
   padding: 20px 48px; display: flex; justify-content: space-between; align-items: center;
 }
-.footer-left { font-family: 'DM Mono', monospace; font-size: 12px; color: #444; letter-spacing: 0.06em; }
+.footer-left { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.06em; }
 .footer-right { display: flex; gap: 24px; }
-.footer-right a { font-size: 12px; color: #444; text-decoration: none; transition: color 0.2s; cursor: pointer; }
+.footer-right a { font-size: 11px; color: #444; text-decoration: none; transition: color 0.2s; cursor: pointer; }
 .footer-right a:hover { color: var(--gold); }
 
 /* ══════════════════════════════════════
@@ -435,11 +435,10 @@ footer {
 <nav>
   <a class="nav-logo" onclick="showPage('home')">Jorge <span>Sanchez</span></a>
   <div class="nav-links">
-    <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('pulse')">Economic Pulse</a>
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100)">Impact</a>
     <a onclick="showPage('practices')">1MC</a>
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('blog').scrollIntoView({behavior:'smooth'}),100)">Blog</a>
+    <a href="https://jorgesnachez.substack.com" target="_blank">Blog ↗</a>
+    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100)">About</a>
   </div>
   <a class="nav-cta" href="https://calendly.com/west-jorge" target="_blank">Let's Talk</a>
 </nav>
@@ -460,11 +459,10 @@ footer {
         the people<br>who build them.
       </h1>
       <p class="hero-bio">
-        <strong>12+ years in chamber experience. $5.5M deployed. 285 companies launched or landed.</strong><br>
         I turn economic data into decisions and entrepreneurial communities into self-sustaining ecosystems. Based in McAllen, TX — working nationally.
       </p>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num" id="s1">0</div><div class="hero-stat-label">years Chamber experience</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" id="s1">0</div><div class="hero-stat-label">years of Chamber experience</div></div>
         <div class="hero-stat"><div class="hero-stat-num" id="s2">0</div><div class="hero-stat-label">companies soft-landed in US</div></div>
         <div class="hero-stat"><div class="hero-stat-num" id="s3">0</div><div class="hero-stat-label">companies assisted to start</div></div>
         <div class="hero-stat"><div class="hero-stat-num" id="s4">0</div><div class="hero-stat-label">1MC communities led</div></div>
@@ -477,10 +475,7 @@ footer {
         <div class="badge"><div class="badge-dot dot-silver"></div>IEDC · Silver Ribbon · 2018</div>
         <div class="badge"><div class="badge-dot dot-cobalt"></div>Author · Brewed From Within</div>
       </div>
-      <div class="hero-actions">
-        <button class="btn-gold" onclick="showPage('pulse')">See the Economic Pulse →</button>
-        <a class="btn-ghost" href="https://calendly.com/west-jorge" target="_blank">Book a call</a>
-      </div>
+
     </div>
     <div class="hero-right">
       <!-- Replace src below with your Higgsfield photo path -->
@@ -497,19 +492,13 @@ footer {
     </div>
   </div>
 
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-num">$5.5M</div><div class="stat-label">COVID relief distributed · 2022</div></div>
-    <div class="stat"><div class="stat-num">34</div><div class="stat-label">Companies soft-landed in the US</div></div>
-    <div class="stat"><div class="stat-num">251</div><div class="stat-label">Companies assisted to start</div></div>
-    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">1MC communities · West Region</div></div>
-  </div>
+
 
   <!-- ECONOMIC PULSE TEASER -->
   <div class="section-dark">
     <div class="eyebrow ey-gold">Economic Pulse of McAllen</div>
     <div class="section-h-dark">What if your city had<br>real-time economic intelligence?</div>
-    <p class="section-body-dark">Most mid-size cities are flying blind — relying on data that's 12–18 months old. McAllen built a live dashboard that tracks what actually moves the needle. I can build one for yours.</p>
+    <p class="section-body-dark">Most mid-size cities are flying blind — relying on data that's 12–18 months old. I built a live economic intelligence dashboard for McAllen that tracks what actually moves the needle. I can build one for your city too — and keep it running every month.</p>
     <div class="pulse-wrap">
       <div class="dash-panel">
         <div class="dash-header">
@@ -526,7 +515,34 @@ footer {
         <div class="pulse-feature"><div class="pulse-feature-title">No expensive software. No IT department required.</div><div class="pulse-feature-desc">Built on Google Sheets and Apps Script — tools your city already has. I configure it, train your team, and hand you the keys.</div></div>
         <div class="pulse-feature"><div class="pulse-feature-title">17 variables. 1,513 data points. AI-powered forecasting.</div><div class="pulse-feature-desc">Real-time indicators, 90-day projections at 85% confidence, seasonality radar charts, and city-to-city benchmarking.</div></div>
         <div class="pulse-feature"><div class="pulse-feature-title">Built and proven in McAllen, TX.</div><div class="pulse-feature-desc">Not a concept. A working system running in one of the fastest-growing cities on the US-Mexico border.</div></div>
-        <button class="btn-gold" onclick="showPage('pulse')" style="align-self:flex-start;margin-top:8px;">Does your city qualify? →</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;">
+      <a href="https://sites.google.com/view/mcallenpulse/home" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:14px 24px;border-radius:2px;text-decoration:none;font-family:'DM Sans',sans-serif;">See McAllen's live dashboard ↗</a>
+      <button class="btn-gold" onclick="showPage('pulse')" style="width:100%;justify-content:center;">Does your city qualify? →</button>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="section-pale" id="blog">
+    <div class="eyebrow ey-cobalt">From the blog</div>
+    <div class="section-h-light">Ideas worth<br>building on.</div>
+
+    <div style="margin-bottom:32px;">
+      <div style="border-top:2px solid var(--cobalt);padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:32px;">
+        <div class="blog-tag">Ecosystem Building</div>
+        <div class="blog-title">The rainforest metaphor, 12 years in: what Victor Hwang got right about border economies</div>
+        <div class="blog-meta"><span>Coming soon</span><span>5 min read</span></div>
+        <a class="blog-read" href="https://jorgesnachez.substack.com" target="_blank">Read on Substack →</a>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #E0DFDB;padding-top:36px;">
+      <div id="substack-feed" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+        <div style="font-size:13px;color:#999;font-weight:300;padding:20px 0;">Loading latest posts...</div>
+      </div>
+      <div style="margin-top:28px;">
+        <a href="https://jorgesnachez.substack.com" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--cobalt);color:#fff;font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:12px 24px;border-radius:2px;text-decoration:none;">Subscribe on Substack →</a>
       </div>
     </div>
   </div>
@@ -575,38 +591,11 @@ footer {
     </div>
   </div>
 
-  <!-- BLOG -->
-  <div class="section-pale" id="blog">
-    <div class="eyebrow ey-cobalt">From the blog</div>
-    <div class="section-h-light">Ideas worth<br>building on.</div>
-    <div class="blog-grid">
-      <div class="blog-card">
-        <div class="blog-tag">Economic Intelligence</div>
-        <div class="blog-title">What cities get wrong about economic data — and how the $5.5M COVID program changed our thinking</div>
-        <div class="blog-meta"><span>March 2026</span><span>6 min read</span></div>
-        <a class="blog-read" href="#">Read →</a>
-      </div>
-      <div class="blog-card">
-        <div class="blog-tag">Ecosystem Building</div>
-        <div class="blog-title">The rainforest metaphor, 12 years in: what Victor Hwang got right about border economies</div>
-        <div class="blog-meta"><span>February 2026</span><span>5 min read</span></div>
-        <a class="blog-read" href="#">Read →</a>
-      </div>
-      <div class="blog-card">
-        <div class="blog-tag">1MC · Community</div>
-        <div class="blog-title">Leading 40+ communities without losing the human element — lessons from the West Region</div>
-        <div class="blog-meta"><span>January 2026</span><span>7 min read</span></div>
-        <a class="blog-read" href="#">Read →</a>
-      </div>
-    </div>
-  </div>
-
   <!-- CTA -->
   <div class="cta-section">
     <div class="eyebrow ey-gold" style="justify-content:center;">Ready to move</div>
     <div class="cta-title">Does your city<br><span>qualify?</span></div>
     <p class="cta-sub">Let's find out if the Economic Pulse is the right fit for where you are. 30 minutes. No fluff.</p>
-    <a class="cta-btn" href="https://calendly.com/west-jorge" target="_blank">Book a discovery call →</a>
   </div>
 
 </div><!-- /page-home -->
@@ -628,7 +617,7 @@ footer {
   </div>
 
   <div class="transition-bar">
-    <div class="transition-text">McAllen solved it.</div>
+    <div class="transition-text">We solved it for McAllen.</div>
     <div style="font-size:24px;color:var(--deep)">→</div>
     <div class="transition-text">Here's what it looks like.</div>
   </div>
@@ -683,12 +672,13 @@ footer {
 
   <div class="how-section">
     <div class="eyebrow ey-cobalt">How it works</div>
-    <div class="section-h-light">No enterprise contract.<br><span style="color:var(--cobalt)">No IT department.</span></div>
+    <div class="section-h-light">We build it.<br><span style="color:var(--cobalt)">We keep it running.</span></div>
+    <p style="font-size:15px;font-weight:300;color:#555;max-width:540px;line-height:1.8;margin-bottom:40px;">This isn't a one-time delivery. We build your Economic Intelligence Dashboard together, then stay on as your monthly data partner — keeping your indicators current, your forecasts sharp, and your leadership informed.</p>
     <div class="steps">
-      <div class="step"><div class="step-num">01</div><div class="step-title">Discovery call</div><div class="step-desc">We identify which public data sources your city already has access to — most cities have more than they realize.</div></div>
+      <div class="step"><div class="step-num">01</div><div class="step-title">Discovery call</div><div class="step-desc">We identify which public data sources your city already has. Most cities have more than they realize.</div></div>
       <div class="step"><div class="step-num">02</div><div class="step-title">Custom build</div><div class="step-desc">I configure your Google Sheets infrastructure, wire in your data sources, and build your Economic Health Index from scratch.</div></div>
-      <div class="step"><div class="step-num">03</div><div class="step-title">Team training</div><div class="step-desc">Your staff learns the system in one session. Built to be run by city staff, not data scientists.</div></div>
-      <div class="step"><div class="step-num">04</div><div class="step-title">You own it</div><div class="step-desc">No subscription lock-in. No vendor dependency. The system lives in your Google Drive and belongs to your city — forever.</div></div>
+      <div class="step"><div class="step-num">03</div><div class="step-title">Monthly updates</div><div class="step-desc">Every month I refresh your indicators, update the 90-day forecast, and send your leadership a one-page economic briefing. No technical knowledge required on your end.</div></div>
+      <div class="step"><div class="step-num">04</div><div class="step-title">Ongoing partnership</div><div class="step-desc">As your city evolves, so does your dashboard. New indicators, new benchmarks, new sectors — your data intelligence grows with your economy.</div></div>
     </div>
   </div>
 
@@ -697,11 +687,14 @@ footer {
     <div class="cta-title">The right fit<br><span>matters.</span></div>
     <div class="qualify-grid">
       <div class="qualify-card"><div class="qualify-check">✓ Population</div><div class="qualify-title">Cities between 50K and 500K residents</div><div class="qualify-desc">Large enough to have meaningful economic data. Small enough that enterprise solutions are out of reach.</div></div>
-      <div class="qualify-card"><div class="qualify-check">✓ Infrastructure</div><div class="qualify-title">You already use Google Workspace</div><div class="qualify-desc">If your city has Google Sheets, you have everything needed to run this system. No new software required.</div></div>
+      <div class="qualify-card"><div class="qualify-check">✓ Infrastructure</div><div class="qualify-title">You already use Google Workspace</div><div class="qualify-desc">If your city has Google Sheets, you have everything needed. No new software required.</div></div>
       <div class="qualify-card"><div class="qualify-check">✓ Intent</div><div class="qualify-title">Leadership committed to data-driven decisions</div><div class="qualify-desc">This works when city leadership wants to use data — not just collect it. A champion inside your organization matters.</div></div>
     </div>
-    <a class="cta-btn" href="https://calendly.com/west-jorge" target="_blank">Book a discovery call →</a>
-    <div class="cta-sub-label">30 minutes · No pitch deck · Just a conversation about your city</div>
+    <div style="display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;">
+      <a class="cta-btn" href="https://calendly.com/west-jorge" target="_blank">Book a discovery call →</a>
+      <a class="cta-btn" href="https://sites.google.com/view/mcallenpulse/home" target="_blank" style="background:transparent;border:1px solid var(--gold);color:var(--gold);">See McAllen's example dashboard →</a>
+    </div>
+    <div class="cta-sub-label" style="margin-top:20px;">30 minutes · No pitch deck · Just a conversation about your city</div>
   </div>
 
 </div><!-- /page-pulse -->
@@ -714,7 +707,7 @@ footer {
   <div class="bp-hero">
     <div class="eyebrow ey-gold">1 Million Cups · West Region · Jorge Sanchez, RNL</div>
     <h1 class="bp-hero-h1">Building communities<br>that <span class="outline">actually</span> <span class="gold">thrive.</span></h1>
-    <p style="font-size:15px;font-weight:300;color:#AAA;max-width:520px;line-height:1.8;margin-bottom:32px;"><strong style="color:var(--off);font-weight:400;">42 field-tested tactics</strong> across 7 categories — built from 8+ years organizing and leading communities across the West Region. Find your focus and put one thing into practice this week.</p>
+    <p style="font-size:15px;font-weight:300;color:#666;max-width:520px;line-height:1.8;margin-bottom:32px;"><strong style="color:var(--off);font-weight:400;">42 field-tested tactics</strong> across 7 categories — built from 8+ years organizing and leading communities across the West Region. Find your focus and put one thing into practice this week.</p>
     <div class="bp-hero-stats">
       <div class="bp-hstat"><div class="bp-hstat-num">42</div><div class="bp-hstat-label">best practices</div></div>
       <div class="bp-hstat"><div class="bp-hstat-num">7</div><div class="bp-hstat-label">categories</div></div>
@@ -739,7 +732,7 @@ footer {
 
   <!-- SPONSORS -->
   <div class="bp-cat" id="bp-sponsors">
-    <div class="bp-cat-header"><div class="bp-cat-icon">☕</div><div><div class="bp-cat-title">Sponsors</div><div class="bp-cat-goal">Aim for 2 to 6 active partners</div><div class="bp-cat-count">5 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Sponsors</div><div class="bp-cat-goal">Aim for 2 to 6 active partners</div><div class="bp-cat-count">5 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">01 · Sponsors</div><div class="bp-card-title">The Self-Sponsor Quick Win</div><div class="bp-card-body">If your community lacks a coffee or venue sponsor, organizers should list their own businesses. This populates the platform, demonstrates real local buy-in, and shows prospects that professionals actively back the community.</div></div>
       <div class="bp-card"><div class="bp-card-num">02 · Sponsors</div><div class="bp-card-title">The Four Pillars of Sponsorship</div><div class="bp-card-body">Aim for one of each: <strong>Venue</strong>, <strong>Coffee or Food</strong>, <strong>Livestream</strong>, and <strong>Marketing or Printing</strong>. Diversifying reduces dependency on any single partner.</div></div>
@@ -751,7 +744,7 @@ footer {
 
   <!-- ORGANIZERS -->
   <div class="bp-cat" id="bp-organizers">
-    <div class="bp-cat-header"><div class="bp-cat-icon">👥</div><div><div class="bp-cat-title">Organizers</div><div class="bp-cat-goal">Aim for 7 or more active organizers</div><div class="bp-cat-count">8 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Organizers</div><div class="bp-cat-goal">Aim for 7 or more active organizers</div><div class="bp-cat-count">8 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">06 · Organizers</div><div class="bp-card-title">Industry and Network Diversity</div><div class="bp-card-body">Build a team with varied backgrounds: a banker, a creative freelancer, a university staffer, a tech founder. Each brings a different network, ensuring outreach reaches every corner of the city.</div></div>
       <div class="bp-card"><div class="bp-card-num">07 · Organizers</div><div class="bp-card-title">Specialized Roles</div><div class="bp-card-body">Assign clear roles: <strong>The Connector</strong> recruits presenters. The <strong>Web and Check-in Lead</strong> manages the dashboard. The <strong>Door Host</strong> greets with a QR code. Clear ownership prevents burnout.</div></div>
@@ -766,7 +759,7 @@ footer {
 
   <!-- MEETINGS -->
   <div class="bp-cat" id="bp-meetings">
-    <div class="bp-cat-header"><div class="bp-cat-icon">📅</div><div><div class="bp-cat-title">Meetings</div><div class="bp-cat-goal">Same day, same time, every week</div><div class="bp-cat-count">7 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Meetings</div><div class="bp-cat-goal">Same day, same time, every week</div><div class="bp-cat-count">7 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">14 · Meetings</div><div class="bp-card-title">The Reliability Rule</div><div class="bp-card-body">1MC happens every Wednesday at the same time. Period. Even if a presenter cancels, the meeting proceeds. Long-term community trust is built on predictability, not perfection.</div></div>
       <div class="bp-card"><div class="bp-card-num">15 · Meetings</div><div class="bp-card-title">The Empty Slot Backup Plan</div><div class="bp-card-body">If a presenter cancels, pivot to a <strong>Community Townhall</strong>, an <strong>ESO Resource Session</strong>, or a roundtable on a founder topic. These often become fan favorites.</div></div>
@@ -780,7 +773,7 @@ footer {
 
   <!-- ATTENDANCE -->
   <div class="bp-cat" id="bp-attendance">
-    <div class="bp-cat-header"><div class="bp-cat-icon">📈</div><div><div class="bp-cat-title">Attendance</div><div class="bp-cat-goal">Aim for 25 or more registered attendees</div><div class="bp-cat-count">6 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Attendance</div><div class="bp-cat-goal">Aim for 25 or more registered attendees</div><div class="bp-cat-count">6 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">21 · Attendance</div><div class="bp-card-title">QR Codes Everywhere</div><div class="bp-card-body">Place QR codes on every chair and the coffee table. Add a sign: <em>Free coffee if you scan.</em> Make check-in the ambient activity of the room, not a friction point at the door.</div></div>
       <div class="bp-card"><div class="bp-card-num">22 · Attendance</div><div class="bp-card-title">The First-Timer Welcome</div><div class="bp-card-body">Assign a dedicated Greeter whose only job is to identify new faces and introduce them to at least three regulars before the meeting starts. Nobody should leave their first 1MC without knowing someone's name.</div></div>
@@ -793,7 +786,7 @@ footer {
 
   <!-- LOGINS -->
   <div class="bp-cat" id="bp-logins">
-    <div class="bp-cat-header"><div class="bp-cat-icon">💻</div><div><div class="bp-cat-title">Platform Logins</div><div class="bp-cat-goal">Aim for 75%+ of organizers recently logged in</div><div class="bp-cat-count">3 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Platform Logins</div><div class="bp-cat-goal">Aim for 75%+ of organizers recently logged in</div><div class="bp-cat-count">3 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">27 · Platform</div><div class="bp-card-title">Monthly Dashboard Day</div><div class="bp-card-body">Once a month, the team stays 10 minutes after the meeting to log in together, update meeting notes, and clear the presenter pipeline. Collective accountability makes a chore feel like a team ritual.</div></div>
       <div class="bp-card"><div class="bp-card-num">28 · Platform</div><div class="bp-card-title">Mobile Accessibility First</div><div class="bp-card-body">Every organizer should have their dashboard login saved on their phone. Real-time check-in management during an event is only possible if nobody is digging through emails to remember a password.</div></div>
@@ -803,7 +796,7 @@ footer {
 
   <!-- PRESENTATIONS -->
   <div class="bp-cat" id="bp-presentations">
-    <div class="bp-cat-header"><div class="bp-cat-icon">🎙</div><div><div class="bp-cat-title">Presentations</div><div class="bp-cat-goal">Keep 5 or more founders ready to present at any time</div><div class="bp-cat-count">7 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Presentations</div><div class="bp-cat-goal">Keep 5 or more founders ready to present at any time</div><div class="bp-cat-count">7 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">30 · Presentations</div><div class="bp-card-title">Always Be Recruiting</div><div class="bp-card-body">Every organizer asks at least one person per week: "Have you thought about presenting at 1MC?" It takes 30 seconds and keeps the pipeline full. Make it a standing item in your post-meeting debrief.</div></div>
       <div class="bp-card"><div class="bp-card-num">31 · Presentations</div><div class="bp-card-title">Presenter Coaching and Dry Runs</div><div class="bp-card-body">Offer a brief coaching session before the event. Prepared presenters refer other founders. The investment in one coaching call pays out in three future applicants.</div></div>
@@ -817,7 +810,7 @@ footer {
 
   <!-- CULTURE -->
   <div class="bp-cat" id="bp-culture">
-    <div class="bp-cat-header"><div class="bp-cat-icon">🏆</div><div><div class="bp-cat-title">Culture & the Extra Shot</div><div class="bp-cat-goal">The tactics that turn attendees into evangelists</div><div class="bp-cat-count">7 practices</div></div></div>
+    <div class="bp-cat-header"><div class="bp-cat-icon"></div><div><div class="bp-cat-title">Culture & the Extra Shot</div><div class="bp-cat-goal">The tactics that turn attendees into evangelists</div><div class="bp-cat-count">7 practices</div></div></div>
     <div class="bp-cards">
       <div class="bp-card"><div class="bp-card-num">37 · Culture</div><div class="bp-card-title">The Coffee Cup Counter</div><div class="bp-card-body">Start every meeting by announcing the cumulative cups served — your total historical attendance. It turns a metric into a celebration and gives long-time regulars a reason to cheer.</div></div>
       <div class="bp-card"><div class="bp-card-num">38 · Culture</div><div class="bp-card-title">The Signature Banner</div><div class="bp-card-body">Have every presenter sign a 1MC banner immediately after their Q&A. It creates a physical legacy of entrepreneurial history and gives you great social media content every single week.</div></div>
@@ -833,9 +826,9 @@ footer {
   <div class="bp-submit-section" id="bp-submit">
     <div class="bp-submit-grid">
       <div>
-        <div class="eyebrow ey-gold">Contribute</div>
-        <div class="bp-submit-h">Share a<br><span>Best Practice</span></div>
-        <p class="bp-submit-p">Something working well in your community? Submit it here and it may be featured in the next edition of this guide. Every community has something to teach.</p>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#F76B1C;display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="width:20px;height:1px;background:#F76B1C;display:block;"></span>Contribute</div>
+        <div class="bp-submit-h">Share a <span>Best Practice</span></div>
+        <p class="bp-submit-p">Something working in your community? Submit it and it may be featured in the next edition of this guide.</p>
       </div>
       <div>
         <form id="bp-form">
@@ -905,6 +898,37 @@ function startPulseCounters() {
 
 // Init
 startCounters();
+
+// Substack RSS feed
+function loadSubstackFeed() {
+  const feed = document.getElementById('substack-feed');
+  if (!feed) return;
+  const rss = 'https://jorgesnachez.substack.com/feed';
+  const proxy = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rss) + '&count=3';
+  fetch(proxy)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.items || !data.items.length) {
+        feed.innerHTML = '<p style="font-size:13px;color:#999;font-weight:300;">No posts yet — check back soon.</p>';
+        return;
+      }
+      feed.innerHTML = data.items.map(item => {
+        const date = new Date(item.pubDate).toLocaleDateString('en-US', {month:'long', year:'numeric'});
+        const desc = item.description ? item.description.replace(/<[^>]*>/g,'').substring(0,120) + '...' : '';
+        return `
+          <div style="background:#fff;border:0.5px solid #E8E8E8;border-radius:4px;padding:22px 20px;border-top:2px solid var(--cobalt);">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--cobalt);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;">${date}</div>
+            <div style="font-size:15px;font-weight:500;color:var(--deep);margin-bottom:8px;line-height:1.35;">${item.title}</div>
+            <div style="font-size:13px;font-weight:300;color:#777;line-height:1.7;margin-bottom:14px;">${desc}</div>
+            <a href="${item.link}" target="_blank" style="font-size:11px;color:var(--cobalt);text-decoration:none;font-weight:500;">Read →</a>
+          </div>`;
+      }).join('');
+    })
+    .catch(() => {
+      feed.innerHTML = '';
+    });
+}
+loadSubstackFeed();
 
 // BP form
 document.getElementById('bp-form').addEventListener('submit', function(e) {
