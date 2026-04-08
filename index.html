@@ -429,6 +429,14 @@ footer {
 /* ══════════════════════════════════════
    MOBILE RESPONSIVE — max-width: 768px
 ══════════════════════════════════════ */
+
+  /* HAMBURGER */
+  #hamburger { display: none !important; }
+  @media (max-width: 768px) {
+    #hamburger { display: flex !important; }
+    .hb-line { display: block; width: 22px; height: 2px; background: var(--gold); border-radius: 1px; }
+  }
+
 @media (max-width: 768px) {
 
   /* NAV */
@@ -531,14 +539,29 @@ footer {
 ══════════════════════════════════════ -->
 <nav>
   <a class="nav-logo" onclick="showPage('home')">Jorge <span>Sanchez</span></a>
-  <div class="nav-links">
-    <a onclick="showPage('pulse')">Economic Pulse</a>
-    <a onclick="showPage('practices')">1MC</a>
-    <a href="https://jorgesnachez.substack.com" target="_blank">Blog ↗</a>
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100)">About</a>
+  <div class="nav-links" id="nav-links">
+    <a onclick="showPage('pulse');closeMobileNav()">Economic Pulse</a>
+    <a onclick="showPage('practices');closeMobileNav()">1MC</a>
+    <a href="https://jorgesnachez.substack.com" target="_blank" onclick="closeMobileNav()">Blog ↗</a>
+    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100);closeMobileNav()">About</a>
   </div>
-  <a class="nav-cta" href="https://calendly.com/west-jorge" target="_blank">Let's Talk</a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a class="nav-cta" href="https://calendly.com/west-jorge" target="_blank">Let's Talk</a>
+    <button id="hamburger" onclick="toggleMobileNav()" style="display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px;align-items:center;justify-content:center;">
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+    </button>
+  </div>
 </nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div id="mobile-nav" style="display:none;position:fixed;top:52px;left:0;right:0;background:var(--deep);z-index:99;border-bottom:1px solid rgba(212,168,67,0.2);padding:16px 20px;flex-direction:column;gap:0;">
+  <a onclick="showPage('pulse');closeMobileNav()" style="color:var(--muted-l);font-size:15px;text-decoration:none;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:block;letter-spacing:0.04em;">Economic Pulse</a>
+  <a onclick="showPage('practices');closeMobileNav()" style="color:var(--muted-l);font-size:15px;text-decoration:none;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:block;letter-spacing:0.04em;">1MC</a>
+  <a href="https://jorgesnachez.substack.com" target="_blank" onclick="closeMobileNav()" style="color:var(--muted-l);font-size:15px;text-decoration:none;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:block;letter-spacing:0.04em;">Blog ↗</a>
+  <a onclick="showPage('home'); setTimeout(()=>document.getElementById('impact').scrollIntoView({behavior:'smooth'}),100);closeMobileNav()" style="color:var(--muted-l);font-size:15px;text-decoration:none;padding:14px 0;display:block;letter-spacing:0.04em;">About</a>
+</div>
 
 <!-- ══════════════════════════════════════
      HOME PAGE
@@ -961,6 +984,17 @@ footer {
 </footer>
 
 <script>
+
+function toggleMobileNav() {
+  var nav = document.getElementById('mobile-nav');
+  var isOpen = nav.style.display === 'flex';
+  nav.style.display = isOpen ? 'none' : 'flex';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
