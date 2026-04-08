@@ -381,29 +381,29 @@ nav {
 .bp-card-body { font-size: 15px; font-weight: 300; color: #777; line-height: 1.75; }
 .bp-card-body strong { color: var(--deep); font-weight: 500; }
 .bp-card-body em { color: #F76B1C; font-style: normal; font-weight: 500; }
-.bp-submit-section { background: #141414; padding: 48px 48px; }
+.bp-submit-section { background: #F76B1C; padding: 48px 48px; }
 .bp-submit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 900px; margin: 0 auto; }
-.bp-submit-h { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #fff; line-height: 0.95; margin-bottom: 10px; }
-.bp-submit-h span { color: #F76B1C; }
-.bp-submit-p { font-size: 13px; font-weight: 300; color: #666; line-height: 1.7; max-width: 360px; }
+.bp-submit-h { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #141414; line-height: 0.95; margin-bottom: 10px; }
+.bp-submit-h span { -webkit-text-stroke: 1.5px #141414; color: transparent; }
+.bp-submit-p { font-size: 16px; font-weight: 400; color: #141414; line-height: 1.7; max-width: 360px; }
 .f-field { margin-bottom: 16px; }
-.f-label { font-family: 'DM Mono', monospace; font-size: 13px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.f-label { font-family: 'DM Mono', monospace; font-size: 13px; color: #141414; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 500; }
 .f-input, .f-select, .f-textarea {
-  width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 2px;
+  width: 100%; background: rgba(255,255,255,0.9); border: none; border-radius: 2px;
   padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px;
-  color: var(--off); outline: none; transition: border-color 0.15s; appearance: none; -webkit-appearance: none;
+  color: #141414; outline: none; transition: border-color 0.15s; appearance: none; -webkit-appearance: none;
 }
-.f-input::placeholder, .f-textarea::placeholder { color: rgba(255,255,255,0.2); }
+.f-input::placeholder, .f-textarea::placeholder { color: #999; }
 .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: #F76B1C; }
 .f-select option { color: var(--deep); background: #fff; }
 .f-textarea { resize: vertical; min-height: 100px; }
 .f-btn {
-  background: #F76B1C; color: #fff;
+  background: #141414; color: #fff;
   font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
   padding: 12px 28px; border-radius: 2px; border: none; cursor: pointer;
   font-family: 'DM Sans', sans-serif; transition: background 0.2s; margin-top: 8px;
 }
-.f-btn:hover { background: #C4520F; color: #fff; }
+.f-btn:hover { background: #333; color: #fff; }
 .f-success { display: none; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(212,168,67,0.3); border-radius: 4px; padding: 24px; color: #AAA; font-size: 14px; font-weight: 300; line-height: 1.7; }
 .f-success strong { color: var(--gold); font-weight: 400; }
 
@@ -706,13 +706,17 @@ footer {
 
   <div class="bp-hero">
     <div class="eyebrow ey-gold">1 Million Cups · West Region · Jorge Sanchez, RNL</div>
-    <h1 class="bp-hero-h1">Building communities<br>that <span class="outline">actually</span> <span class="gold">thrive.</span></h1>
-    <p style="font-size:16px;font-weight:400;color:#333;max-width:580px;line-height:1.8;margin-bottom:32px;"><strong style="color:#F76B1C;font-weight:500;">42 field-tested tactics</strong> across 7 categories — built from 8+ years organizing and leading communities across the West Region. Find your focus and put one thing into practice this week.</p>
-    <div class="bp-hero-stats">
-      <div class="bp-hstat"><div class="bp-hstat-num">42</div><div class="bp-hstat-label">best practices</div></div>
-      <div class="bp-hstat"><div class="bp-hstat-num">7</div><div class="bp-hstat-label">categories</div></div>
-      <div class="bp-hstat"><div class="bp-hstat-num">40+</div><div class="bp-hstat-label">communities in the West</div></div>
-      <div class="bp-hstat"><div class="bp-hstat-num">8+</div><div class="bp-hstat-label">years in 1MC</div></div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;">
+      <div>
+        <h1 class="bp-hero-h1">Building communities<br>that <span class="outline">actually</span> <span class="gold">thrive.</span></h1>
+        <p style="font-size:16px;font-weight:400;color:#333;max-width:540px;line-height:1.8;margin-top:16px;"><strong style="color:#F76B1C;font-weight:500;">42 field-tested tactics</strong> across 7 categories — built from 8+ years organizing and leading communities across the West Region.</p>
+      </div>
+      <div class="bp-hero-stats" style="flex-direction:column;gap:20px;border-left:2px solid rgba(247,107,28,0.2);padding-left:40px;">
+        <div class="bp-hstat"><div class="bp-hstat-num">42</div><div class="bp-hstat-label">best practices</div></div>
+        <div class="bp-hstat"><div class="bp-hstat-num">7</div><div class="bp-hstat-label">categories</div></div>
+        <div class="bp-hstat"><div class="bp-hstat-num">40+</div><div class="bp-hstat-label">communities</div></div>
+        <div class="bp-hstat"><div class="bp-hstat-num">8+</div><div class="bp-hstat-label">years in 1MC</div></div>
+      </div>
     </div>
   </div>
 
@@ -826,7 +830,7 @@ footer {
   <div class="bp-submit-section" id="bp-submit">
     <div class="bp-submit-grid">
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#F76B1C;display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="width:20px;height:1px;background:#F76B1C;display:block;"></span>Contribute</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#141414;display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="width:20px;height:1px;background:#141414;display:block;"></span>Contribute</div>
         <div class="bp-submit-h">Share a <span>Best Practice</span></div>
         <p class="bp-submit-p">Something working in your community? Submit it and it may be featured in the next edition of this guide.</p>
       </div>
