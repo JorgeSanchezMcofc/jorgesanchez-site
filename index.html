@@ -1034,6 +1034,14 @@ function startPulseCounters() {
 // Init
 startCounters();
 
+// Detect ?page= parameter for direct links e.g. jorgesanchez.me/1mc
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var page = params.get('page');
+  if (page === 'practices') showPage('practices');
+  if (page === 'pulse') showPage('pulse');
+})();
+
 // Substack RSS feed
 function loadSubstackFeed() {
   const feed = document.getElementById('substack-feed');
