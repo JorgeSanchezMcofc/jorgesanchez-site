@@ -4,4 +4,11 @@
       "runtime": "nodejs18.x"
     }
   },
+  "redirects": [
+    {
+      "source": "/1mc",
+      "destination": "/?page=practices",
+      "permanent": false
+    }
+  ]
 }
