@@ -3,5 +3,12 @@
     "api/*.js": {
       "runtime": "nodejs18.x"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/coach",
+      "destination": "https://jorgesanchez-site.vercel.app/coach",
+      "permanent": false
+    }
+  ]
 }
