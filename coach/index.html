@@ -653,7 +653,7 @@
           <div class="log-unit">ms</div>
         </div>
       </div>
-      <button class="log-btn" onclick="saveLog()">SAVE TODAY'S LOG</button>
+      <button class="log-btn" id="saveBtn" onclick="saveLog()">SAVE TODAY'S LOG</button>
     </div>
 
     <!-- WEIGHT HISTORY -->
@@ -1007,6 +1007,51 @@
       </div>`;
   }
 
+  // Google Sheets API
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
+
+  async function sendToSheets(entry) {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = 'SAVING TO SHEETS...';
+    btn.style.opacity = '0.7';
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: entry.date,
+          day: entry.day,
+          weight: entry.weight,
+          calories: entry.cals,
+          protein: entry.protein,
+          carbs: entry.carbs,
+          fat: entry.fat,
+          steps: entry.steps,
+          sleep: entry.sleep,
+          hrv: entry.hrv
+        })
+      });
+      btn.textContent = '✅ SAVED TO SHEETS!';
+      btn.style.background = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'SAVE TODAY\'S LOG';
+        btn.style.background = 'var(--accent)';
+        btn.style.opacity = '1';
+      }, 3000);
+    } catch (err) {
+      btn.textContent = '⚠️ SAVED LOCALLY ONLY';
+      btn.style.background = 'var(--yellow)';
+      btn.style.color = '#000';
+      setTimeout(() => {
+        btn.textContent = 'SAVE TODAY\'S LOG';
+        btn.style.background = 'var(--accent)';
+        btn.style.color = '#000';
+        btn.style.opacity = '1';
+      }, 3000);
+    }
+  }
+
   // Save log
   function saveLog() {
     const weight = parseFloat(document.getElementById('inputWeight').value);
@@ -1025,6 +1070,9 @@
 
     todayLogged = { cals, protein, carbs, fat, steps };
     save('jorge_today', todayLogged);
+
+    // Send to Google Sheets
+    sendToSheets(entry);
 
     updateCalDisplay();
     updateStreak();
