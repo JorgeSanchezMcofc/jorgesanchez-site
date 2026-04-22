@@ -503,7 +503,7 @@ COMO ME SIENTO: __
 
 <script>
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
-const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
+const CLAUDE_URL = '/api/coach';
 
 const JORGE_PROFILE = `You are Jorge's personal Metabolic Performance Coach. Speak naturally — mix English with occasional Spanish phrases just like Jorge does (Spanglish). He's from McAllen TX, US-Mexico border.
 
@@ -547,15 +547,13 @@ async function askClaude(prompt) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
       system: JORGE_PROFILE,
-      messages: [{ role: 'user', content: prompt }]
+      prompt: prompt
     })
   });
   const data = await res.json();
-  if (!data.content) throw new Error('No response');
-  return data.content[0].text;
+  if (!data.text) throw new Error('No response');
+  return data.text;
 }
 
 // Morning briefing
