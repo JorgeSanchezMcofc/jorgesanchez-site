@@ -285,21 +285,21 @@
       <div class="readiness-top">
         <div>
           <div class="readiness-title">Oura Readiness</div>
-          <div class="readiness-score">55</div>
-          <div class="readiness-lbl">⚠️ PAY ATTENTION</div>
+          <div class="readiness-score" id="readinessScore">55</div>
+          <div class="readiness-lbl" id="readinessLabel">⚠️ PAY ATTENTION</div>
         </div>
         <div class="rring">
           <svg width="80" height="80" viewBox="0 0 80 80">
             <circle class="ring-bg" cx="40" cy="40" r="35"/>
             <circle class="ring-fill" cx="40" cy="40" r="35"/>
           </svg>
-          <div class="ring-text">55</div>
+          <div class="ring-text" id="readinessRingText">55</div>
         </div>
       </div>
       <div class="rbars">
         <div class="rbar"><div class="rbar-lbl">RHR</div><div class="rbar-track"><div class="rbar-fill" style="width:85%;background:var(--green)"></div></div><div class="rbar-val">62 bpm ✅</div></div>
         <div class="rbar"><div class="rbar-lbl">HRV</div><div class="rbar-track"><div class="rbar-fill" style="width:42%;background:var(--yellow)"></div></div><div class="rbar-val">33 ms ⚠️</div></div>
-        <div class="rbar"><div class="rbar-lbl">Sleep</div><div class="rbar-track"><div class="rbar-fill" style="width:60%;background:var(--yellow)"></div></div><div class="rbar-val">6h 24m ⚠️</div></div>
+        <div class="rbar"><div class="rbar-lbl">Sleep Score</div><div class="rbar-track"><div class="rbar-fill" id="sleepScoreBar" style="width:60%;background:var(--yellow)"></div></div><div class="rbar-val" id="sleepScoreVal">— pts</div></div>
         <div class="rbar"><div class="rbar-lbl">Body Temp</div><div class="rbar-track"><div class="rbar-fill" style="width:90%;background:var(--green)"></div></div><div class="rbar-val">−0.3°F ✅</div></div>
       </div>
     </div>
@@ -377,6 +377,9 @@
         <div class="log-row"><div class="log-lbl">🚶 Steps</div><input class="log-input" type="number" id="inputSteps" placeholder="7500"><div class="log-unit">steps</div></div>
         <div class="log-row"><div class="log-lbl">😴 Sleep</div><input class="log-input" type="number" id="inputSleep" placeholder="7.5" step="0.1"><div class="log-unit">hrs</div></div>
         <div class="log-row"><div class="log-lbl">❤️ HRV</div><input class="log-input" type="number" id="inputHRV" placeholder="33"><div class="log-unit">ms</div></div>
+        <div class="log-row"><div class="log-lbl">🟠 Readiness</div><input class="log-input" type="number" id="inputReadiness" placeholder="55"><div class="log-unit">/ 100</div></div>
+        <div class="log-row"><div class="log-lbl">😴 Sleep Score</div><input class="log-input" type="number" id="inputSleepScore" placeholder="72"><div class="log-unit">/ 100</div></div>
+        <div class="log-row"><div class="log-lbl">⚡ Activity</div><input class="log-input" type="number" id="inputActivityScore" placeholder="55"><div class="log-unit">/ 100</div></div>
       </div>
       <button class="log-btn" id="saveBtn" onclick="saveLog()">SAVE + GET AI ANALYSIS 🤖</button>
     </div>
@@ -503,7 +506,7 @@ COMO ME SIENTO: __
 
 <script>
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
-const CLAUDE_URL = 'https://jorgesanchez-site.vercel.app/api/coach';
+const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
 
 const JORGE_PROFILE = `You are Jorge's personal Metabolic Performance Coach. Speak naturally — mix English with occasional Spanish phrases just like Jorge does (Spanglish). He's from McAllen TX, US-Mexico border.
 
@@ -547,13 +550,15 @@ async function askClaude(prompt) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
       system: JORGE_PROFILE,
-      prompt: prompt
+      messages: [{ role: 'user', content: prompt }]
     })
   });
   const data = await res.json();
-  if (!data.text) throw new Error('No response');
-  return data.text;
+  if (!data.content) throw new Error('No response');
+  return data.content[0].text;
 }
 
 // Morning briefing
@@ -668,7 +673,7 @@ async function sendToSheets(entry) {
     await fetch(SHEET_URL, {
       method:'POST', mode:'no-cors',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ date:entry.date, day:entry.day, weight:entry.weight, calories:entry.cals, protein:entry.protein, carbs:entry.carbs, fat:entry.fat, steps:entry.steps, sleep:entry.sleep, hrv:entry.hrv })
+      body: JSON.stringify({ date:entry.date, day:entry.day, weight:entry.weight, calories:entry.cals, protein:entry.protein, carbs:entry.carbs, fat:entry.fat, steps:entry.steps, sleep:entry.sleep, hrv:entry.hrv, readiness:entry.readiness, sleepScore:entry.sleepScore, activityScore:entry.activityScore })
     });
   } catch(e) { console.log('Sheets offline'); }
 }
@@ -683,13 +688,16 @@ async function saveLog() {
   const steps   = parseInt(document.getElementById('inputSteps').value) || 0;
   const sleep   = parseFloat(document.getElementById('inputSleep').value) || 0;
   const hrv     = parseInt(document.getElementById('inputHRV').value) || 0;
+  const readiness     = parseInt(document.getElementById("inputReadiness").value) || 0;
+  const sleepScore    = parseInt(document.getElementById("inputSleepScore").value) || 0;
+  const activityScore = parseInt(document.getElementById("inputActivityScore").value) || 0;
 
   const btn = document.getElementById('saveBtn');
   btn.textContent = '⏳ SAVING TO SHEETS...';
   btn.style.opacity = '0.7';
 
   const dateStr = `${MONTHS[now.getMonth()]} ${now.getDate()}`;
-  const entry = { date:dateStr, day:logs.length+2, weight, cals, protein, carbs, fat, steps, sleep, hrv };
+  const entry = { date:dateStr, day:logs.length+2, weight, cals, protein, carbs, fat, steps, sleep, hrv, readiness, sleepScore, activityScore };
   logs.push(entry);
   save('jorge_logs', logs);
   todayLogged = { cals, protein, carbs, fat, steps };
@@ -704,10 +712,11 @@ async function saveLog() {
   buildChart();
   buildHistory();
   updatePrediction();
+  updateReadiness(readiness, sleepScore, activityScore);
 
   await generateNightDebrief(entry);
 
-  ['inputWeight','inputCals','inputProtein','inputCarbs','inputFat','inputSteps','inputSleep','inputHRV'].forEach(id => document.getElementById(id).value='');
+  ['inputWeight','inputCals','inputProtein','inputCarbs','inputFat','inputSteps','inputSleep','inputHRV','inputReadiness','inputSleepScore','inputActivityScore'].forEach(id => document.getElementById(id).value='');
 
   btn.textContent = '✅ DONE — VER ANÁLISIS';
   btn.style.background = 'var(--green)';
@@ -717,6 +726,29 @@ async function saveLog() {
 }
 
 // UI helpers
+// Update readiness display dynamically
+function updateReadiness(score, sleepSc, actSc) {
+  if (!score) return;
+  const color = score >= 85 ? "var(--green)" : score >= 70 ? "var(--accent2)" : score >= 50 ? "var(--yellow)" : "var(--red)";
+  const label = score >= 85 ? "✅ OPTIMAL" : score >= 70 ? "✅ GOOD" : score >= 50 ? "⚠️ PAY ATTENTION" : "🔴 LOW — REST DAY";
+  document.getElementById("readinessScore").textContent = score;
+  document.getElementById("readinessScore").style.color = color;
+  document.getElementById("readinessRingText").textContent = score;
+  document.getElementById("readinessLabel").textContent = label;
+  document.getElementById("readinessLabel").style.color = color;
+  const offset = 220 - (score / 100) * 220;
+  document.querySelector(".ring-fill").style.strokeDashoffset = offset;
+  document.querySelector(".ring-fill").style.stroke = color;
+  if (sleepSc) {
+    document.getElementById("sleepScoreBar").style.width = sleepSc + "%";
+    document.getElementById("sleepScoreBar").style.background = sleepSc >= 80 ? "var(--green)" : sleepSc >= 60 ? "var(--yellow)" : "var(--red)";
+    document.getElementById("sleepScoreVal").textContent = sleepSc + " pts";
+  }
+  const alerts = document.querySelectorAll(".alert");
+  if (score < 50 && alerts[1]) alerts[1].innerHTML = "<span>🔴</span> Readiness " + score + " — rest day, no training today";
+  else if (score >= 85 && alerts[1]) alerts[1].innerHTML = "<span>✅</span> Readiness " + score + " — green light, push today!";
+}
+
 function updateCalDisplay() {
   const pct = Math.min(100, Math.round((todayLogged.cals/1900)*100));
   document.getElementById('calPct').textContent = pct+'%';
@@ -771,6 +803,8 @@ function switchTab(name,el) {
 
 // Init
 updateCalDisplay(); updateStreak(); buildChart(); buildHistory(); updatePrediction();
+const lastLog = logs[logs.length-1];
+if(lastLog && lastLog.readiness) updateReadiness(lastLog.readiness, lastLog.sleepScore, lastLog.activityScore);
 if(aiCache[`night_${todayKey}`]){document.getElementById('nightSection').style.display='block';document.getElementById('nightMsg').innerHTML=fmt(aiCache[`night_${todayKey}`]);}
 loadMorning();
 </script>
