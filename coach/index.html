@@ -1,207 +1,254 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Jorge | AI Metabolic Coach</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#0a0a0f;--surface:#111118;--surface2:#18181f;--border:#ffffff0f;
-    --accent:#f97316;--accent2:#22d3ee;--accent3:#a3e635;
-    --red:#ef4444;--yellow:#eab308;--green:#22c55e;
-    --text:#f1f5f9;--muted:#64748b;
-    --card-glow:0 0 0 1px #ffffff08,0 4px 24px #00000060;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
-  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(#ffffff04 1px,transparent 1px),linear-gradient(90deg,#ffffff04 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-  .app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 0 110px;}
-  .header{padding:24px 20px 16px;display:flex;align-items:center;justify-content:space-between;}
-  .greeting{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:500;}
-  .name{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;letter-spacing:1px;}
-  .date-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
-  .section-label{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);font-weight:600;padding:0 20px;margin-bottom:10px;margin-top:24px;}
-  .streak-bar{margin:0 20px 20px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--card-glow);}
-  .streak-icon{font-size:28px;}
-  .streak-text{flex:1;}
-  .streak-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-  .streak-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;}
-  .streak-dots{display:flex;gap:5px;}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);}
-  .dot.done{background:var(--accent);border-color:var(--accent);}
-  .dot.today{background:transparent;border-color:var(--accent);animation:pdot 1.5s ease infinite;}
-  @keyframes pdot{0%,100%{box-shadow:0 0 0 0 #f9731640;}50%{box-shadow:0 0 0 4px #f9731610;}}
+:root{--bg:#0a0a0f;--surface:#111118;--surface2:#18181f;--border:#ffffff0f;--accent:#f97316;--accent2:#22d3ee;--accent3:#a3e635;--red:#ef4444;--yellow:#eab308;--green:#22c55e;--purple:#a855f7;--text:#f1f5f9;--muted:#64748b;--card-glow:0 0 0 1px #ffffff08,0 4px 24px #00000060;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(#ffffff04 1px,transparent 1px),linear-gradient(90deg,#ffffff04 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 0 110px;}
+.header{padding:24px 20px 16px;display:flex;align-items:center;justify-content:space-between;}
+.greeting{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:500;}
+.name{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;letter-spacing:1px;}
+.date-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.section-label{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);font-weight:600;padding:0 20px;margin-bottom:10px;margin-top:24px;}
 
-  /* AI COACH CARD */
-  .coach-card{margin:0 20px 12px;border-radius:20px;padding:18px 20px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a,#1e1b4b);border:1px solid #6366f130;box-shadow:0 0 40px #6366f110,var(--card-glow);}
-  .coach-card::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,#6366f120,transparent 70%);}
-  .coach-card.morning{background:linear-gradient(135deg,#0f172a,#042f2e);border-color:#22d3ee30;}
-  .coach-card.morning::before{background:radial-gradient(circle,#22d3ee15,transparent 70%);}
-  .coach-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-  .coach-avatar{font-size:24px;}
-  .coach-badge{display:flex;flex-direction:column;flex:1;}
-  .coach-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#a5b4fc;font-weight:700;}
-  .coach-sublabel{font-size:10px;color:var(--muted);}
-  .ai-dot{width:6px;height:6px;border-radius:50%;background:#a5b4fc;animation:pdot 2s ease infinite;}
-  .coach-msg{font-size:13.5px;line-height:1.7;color:#cbd5e1;}
-  .coach-msg strong{color:var(--text);}
-  .loading-dots{display:flex;gap:4px;align-items:center;}
-  .loading-dots span{width:6px;height:6px;border-radius:50%;background:#a5b4fc;animation:bounce 1.2s ease infinite;}
-  .loading-dots span:nth-child(2){animation-delay:.2s;}
-  .loading-dots span:nth-child(3){animation-delay:.4s;}
-  @keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-  .loading-row{display:flex;align-items:center;gap:10px;}
-  .loading-text{font-size:12px;color:var(--muted);font-style:italic;}
+/* STREAK */
+.streak-bar{margin:0 20px 20px;background:var(–surface);border:1px solid var(–border);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(–card-glow);}
+.streak-icon{font-size:28px;}
+.streak-text{flex:1;}
+.streak-label{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
+.streak-val{font-family:‘Bebas Neue’,sans-serif;font-size:22px;color:var(–accent);letter-spacing:1px;}
+.streak-dots{display:flex;gap:5px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(–surface2);border:1px solid var(–border);}
+.dot.done{background:var(–accent);border-color:var(–accent);}
+.dot.today{background:transparent;border-color:var(–accent);animation:pdot 1.5s ease infinite;}
+@keyframes pdot{0%,100%{box-shadow:0 0 0 0 #f9731640;}50%{box-shadow:0 0 0 4px #f9731610;}}
 
-  /* PREDICTION */
-  .pred-card{margin:0 20px 12px;background:linear-gradient(135deg,#0f2a1a,#0a1f0f);border:1px solid #22c55e30;border-radius:20px;padding:18px 20px;box-shadow:var(--card-glow);}
-  .pred-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--green);font-weight:700;margin-bottom:12px;}
-  .pred-main{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--green);line-height:1;margin-bottom:4px;}
-  .pred-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
-  .pred-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-  .pred-stat{background:#ffffff06;border-radius:10px;padding:10px;text-align:center;}
-  .pred-stat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);}
-  .pred-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+/* AI COACH CARD */
+.coach-card{margin:0 20px 12px;border-radius:20px;padding:18px 20px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a,#1e1b4b);border:1px solid #6366f130;box-shadow:0 0 40px #6366f110,var(–card-glow);}
+.coach-card::before{content:’’;position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,#6366f120,transparent 70%);}
+.coach-card.morning{background:linear-gradient(135deg,#0f172a,#042f2e);border-color:#22d3ee30;}
+.coach-card.morning::before{background:radial-gradient(circle,#22d3ee15,transparent 70%);}
+.coach-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.coach-avatar{font-size:24px;}
+.coach-badge{display:flex;flex-direction:column;flex:1;}
+.coach-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#a5b4fc;font-weight:700;}
+.coach-sublabel{font-size:10px;color:var(–muted);}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:#a5b4fc;animation:pdot 2s ease infinite;}
+.coach-msg{font-size:13.5px;line-height:1.7;color:#cbd5e1;}
+.coach-msg strong{color:var(–text);}
+.loading-row{display:flex;align-items:center;gap:10px;}
+.loading-dots{display:flex;gap:4px;}
+.loading-dots span{width:6px;height:6px;border-radius:50%;background:#a5b4fc;animation:bounce 1.2s ease infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.loading-text{font-size:12px;color:var(–muted);font-style:italic;}
 
-  /* ALERTS */
-  .alert{margin:0 20px 8px;border-radius:14px;padding:11px 16px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:500;border:1px solid;}
-  .alert.red{background:#ef444410;border-color:#ef444430;color:#fca5a5;}
-  .alert.yellow{background:#eab30810;border-color:#eab30830;color:#fde047;}
-  .alert.green{background:#22c55e10;border-color:#22c55e30;color:#86efac;}
+/* PREDICTION */
+.pred-card{margin:0 20px 12px;background:linear-gradient(135deg,#0f2a1a,#0a1f0f);border:1px solid #22c55e30;border-radius:20px;padding:18px 20px;box-shadow:var(–card-glow);}
+.pred-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(–green);font-weight:700;margin-bottom:12px;}
+.pred-main{font-family:‘Bebas Neue’,sans-serif;font-size:36px;color:var(–green);line-height:1;margin-bottom:4px;}
+.pred-sub{font-size:12px;color:var(–muted);margin-bottom:14px;}
+.pred-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.pred-stat{background:#ffffff06;border-radius:10px;padding:10px;text-align:center;}
+.pred-stat-val{font-family:‘Bebas Neue’,sans-serif;font-size:18px;color:var(–text);}
+.pred-stat-lbl{font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
 
-  /* READINESS */
-  .readiness-card{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);position:relative;overflow:hidden;}
-  .readiness-card::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,#f9731620,transparent 70%);pointer-events:none;}
-  .readiness-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
-  .readiness-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
-  .readiness-score{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;color:var(--accent);}
-  .readiness-lbl{font-size:12px;color:var(--accent);font-weight:600;}
-  .rring{width:80px;height:80px;position:relative;}
-  .rring svg{transform:rotate(-90deg);}
-  .ring-bg{fill:none;stroke:#ffffff10;stroke-width:6;}
-  .ring-fill{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:220;stroke-dashoffset:99;}
-  .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
-  .rbars{display:flex;flex-direction:column;gap:8px;}
-  .rbar{display:flex;align-items:center;gap:10px;}
-  .rbar-lbl{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;}
-  .rbar-track{flex:1;height:4px;background:#ffffff10;border-radius:2px;overflow:hidden;}
-  .rbar-fill{height:100%;border-radius:2px;}
-  .rbar-val{font-size:11px;font-family:'DM Mono',monospace;width:60px;text-align:right;}
+/* SLEEP DEBT */
+.sleep-debt-card{margin:0 20px 12px;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(–card-glow);}
+.sleep-debt-card.low{background:#22c55e10;border:1px solid #22c55e30;}
+.sleep-debt-card.med{background:#eab30810;border:1px solid #eab30830;}
+.sleep-debt-card.high{background:#ef444410;border:1px solid #ef444430;}
+.debt-icon{font-size:28px;}
+.debt-text{flex:1;}
+.debt-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(–muted);font-weight:600;}
+.debt-val{font-family:‘Bebas Neue’,sans-serif;font-size:24px;}
+.debt-sub{font-size:10px;color:var(–muted);margin-top:2px;}
 
-  /* STATS GRID */
-  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 12px;}
-  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--card-glow);}
-  .stat-icon{font-size:18px;margin-bottom:8px;}
-  .stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
-  .stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;}
-  .stat-unit{font-size:12px;color:var(--muted);font-weight:400;}
-  .stat-sub{font-size:10px;margin-top:4px;font-family:'DM Mono',monospace;}
-  .stat-card.orange .stat-val{color:var(--accent);}
-  .stat-card.cyan .stat-val{color:var(--accent2);}
-  .stat-card.green .stat-val{color:var(--green);}
-  .stat-card.yellow .stat-val{color:var(--yellow);}
+/* ALERTS */
+.alert{margin:0 20px 8px;border-radius:14px;padding:11px 16px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:500;border:1px solid;}
+.alert.red{background:#ef444410;border-color:#ef444430;color:#fca5a5;}
+.alert.yellow{background:#eab30810;border-color:#eab30830;color:#fde047;}
+.alert.green{background:#22c55e10;border-color:#22c55e30;color:#86efac;}
+.alert.blue{background:#3b82f610;border-color:#3b82f630;color:#93c5fd;}
 
-  /* CAL TRACKER */
-  .cal-card{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);}
-  .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-  .cal-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;}
-  .cal-pct{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent2);}
-  .cal-bar-wrap{background:#ffffff08;border-radius:8px;height:10px;overflow:hidden;margin-bottom:16px;}
-  .cal-bar{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 1s ease;}
-  .macro-row{display:flex;gap:10px;}
-  .macro-item{flex:1;background:var(--surface2);border-radius:12px;padding:10px;text-align:center;}
-  .macro-name{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
-  .macro-val{font-family:'Bebas Neue',sans-serif;font-size:20px;}
-  .macro-target{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;}
-  .macro-item.protein .macro-val{color:var(--accent);}
-  .macro-item.carbs .macro-val{color:var(--accent2);}
-  .macro-item.fat .macro-val{color:var(--accent3);}
+/* READINESS */
+.readiness-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);position:relative;overflow:hidden;}
+.readiness-card::before{content:’’;position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,#f9731620,transparent 70%);pointer-events:none;}
+.readiness-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.readiness-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.readiness-score{font-family:‘Bebas Neue’,sans-serif;font-size:64px;line-height:1;color:var(–accent);}
+.readiness-lbl{font-size:12px;color:var(–accent);font-weight:600;}
+.rring{width:80px;height:80px;position:relative;}
+.rring svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:#ffffff10;stroke-width:6;}
+.ring-fill{fill:none;stroke:var(–accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:220;stroke-dashoffset:99;}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:18px;color:var(–accent);}
+.rbars{display:flex;flex-direction:column;gap:8px;}
+.rbar{display:flex;align-items:center;gap:10px;}
+.rbar-lbl{font-size:11px;color:var(–muted);width:90px;flex-shrink:0;}
+.rbar-track{flex:1;height:4px;background:#ffffff10;border-radius:2px;overflow:hidden;}
+.rbar-fill{height:100%;border-radius:2px;}
+.rbar-val{font-size:11px;font-family:‘DM Mono’,monospace;width:65px;text-align:right;}
 
-  /* ZONE 2 */
-  .zone-card{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);}
-  .zone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-  .zone-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;}
-  .hr-display{display:flex;align-items:baseline;gap:6px;margin-bottom:14px;}
-  .hr-val{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;}
-  .hr-unit{font-size:14px;color:var(--muted);}
-  .hr-target{font-size:12px;color:var(--accent2);font-family:'DM Mono',monospace;}
-  .zone-bar-wrap{height:32px;background:#ffffff06;border-radius:8px;overflow:hidden;margin-bottom:8px;}
-  .zone-segs{display:flex;height:100%;}
-  .zone-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;letter-spacing:1px;opacity:.5;}
-  .zone-seg.z1{background:#22c55e15;color:var(--green);}
-  .zone-seg.z2{background:#22d3ee25;color:var(--accent2);opacity:1;border:1px solid var(--accent2);}
-  .zone-seg.z3{background:#eab30815;color:var(--yellow);}
-  .zone-seg.z4{background:#f9731615;color:var(--accent);}
-  .zone-seg.z5{background:#ef444415;color:var(--red);}
-  .zone-ranges{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 12px;}
+.stat-card{background:var(–surface);border:1px solid var(–border);border-radius:16px;padding:16px;box-shadow:var(–card-glow);}
+.stat-icon{font-size:18px;margin-bottom:8px;}
+.stat-lbl{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.stat-val{font-family:‘Bebas Neue’,sans-serif;font-size:28px;line-height:1;}
+.stat-unit{font-size:12px;color:var(–muted);font-weight:400;}
+.stat-sub{font-size:10px;margin-top:4px;font-family:‘DM Mono’,monospace;}
+.stat-card.orange .stat-val{color:var(–accent);}
+.stat-card.cyan .stat-val{color:var(–accent2);}
+.stat-card.green .stat-val{color:var(–green);}
+.stat-card.yellow .stat-val{color:var(–yellow);}
 
-  /* LOG */
-  .log-card{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);}
-  .log-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}
-  .log-inputs{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-  .log-row{display:flex;align-items:center;gap:10px;}
-  .log-lbl{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;}
-  .log-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
-  .log-input:focus{border-color:var(--accent2);}
-  .log-unit{font-size:11px;color:var(--muted);width:28px;}
-  .log-btn{width:100%;background:var(--accent);border:none;border-radius:12px;padding:14px;color:#000;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:transform .15s,opacity .15s;}
-  .log-btn:active{transform:scale(.97);}
+/* CALORIE TRACKER */
+.cal-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.cal-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;}
+.cal-pct{font-family:‘Bebas Neue’,sans-serif;font-size:20px;color:var(–accent2);}
+.cal-bar-wrap{background:#ffffff08;border-radius:8px;height:10px;overflow:hidden;margin-bottom:16px;}
+.cal-bar{height:100%;border-radius:8px;background:linear-gradient(90deg,var(–accent2),var(–accent));transition:width 1s ease;}
+.macro-row{display:flex;gap:10px;}
+.macro-item{flex:1;background:var(–surface2);border-radius:12px;padding:10px;text-align:center;}
+.macro-name{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(–muted);margin-bottom:4px;}
+.macro-val{font-family:‘Bebas Neue’,sans-serif;font-size:20px;}
+.macro-target{font-size:9px;color:var(–muted);font-family:‘DM Mono’,monospace;}
+.macro-item.protein .macro-val{color:var(–accent);}
+.macro-item.carbs .macro-val{color:var(–accent2);}
+.macro-item.fat .macro-val{color:var(–accent3);}
 
-  /* HISTORY */
-  .history-list{display:flex;flex-direction:column;gap:8px;}
-  .history-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
-  .history-date{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
-  .history-w{font-family:'Bebas Neue',sans-serif;font-size:20px;}
-  .hdelta{font-size:11px;font-family:'DM Mono',monospace;}
-  .hdelta.down{color:var(--green);}
-  .hdelta.up{color:var(--red);}
-  .hdelta.same{color:var(--muted);}
+/* ZONE 2 */
+.zone-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.zone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.zone-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;}
+.hr-display{display:flex;align-items:baseline;gap:6px;margin-bottom:14px;}
+.hr-val{font-family:‘Bebas Neue’,sans-serif;font-size:52px;line-height:1;}
+.hr-unit{font-size:14px;color:var(–muted);}
+.hr-target{font-size:12px;color:var(–accent2);font-family:‘DM Mono’,monospace;}
+.zone-bar-wrap{height:32px;background:#ffffff06;border-radius:8px;overflow:hidden;margin-bottom:8px;}
+.zone-segs{display:flex;height:100%;}
+.zone-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;letter-spacing:1px;opacity:.5;}
+.zone-seg.z1{background:#22c55e15;color:var(–green);}
+.zone-seg.z2{background:#22d3ee25;color:var(–accent2);opacity:1;border:1px solid var(–accent2);}
+.zone-seg.z3{background:#eab30815;color:var(–yellow);}
+.zone-seg.z4{background:#f9731615;color:var(–accent);}
+.zone-seg.z5{background:#ef444415;color:var(–red);}
+.zone-ranges{display:flex;justify-content:space-between;font-size:9px;color:var(–muted);font-family:‘DM Mono’,monospace;}
 
-  /* CHART */
-  .chart-wrap{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);}
-  .chart-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
-  .chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
-  .chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
-  .chart-bar{width:100%;border-radius:4px 4px 0 0;background:var(--surface2);border:1px solid var(--border);min-height:4px;}
-  .chart-bar.today{background:linear-gradient(180deg,var(--accent),#f97316aa);border-color:var(--accent);}
-  .chart-day{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;}
+/* WORKOUT CARD */
+.workout-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.workout-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.workout-day-badge{background:var(–accent);border-radius:8px;padding:4px 10px;font-family:‘Bebas Neue’,sans-serif;font-size:14px;color:#000;letter-spacing:1px;}
+.exercise-list{display:flex;flex-direction:column;gap:12px;}
+.exercise-item{background:var(–surface2);border:1px solid var(–border);border-radius:14px;padding:14px;}
+.exercise-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.exercise-name{font-size:14px;font-weight:600;color:var(–text);}
+.exercise-link{font-size:10px;color:var(–accent2);text-decoration:none;display:flex;align-items:center;gap:4px;}
+.exercise-detail{font-size:12px;color:var(–muted);margin-bottom:4px;}
+.exercise-sets{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.set-badge{background:var(–accent);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:#000;font-family:‘DM Mono’,monospace;}
+.rest-badge{background:var(–surface);border:1px solid var(–border);border-radius:6px;padding:3px 8px;font-size:10px;color:var(–muted);font-family:‘DM Mono’,monospace;}
+.workout-rest-day{text-align:center;padding:20px;}
+.rest-emoji{font-size:48px;margin-bottom:12px;}
+.rest-title{font-family:‘Bebas Neue’,sans-serif;font-size:28px;color:var(–green);margin-bottom:8px;}
+.rest-sub{font-size:13px;color:var(–muted);line-height:1.6;}
 
-  /* PROTOCOL */
-  .protocol-card{margin:0 20px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--card-glow);}
-  .protocol-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}
-  .protocol-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
-  .protocol-row:last-child{border-bottom:none;}
-  .protocol-key{font-size:12px;color:var(--muted);}
-  .protocol-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;}
-  .pv-orange{color:var(--accent);}
-  .pv-cyan{color:var(--accent2);}
-  .pv-green{color:var(--green);}
-  .pv-yellow{color:var(--yellow);}
-  .pv-red{color:var(--red);}
-  .pv-lime{color:var(--accent3);}
+/* CHARTS */
+.chart-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.chart-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;background:var(–surface2);border:1px solid var(–border);min-height:4px;}
+.chart-bar.active{background:linear-gradient(180deg,var(–accent),#f97316aa);border-color:var(–accent);}
+.chart-bar.protein-bar{background:linear-gradient(180deg,var(–accent2),#22d3eeaa);border-color:var(–accent2);}
+.chart-bar.weight-bar{background:linear-gradient(180deg,var(–green),#22c55eaa);border-color:var(–green);}
+.chart-day{font-size:9px;color:var(–muted);font-family:‘DM Mono’,monospace;}
+.chart-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.chart-tab{flex:1;padding:6px;border-radius:8px;font-size:10px;font-weight:600;text-align:center;cursor:pointer;border:1px solid var(–border);color:var(–muted);background:transparent;transition:all .2s;}
+.chart-tab.active{background:var(–accent);color:#000;border-color:var(–accent);}
 
-  /* REMINDERS */
-  .reminder-list{display:flex;flex-direction:column;gap:8px;margin:0 20px 12px;}
-  .reminder-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--card-glow);}
-  .reminder-time{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent2);width:70px;flex-shrink:0;}
-  .reminder-text{flex:1;}
-  .reminder-title{font-size:13px;font-weight:500;}
-  .reminder-sub{font-size:10px;color:var(--muted);margin-top:2px;}
-  .paste-box{background:var(--surface2);border-radius:12px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:2;user-select:all;}
+/* NUTRITION AI */
+.nutrition-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.nutrition-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}
+.meal-suggestion{background:var(–surface2);border:1px solid var(–border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.meal-time{font-size:10px;color:var(–accent);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px;}
+.meal-name{font-size:14px;font-weight:600;color:var(–text);margin-bottom:4px;}
+.meal-macros{font-size:11px;color:var(–muted);font-family:‘DM Mono’,monospace;}
+.ai-generate-btn{width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:12px;padding:14px;color:#fff;font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;margin-bottom:14px;transition:opacity .2s;}
+.ai-generate-btn:active{opacity:.8;}
+.grocery-section{margin-top:14px;}
+.grocery-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(–border);}
+.grocery-item:last-child{border-bottom:none;}
+.grocery-check{width:18px;height:18px;border-radius:4px;border:1px solid var(–border);background:var(–surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.grocery-check.checked{background:var(–green);border-color:var(–green);}
+.grocery-name{font-size:13px;color:var(–text);flex:1;}
+.grocery-qty{font-size:11px;color:var(–muted);font-family:‘DM Mono’,monospace;}
 
-  /* TABS */
-  .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0d0d14ee;backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding:8px 0 16px;z-index:100;}
-  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 0;opacity:.4;transition:opacity .2s;}
-  .tab.active{opacity:1;}
-  .tab-icon{font-size:20px;}
-  .tab-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;}
-  .tab.active .tab-label{color:var(--accent);}
-  .page{display:none;}
-  .page.active{display:block;}
-  .fade-in{animation:fadeIn .4s ease both;}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+/* LOG */
+.log-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.log-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}
+.log-section-header{font-size:10px;color:var(–accent);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin:12px 0 8px;}
+.log-inputs{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.log-row{display:flex;align-items:center;gap:10px;}
+.log-lbl{font-size:11px;color:var(–muted);width:100px;flex-shrink:0;}
+.log-input{flex:1;background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:8px 12px;color:var(–text);font-family:‘DM Mono’,monospace;font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.log-input:focus{border-color:var(–accent2);}
+.log-unit{font-size:11px;color:var(–muted);width:36px;}
+.log-optional{font-size:9px;color:var(–muted);margin-left:4px;font-style:italic;}
+.log-btn{width:100%;background:var(–accent);border:none;border-radius:12px;padding:14px;color:#000;font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:transform .15s,opacity .15s;}
+.log-btn:active{transform:scale(.97);}
+.weigh-note{background:var(–surface2);border:1px solid var(–border);border-radius:12px;padding:12px 14px;font-size:12px;color:var(–muted);margin-bottom:12px;line-height:1.5;}
+
+/* HISTORY */
+.history-list{display:flex;flex-direction:column;gap:8px;}
+.history-item{background:var(–surface2);border:1px solid var(–border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.history-date{font-size:10px;color:var(–muted);font-family:‘DM Mono’,monospace;}
+.history-w{font-family:‘Bebas Neue’,sans-serif;font-size:20px;}
+.hdelta{font-size:11px;font-family:‘DM Mono’,monospace;}
+.hdelta.down{color:var(–green);}
+.hdelta.up{color:var(–red);}
+.hdelta.same{color:var(–muted);}
+
+/* PROTOCOL */
+.protocol-card{margin:0 20px 12px;background:var(–surface);border:1px solid var(–border);border-radius:20px;padding:20px;box-shadow:var(–card-glow);}
+.protocol-title{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}
+.protocol-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(–border);}
+.protocol-row:last-child{border-bottom:none;}
+.protocol-key{font-size:12px;color:var(–muted);}
+.protocol-val{font-family:‘DM Mono’,monospace;font-size:13px;font-weight:500;}
+
+/* REMINDERS */
+.reminder-list{display:flex;flex-direction:column;gap:8px;margin:0 20px 12px;}
+.reminder-item{background:var(–surface);border:1px solid var(–border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(–card-glow);}
+.reminder-time{font-family:‘Bebas Neue’,sans-serif;font-size:22px;color:var(–accent2);width:70px;flex-shrink:0;}
+.reminder-text{flex:1;}
+.reminder-title{font-size:13px;font-weight:500;}
+.reminder-sub{font-size:10px;color:var(–muted);margin-top:2px;}
+.paste-box{background:var(–surface2);border-radius:12px;padding:14px;font-family:‘DM Mono’,monospace;font-size:11px;color:var(–muted);line-height:2;user-select:all;}
+
+/* TABS */
+.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0d0d14ee;backdrop-filter:blur(20px);border-top:1px solid var(–border);display:flex;padding:8px 0 16px;z-index:100;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 0;opacity:.4;transition:opacity .2s;}
+.tab.active{opacity:1;}
+.tab-icon{font-size:20px;}
+.tab-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(–muted);font-weight:600;}
+.tab.active .tab-label{color:var(–accent);}
+.page{display:none;}
+.page.active{display:block;}
+.fade-in{animation:fadeIn .4s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 </style>
+
 </head>
 <body>
 <div class="app">
@@ -214,282 +261,325 @@
     <div class="date-badge" id="dateBadge">—</div>
   </div>
 
-  <!-- TODAY PAGE -->
+  <!-- ═══════════ TODAY PAGE ═══════════ -->
+
   <div class="page active" id="page-today">
 
-    <div class="streak-bar fade-in">
-      <div class="streak-icon">🔥</div>
-      <div class="streak-text">
-        <div class="streak-label">Day Streak</div>
-        <div class="streak-val" id="streakVal">DAY 1 — LET'S GO</div>
-      </div>
-      <div class="streak-dots" id="streakDots"></div>
-    </div>
+```
+<div class="streak-bar fade-in">
+  <div class="streak-icon">🔥</div>
+  <div class="streak-text">
+    <div class="streak-label">Day Streak</div>
+    <div class="streak-val" id="streakVal">DAY 1 — LET'S GO</div>
+  </div>
+  <div class="streak-dots" id="streakDots"></div>
+</div>
 
-    <!-- MORNING BRIEFING -->
-    <div class="section-label">☀️ MORNING BRIEFING</div>
-    <div class="coach-card morning fade-in">
-      <div class="coach-top">
-        <div class="coach-avatar">🤖</div>
-        <div class="coach-badge">
-          <div class="coach-label">AI Coach — Plan del Día</div>
-          <div class="coach-sublabel">Powered by Claude · Updates daily</div>
-        </div>
-        <div class="ai-dot"></div>
-      </div>
-      <div class="coach-msg" id="morningMsg">
-        <div class="loading-row">
-          <div class="loading-dots"><span></span><span></span><span></span></div>
-          <div class="loading-text">Generating your morning plan...</div>
-        </div>
-      </div>
+<!-- MORNING BRIEFING -->
+<div class="section-label">☀️ MORNING BRIEFING</div>
+<div class="coach-card morning fade-in">
+  <div class="coach-top">
+    <div class="coach-avatar">🤖</div>
+    <div class="coach-badge">
+      <div class="coach-label">AI Coach — Plan del Día</div>
+      <div class="coach-sublabel">Powered by Claude · Updates daily</div>
     </div>
-
-    <!-- NIGHT DEBRIEF (shown after log) -->
-    <div id="nightSection" style="display:none">
-      <div class="section-label">🌙 NIGHT DEBRIEF</div>
-      <div class="coach-card fade-in">
-        <div class="coach-top">
-          <div class="coach-avatar">🤖</div>
-          <div class="coach-badge">
-            <div class="coach-label">AI Coach — Daily Analysis</div>
-            <div class="coach-sublabel">Powered by Claude · Auto-generated</div>
-          </div>
-          <div class="ai-dot"></div>
-        </div>
-        <div class="coach-msg" id="nightMsg">Log your day to get your AI analysis.</div>
-      </div>
+    <div class="ai-dot"></div>
+  </div>
+  <div class="coach-msg" id="morningMsg">
+    <div class="loading-row">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <div class="loading-text">Generating your morning plan...</div>
     </div>
+  </div>
+</div>
 
-    <!-- PREDICTION -->
-    <div class="section-label">📈 GOAL PREDICTION ENGINE</div>
-    <div class="pred-card fade-in">
-      <div class="pred-title">🎯 Projected Goal Date</div>
-      <div class="pred-main" id="predDate">— weeks</div>
-      <div class="pred-sub" id="predSub">Log at least 3 days to activate</div>
-      <div class="pred-stats">
-        <div class="pred-stat"><div class="pred-stat-val" id="predLost">0.0</div><div class="pred-stat-lbl">lbs lost</div></div>
-        <div class="pred-stat"><div class="pred-stat-val" id="predRate">—</div><div class="pred-stat-lbl">lbs/week</div></div>
-        <div class="pred-stat"><div class="pred-stat-val" id="predRemain">27.8</div><div class="pred-stat-lbl">lbs to go</div></div>
+<!-- NIGHT DEBRIEF -->
+<div id="nightSection" style="display:none">
+  <div class="section-label">🌙 NIGHT DEBRIEF</div>
+  <div class="coach-card fade-in">
+    <div class="coach-top">
+      <div class="coach-avatar">🤖</div>
+      <div class="coach-badge">
+        <div class="coach-label">AI Coach — Daily Analysis</div>
+        <div class="coach-sublabel">Powered by Claude · Auto-generated</div>
       </div>
+      <div class="ai-dot"></div>
     </div>
+    <div class="coach-msg" id="nightMsg">Log your day to get your AI analysis.</div>
+  </div>
+</div>
 
-    <!-- ALERTS -->
-    <div class="alert red fade-in"><span>🔴</span> Sleep debt 5h HIGH — bed by 10:30 PM tonight</div>
-    <div class="alert yellow fade-in"><span>⚠️</span> HRV 27ms avg — keep intensity low this week</div>
-    <div class="alert green fade-in"><span>✅</span> RHR 62 bpm — solid cardiovascular baseline</div>
+<!-- SLEEP DEBT -->
+<div class="section-label">😴 SLEEP DEBT</div>
+<div class="sleep-debt-card high fade-in" id="sleepDebtCard">
+  <div class="debt-icon">🔴</div>
+  <div class="debt-text">
+    <div class="debt-label">Accumulated Sleep Debt</div>
+    <div class="debt-val" id="sleepDebtVal">Calculating...</div>
+    <div class="debt-sub" id="sleepDebtSub">Based on last 7 days vs 7.5hr target</div>
+  </div>
+</div>
 
-    <!-- READINESS -->
-    <div class="section-label">TODAY'S READINESS</div>
-    <div class="readiness-card fade-in">
-      <div class="readiness-top">
-        <div>
-          <div class="readiness-title">Oura Readiness</div>
-          <div class="readiness-score" id="readinessScore">55</div>
-          <div class="readiness-lbl" id="readinessLabel">⚠️ PAY ATTENTION</div>
-        </div>
-        <div class="rring">
-          <svg width="80" height="80" viewBox="0 0 80 80">
-            <circle class="ring-bg" cx="40" cy="40" r="35"/>
-            <circle class="ring-fill" cx="40" cy="40" r="35"/>
-          </svg>
-          <div class="ring-text" id="readinessRingText">55</div>
-        </div>
-      </div>
-      <div class="rbars">
-        <div class="rbar"><div class="rbar-lbl">RHR</div><div class="rbar-track"><div class="rbar-fill" style="width:85%;background:var(--green)"></div></div><div class="rbar-val">62 bpm ✅</div></div>
-        <div class="rbar"><div class="rbar-lbl">HRV</div><div class="rbar-track"><div class="rbar-fill" style="width:42%;background:var(--yellow)"></div></div><div class="rbar-val">33 ms ⚠️</div></div>
-        <div class="rbar"><div class="rbar-lbl">Sleep Score</div><div class="rbar-track"><div class="rbar-fill" id="sleepScoreBar" style="width:60%;background:var(--yellow)"></div></div><div class="rbar-val" id="sleepScoreVal">— pts</div></div>
-        <div class="rbar"><div class="rbar-lbl">Body Temp</div><div class="rbar-track"><div class="rbar-fill" style="width:90%;background:var(--green)"></div></div><div class="rbar-val">−0.3°F ✅</div></div>
-      </div>
+<!-- GOAL PREDICTION -->
+<div class="section-label">📈 GOAL PREDICTION ENGINE</div>
+<div class="pred-card fade-in">
+  <div class="pred-title">🎯 Projected Goal Date</div>
+  <div class="pred-main" id="predDate">— weeks</div>
+  <div class="pred-sub" id="predSub">Log at least 3 days to activate</div>
+  <div class="pred-stats">
+    <div class="pred-stat"><div class="pred-stat-val" id="predLost">0.0</div><div class="pred-stat-lbl">lbs lost</div></div>
+    <div class="pred-stat"><div class="pred-stat-val" id="predRate">—</div><div class="pred-stat-lbl">lbs/week</div></div>
+    <div class="pred-stat"><div class="pred-stat-val" id="predRemain">27.8</div><div class="pred-stat-lbl">lbs to go</div></div>
+  </div>
+</div>
+
+<!-- DYNAMIC ALERTS -->
+<div id="alertsContainer"></div>
+
+<!-- READINESS -->
+<div class="section-label">TODAY'S READINESS</div>
+<div class="readiness-card fade-in">
+  <div class="readiness-top">
+    <div>
+      <div class="readiness-title">Oura Readiness</div>
+      <div class="readiness-score" id="readinessScore">—</div>
+      <div class="readiness-lbl" id="readinessLabel">Log tonight to update</div>
     </div>
-
-    <!-- TARGETS -->
-    <div class="section-label">TODAY'S TARGETS</div>
-    <div class="stats-grid fade-in">
-      <div class="stat-card orange">
-        <div class="stat-icon">🔥</div><div class="stat-lbl">Calorie Target</div>
-        <div class="stat-val">1,900 <span class="stat-unit">kcal</span></div>
-        <div class="stat-sub" style="color:var(--muted)">Deficit: −450/day</div>
-      </div>
-      <div class="stat-card cyan">
-        <div class="stat-icon">🥩</div><div class="stat-lbl">Protein Target</div>
-        <div class="stat-val">170 <span class="stat-unit">g</span></div>
-        <div class="stat-sub" style="color:var(--muted)">4 meals × 42g</div>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-icon">🚶</div><div class="stat-lbl">Steps Goal</div>
-        <div class="stat-val">7,500</div>
-        <div class="stat-sub" style="color:var(--muted)">Today: 2,253 so far</div>
-      </div>
-      <div class="stat-card yellow">
-        <div class="stat-icon">😴</div><div class="stat-lbl">Sleep Target</div>
-        <div class="stat-val">7.5 <span class="stat-unit">hrs</span></div>
-        <div class="stat-sub" style="color:var(--red)">Last: 6h 24m</div>
-      </div>
+    <div class="rring">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle class="ring-bg" cx="40" cy="40" r="35"/>
+        <circle class="ring-fill" cx="40" cy="40" r="35" id="readinessRing"/>
+      </svg>
+      <div class="ring-text" id="readinessRingText">—</div>
     </div>
+  </div>
+  <div class="rbars">
+    <div class="rbar"><div class="rbar-lbl">RHR</div><div class="rbar-track"><div class="rbar-fill" id="rhrBar" style="width:0%;background:var(--muted)"></div></div><div class="rbar-val" id="rhrVal">— bpm</div></div>
+    <div class="rbar"><div class="rbar-lbl">HRV</div><div class="rbar-track"><div class="rbar-fill" id="hrvBar" style="width:0%;background:var(--muted)"></div></div><div class="rbar-val" id="hrvVal">— ms</div></div>
+    <div class="rbar"><div class="rbar-lbl">Sleep Score</div><div class="rbar-track"><div class="rbar-fill" id="sleepScoreBar" style="width:0%;background:var(--muted)"></div></div><div class="rbar-val" id="sleepScoreVal">— pts</div></div>
+    <div class="rbar"><div class="rbar-lbl">Activity</div><div class="rbar-track"><div class="rbar-fill" id="activityBar" style="width:0%;background:var(--muted)"></div></div><div class="rbar-val" id="activityVal">— pts</div></div>
+  </div>
+</div>
 
-    <!-- ZONE 2 -->
-    <div class="section-label">ZONE 2 HEART RATE</div>
-    <div class="zone-card fade-in">
-      <div class="zone-header">
-        <div class="zone-title">Karvonen — Fat Burn Zone</div>
-        <div style="font-size:11px;color:var(--accent2)">RHR: 62 ✅</div>
-      </div>
-      <div class="hr-display">
-        <div class="hr-val">137</div>
-        <div><div class="hr-unit">– 149 bpm</div><div class="hr-target">YOUR FAT BURN ZONE</div></div>
-      </div>
-      <div class="zone-bar-wrap">
-        <div class="zone-segs">
-          <div class="zone-seg z1">Z1</div><div class="zone-seg z2">✅ Z2</div>
-          <div class="zone-seg z3">Z3</div><div class="zone-seg z4">Z4</div><div class="zone-seg z5">Z5</div>
-        </div>
-      </div>
-      <div class="zone-ranges"><span>&lt;137</span><span>137–149</span><span>150–162</span><span>163–174</span><span>175+</span></div>
-    </div>
+<!-- TARGETS -->
+<div class="section-label">TODAY'S TARGETS</div>
+<div class="stats-grid fade-in">
+  <div class="stat-card orange">
+    <div class="stat-icon">🔥</div><div class="stat-lbl">Calorie Target</div>
+    <div class="stat-val">1,700 <span class="stat-unit">kcal</span></div>
+    <div class="stat-sub" style="color:var(--muted)">Deficit: −650/day</div>
+  </div>
+  <div class="stat-card cyan">
+    <div class="stat-icon">🥩</div><div class="stat-lbl">Protein Target</div>
+    <div class="stat-val">170 <span class="stat-unit">g</span></div>
+    <div class="stat-sub" style="color:var(--muted)">3 meals × 57g</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-icon">🚶</div><div class="stat-lbl">Steps Goal</div>
+    <div class="stat-val">7,500</div>
+    <div class="stat-sub" style="color:var(--muted)">Min daily target</div>
+  </div>
+  <div class="stat-card yellow">
+    <div class="stat-icon">😴</div><div class="stat-lbl">Sleep Target</div>
+    <div class="stat-val">7.5 <span class="stat-unit">hrs</span></div>
+    <div class="stat-sub" style="color:var(--red)">Pay back debt first</div>
+  </div>
+</div>
 
-    <!-- NUTRITION -->
-    <div class="section-label">TODAY'S NUTRITION</div>
-    <div class="cal-card fade-in">
-      <div class="cal-header"><div class="cal-title">Calories Logged</div><div class="cal-pct" id="calPct">0%</div></div>
-      <div class="cal-bar-wrap"><div class="cal-bar" id="calBar" style="width:0%"></div></div>
-      <div class="macro-row">
-        <div class="macro-item protein"><div class="macro-name">Protein</div><div class="macro-val" id="macroP">0</div><div class="macro-target">/ 170g</div></div>
-        <div class="macro-item carbs"><div class="macro-name">Carbs</div><div class="macro-val" id="macroC">0</div><div class="macro-target">/ 159g</div></div>
-        <div class="macro-item fat"><div class="macro-name">Fat</div><div class="macro-val" id="macroF">0</div><div class="macro-target">/ 65g</div></div>
-      </div>
+<!-- ZONE 2 — DYNAMIC -->
+<div class="section-label">ZONE 2 HEART RATE</div>
+<div class="zone-card fade-in">
+  <div class="zone-header">
+    <div class="zone-title">Karvonen — Fat Burn Zone</div>
+    <div style="font-size:11px;color:var(--accent2)" id="rhrBadge">RHR: 62 bpm</div>
+  </div>
+  <div class="hr-display">
+    <div class="hr-val" id="zone2Low">137</div>
+    <div><div class="hr-unit" id="zone2High">– 149 bpm</div><div class="hr-target">YOUR FAT BURN ZONE</div></div>
+  </div>
+  <div class="zone-bar-wrap">
+    <div class="zone-segs">
+      <div class="zone-seg z1">Z1</div>
+      <div class="zone-seg z2">✅ Z2</div>
+      <div class="zone-seg z3">Z3</div>
+      <div class="zone-seg z4">Z4</div>
+      <div class="zone-seg z5">Z5</div>
     </div>
+  </div>
+  <div class="zone-ranges" id="zoneRanges">
+    <span>&lt;137</span><span>137–149</span><span>150–162</span><span>163–174</span><span>175+</span>
+  </div>
+</div>
+
+<!-- NUTRITION TODAY -->
+<div class="section-label">TODAY'S NUTRITION</div>
+<div class="cal-card fade-in">
+  <div class="cal-header"><div class="cal-title">Calories Logged</div><div class="cal-pct" id="calPct">0%</div></div>
+  <div class="cal-bar-wrap"><div class="cal-bar" id="calBar" style="width:0%"></div></div>
+  <div class="macro-row">
+    <div class="macro-item protein"><div class="macro-name">Protein</div><div class="macro-val" id="macroP">0</div><div class="macro-target">/ 170g</div></div>
+    <div class="macro-item carbs"><div class="macro-name">Carbs</div><div class="macro-val" id="macroC">0</div><div class="macro-target">/ 128g</div></div>
+    <div class="macro-item fat"><div class="macro-name">Fat</div><div class="macro-val" id="macroF">0</div><div class="macro-target">/ 57g</div></div>
+  </div>
+</div>
+```
 
   </div><!-- /today -->
 
-  <!-- LOG PAGE -->
-  <div class="page" id="page-log">
-    <div class="section-label" style="margin-top:20px">DAILY CHECK-IN — 9 PM</div>
-    <div class="log-card fade-in">
-      <div class="log-title">Enter Today's Numbers</div>
-      <div class="log-inputs">
-        <div class="log-row"><div class="log-lbl">⚖️ Weight</div><input class="log-input" type="number" id="inputWeight" placeholder="197.8" step="0.1"><div class="log-unit">lbs</div></div>
-        <div class="log-row"><div class="log-lbl">🔥 Calories</div><input class="log-input" type="number" id="inputCals" placeholder="1900"><div class="log-unit">kcal</div></div>
-        <div class="log-row"><div class="log-lbl">🥩 Protein</div><input class="log-input" type="number" id="inputProtein" placeholder="170"><div class="log-unit">g</div></div>
-        <div class="log-row"><div class="log-lbl">🍚 Carbs</div><input class="log-input" type="number" id="inputCarbs" placeholder="159"><div class="log-unit">g</div></div>
-        <div class="log-row"><div class="log-lbl">🥑 Fat</div><input class="log-input" type="number" id="inputFat" placeholder="65"><div class="log-unit">g</div></div>
-        <div class="log-row"><div class="log-lbl">🚶 Steps</div><input class="log-input" type="number" id="inputSteps" placeholder="7500"><div class="log-unit">steps</div></div>
-        <div class="log-row"><div class="log-lbl">😴 Sleep</div><input class="log-input" type="number" id="inputSleep" placeholder="7.5" step="0.1"><div class="log-unit">hrs</div></div>
-        <div class="log-row"><div class="log-lbl">❤️ HRV</div><input class="log-input" type="number" id="inputHRV" placeholder="33"><div class="log-unit">ms</div></div>
-        <div class="log-row"><div class="log-lbl">🟠 Readiness</div><input class="log-input" type="number" id="inputReadiness" placeholder="55"><div class="log-unit">/ 100</div></div>
-        <div class="log-row"><div class="log-lbl">😴 Sleep Score</div><input class="log-input" type="number" id="inputSleepScore" placeholder="72"><div class="log-unit">/ 100</div></div>
-        <div class="log-row"><div class="log-lbl">⚡ Activity</div><input class="log-input" type="number" id="inputActivityScore" placeholder="55"><div class="log-unit">/ 100</div></div>
+  <!-- ═══════════ WORKOUT PAGE ═══════════ -->
+
+  <div class="page" id="page-workout">
+    <div class="section-label" style="margin-top:20px" id="workoutDayLabel">TODAY'S WORKOUT</div>
+    <div class="workout-card fade-in" id="workoutContent">
+      <div class="loading-row" style="padding:20px 0;">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">Loading today's workout...</div>
       </div>
-      <button class="log-btn" id="saveBtn" onclick="saveLog()">SAVE + GET AI ANALYSIS 🤖</button>
     </div>
 
-    <div class="section-label">WEIGHT HISTORY</div>
-    <div class="log-card fade-in">
-      <div class="history-list" id="historyList">
-        <div class="history-item">
-          <div><div class="history-date">APR 21 — DAY 1</div><div style="font-size:10px;color:var(--muted)">Baseline</div></div>
-          <div class="history-w">197.8 <span style="font-size:11px;color:var(--muted)">lbs</span></div>
-          <div class="hdelta same">START</div>
+```
+<!-- AI WORKOUT ADVICE -->
+<div class="section-label">🤖 AI COACH ADVICE</div>
+<div class="coach-card fade-in">
+  <div class="coach-top">
+    <div class="coach-avatar">💪</div>
+    <div class="coach-badge">
+      <div class="coach-label">Workout Intelligence</div>
+      <div class="coach-sublabel">Based on your HRV + Readiness</div>
+    </div>
+    <div class="ai-dot"></div>
+  </div>
+  <div class="coach-msg" id="workoutAdviceMsg">
+    <div class="loading-row">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <div class="loading-text">Analyzing your recovery data...</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- ═══════════ NUTRITION PAGE ═══════════ -->
+
+  <div class="page" id="page-nutrition">
+    <div class="section-label" style="margin-top:20px">🍽️ MEAL SUGGESTIONS</div>
+    <div class="nutrition-card fade-in">
+      <div class="nutrition-title">Today's Meal Plan — AI Generated</div>
+      <button class="ai-generate-btn" onclick="generateMealPlan()">🤖 GENERATE MEAL PLAN FOR TODAY</button>
+      <div id="mealPlanContent">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">
+          Tap the button to generate a personalized meal plan based on your targets: 1,700 kcal / 170g protein
         </div>
       </div>
     </div>
 
-    <div class="section-label">7-DAY CALORIE CHART</div>
-    <div class="chart-wrap fade-in">
-      <div class="chart-title">Daily Calories vs. 1,900 kcal Target</div>
-      <div class="chart-bars" id="weekChart"></div>
+```
+<div class="section-label">🛒 WEEKLY GROCERY LIST</div>
+<div class="nutrition-card fade-in">
+  <div class="nutrition-title">AI-Generated Shopping List</div>
+  <button class="ai-generate-btn" onclick="generateGroceryList()">🤖 GENERATE THIS WEEK'S GROCERY LIST</button>
+  <div id="groceryContent">
+    <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">
+      Tap to generate a weekly grocery list based on your macro targets
     </div>
   </div>
+</div>
+```
 
-  <!-- PROTOCOL PAGE -->
-  <div class="page" id="page-protocol">
-    <div class="section-label" style="margin-top:20px">YOUR PROTOCOL</div>
-    <div class="protocol-card fade-in">
-      <div class="protocol-title">📊 Metabolic Numbers</div>
-      <div class="protocol-row"><div class="protocol-key">BMR (Mifflin-St Jeor)</div><div class="protocol-val pv-orange">1,768 kcal</div></div>
-      <div class="protocol-row"><div class="protocol-key">TDEE (Oura validated)</div><div class="protocol-val pv-orange">2,350 kcal</div></div>
-      <div class="protocol-row"><div class="protocol-key">Daily Target</div><div class="protocol-val pv-orange">1,900 kcal</div></div>
-      <div class="protocol-row"><div class="protocol-key">Daily Deficit</div><div class="protocol-val pv-green">−450 kcal</div></div>
-      <div class="protocol-row"><div class="protocol-key">Projected weekly loss</div><div class="protocol-val pv-green">~0.9 lbs fat</div></div>
-    </div>
-    <div class="protocol-card fade-in">
-      <div class="protocol-title">🥩 Macro Targets</div>
-      <div class="protocol-row"><div class="protocol-key">Protein</div><div class="protocol-val pv-orange">170g / 680 kcal (36%)</div></div>
-      <div class="protocol-row"><div class="protocol-key">Carbohydrates</div><div class="protocol-val pv-cyan">159g / 636 kcal (33%)</div></div>
-      <div class="protocol-row"><div class="protocol-key">Fat</div><div class="protocol-val pv-lime">65g / 585 kcal (31%)</div></div>
-    </div>
-    <div class="protocol-card fade-in">
-      <div class="protocol-title">❤️ Karvonen HR Zones</div>
-      <div class="protocol-row"><div class="protocol-key">Resting HR (Oura)</div><div class="protocol-val">62 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">Max HR (220−33)</div><div class="protocol-val">187 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">Zone 1 — Recovery</div><div class="protocol-val pv-green">&lt;137 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">✅ Zone 2 — Fat Burn</div><div class="protocol-val pv-cyan">137–149 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">Zone 3 — Aerobic</div><div class="protocol-val pv-yellow">150–162 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">Zone 4 — Threshold</div><div class="protocol-val pv-orange">163–174 bpm</div></div>
-      <div class="protocol-row"><div class="protocol-key">Zone 5 — Avoid now</div><div class="protocol-val pv-red">175+ bpm</div></div>
-    </div>
-    <div class="protocol-card fade-in">
-      <div class="protocol-title">📅 Phase 1 Weekly Plan (Wks 1–6)</div>
-      <div class="protocol-row"><div class="protocol-key">Monday</div><div class="protocol-val">💪 Full body strength 45min</div></div>
-      <div class="protocol-row"><div class="protocol-key">Tuesday</div><div class="protocol-val pv-cyan">🚶 Zone 2 cardio 30min</div></div>
-      <div class="protocol-row"><div class="protocol-key">Wednesday</div><div class="protocol-val pv-green">😴 Rest / walk</div></div>
-      <div class="protocol-row"><div class="protocol-key">Thursday</div><div class="protocol-val">💪 Full body strength 45min</div></div>
-      <div class="protocol-row"><div class="protocol-key">Friday</div><div class="protocol-val pv-cyan">🚶 Zone 2 cardio 30min</div></div>
-      <div class="protocol-row"><div class="protocol-key">Saturday</div><div class="protocol-val" style="color:var(--muted)">🧘 Active recovery</div></div>
-      <div class="protocol-row"><div class="protocol-key">Sunday</div><div class="protocol-val pv-green">😴 Full rest</div></div>
-    </div>
   </div>
 
-  <!-- REMINDERS PAGE -->
+  <!-- ═══════════ LOG PAGE ═══════════ -->
+
+  <div class="page" id="page-log">
+    <div class="section-label" style="margin-top:20px">DAILY CHECK-IN — 9 PM</div>
+
+```
+<div class="weigh-note fade-in">
+  ⚖️ <strong>Weigh-in is optional</strong> — only weigh yourself on <strong>Mondays</strong>. Leave weight blank on other days. The app will only track your Monday weight for trend analysis.
+</div>
+
+<div class="log-card fade-in">
+  <div class="log-title">Enter Today's Numbers</div>
+  <div class="log-section-header">📊 BODY (Monday only for weight)</div>
+  <div class="log-inputs">
+    <div class="log-row"><div class="log-lbl">⚖️ Weight<span class="log-optional">(Mon only)</span></div><input class="log-input" type="number" id="inputWeight" placeholder="Leave blank if not Monday" step="0.1"><div class="log-unit">lbs</div></div>
+  </div>
+  <div class="log-section-header">🍽️ NUTRITION (from Cronometer)</div>
+  <div class="log-inputs">
+    <div class="log-row"><div class="log-lbl">🔥 Calories</div><input class="log-input" type="number" id="inputCals" placeholder="1700"><div class="log-unit">kcal</div></div>
+    <div class="log-row"><div class="log-lbl">🥩 Protein</div><input class="log-input" type="number" id="inputProtein" placeholder="170"><div class="log-unit">g</div></div>
+    <div class="log-row"><div class="log-lbl">🍚 Carbs</div><input class="log-input" type="number" id="inputCarbs" placeholder="128"><div class="log-unit">g</div></div>
+    <div class="log-row"><div class="log-lbl">🥑 Fat</div><input class="log-input" type="number" id="inputFat" placeholder="57"><div class="log-unit">g</div></div>
+  </div>
+  <div class="log-section-header">📱 OURA RING DATA</div>
+  <div class="log-inputs">
+    <div class="log-row"><div class="log-lbl">🚶 Steps</div><input class="log-input" type="number" id="inputSteps" placeholder="7500"><div class="log-unit">steps</div></div>
+    <div class="log-row"><div class="log-lbl">😴 Sleep</div><input class="log-input" type="number" id="inputSleep" placeholder="7.5" step="0.1"><div class="log-unit">hrs</div></div>
+    <div class="log-row"><div class="log-lbl">❤️ HRV</div><input class="log-input" type="number" id="inputHRV" placeholder="33"><div class="log-unit">ms</div></div>
+    <div class="log-row"><div class="log-lbl">💓 RHR</div><input class="log-input" type="number" id="inputRHR" placeholder="62"><div class="log-unit">bpm</div></div>
+    <div class="log-row"><div class="log-lbl">🟠 Readiness</div><input class="log-input" type="number" id="inputReadiness" placeholder="75"><div class="log-unit">/ 100</div></div>
+    <div class="log-row"><div class="log-lbl">😴 Sleep Score</div><input class="log-input" type="number" id="inputSleepScore" placeholder="80"><div class="log-unit">/ 100</div></div>
+    <div class="log-row"><div class="log-lbl">⚡ Activity</div><input class="log-input" type="number" id="inputActivityScore" placeholder="60"><div class="log-unit">/ 100</div></div>
+  </div>
+  <button class="log-btn" id="saveBtn" onclick="saveLog()">SAVE + GET AI ANALYSIS 🤖</button>
+</div>
+
+<!-- WEEKLY PROGRESS CHARTS -->
+<div class="section-label">📊 WEEKLY PROGRESS</div>
+<div class="chart-card fade-in">
+  <div class="chart-tabs">
+    <button class="chart-tab active" onclick="switchChart('calories',this)">Calories</button>
+    <button class="chart-tab" onclick="switchChart('protein',this)">Protein</button>
+    <button class="chart-tab" onclick="switchChart('weight',this)">Weight</button>
+  </div>
+  <div class="chart-bars" id="progressChart"></div>
+</div>
+
+<!-- WEIGHT HISTORY -->
+<div class="section-label">WEIGHT HISTORY (Mondays)</div>
+<div class="log-card fade-in">
+  <div class="history-list" id="historyList">
+    <div class="history-item">
+      <div><div class="history-date">APR 21 — Day 1</div><div style="font-size:10px;color:var(--muted)">Baseline</div></div>
+      <div class="history-w">197.8 <span style="font-size:11px;color:var(--muted)">lbs</span></div>
+      <div class="hdelta same">START</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- ═══════════ REMINDERS PAGE ═══════════ -->
+
   <div class="page" id="page-reminders">
-    <div class="section-label" style="margin-top:20px">📱 SET IN IPHONE CLOCK — TODOS LOS DÍAS</div>
+    <div class="section-label" style="margin-top:20px">📱 SET IN REMINDERS APP — EVERY DAY</div>
     <div class="reminder-list fade-in">
-      <div class="reminder-item">
-        <div class="reminder-time">7:00</div>
-        <div class="reminder-text"><div class="reminder-title">⚖️ Weigh In + Oura Check</div><div class="reminder-sub">Báscula antes de comer · Anota peso, HRV, sueño</div></div>
-      </div>
-      <div class="reminder-item">
-        <div class="reminder-time">8:00</div>
-        <div class="reminder-text"><div class="reminder-title">🍳 Log Desayuno</div><div class="reminder-sub">Cronometer → registra antes de olvidar</div></div>
-      </div>
-      <div class="reminder-item">
-        <div class="reminder-time">12:30</div>
-        <div class="reminder-text"><div class="reminder-title">🍽️ Log Comida + Pasos Check</div><div class="reminder-sub">¿Vas en camino a 7,500 pasos?</div></div>
-      </div>
-      <div class="reminder-item">
-        <div class="reminder-time">6:00</div>
-        <div class="reminder-text"><div class="reminder-title">🏃 Movement Alert</div><div class="reminder-sub">¿Faltan pasos? 30 min caminata ahorita.</div></div>
-      </div>
-      <div class="reminder-item">
-        <div class="reminder-time">8:30</div>
-        <div class="reminder-text"><div class="reminder-title">🍽️ Log Cena</div><div class="reminder-sub">Última comida del día → Cronometer</div></div>
-      </div>
-      <div class="reminder-item" style="border-color:#f9731640;">
-        <div class="reminder-time" style="color:var(--accent)">9:00</div>
-        <div class="reminder-text"><div class="reminder-title">📊 DAILY LOG — MY COACH APP</div><div class="reminder-sub">Abre My Coach → Log → llena todo → SAVE + AI Analysis 🤖</div></div>
-      </div>
-      <div class="reminder-item">
-        <div class="reminder-time">10:30</div>
-        <div class="reminder-text"><div class="reminder-title">📵 Sleep Mode</div><div class="reminder-sub">Apaga el teléfono. Meta: 7.5 hrs. Paga la deuda.</div></div>
-      </div>
+      <div class="reminder-item"><div class="reminder-time">7:00</div><div class="reminder-text"><div class="reminder-title">⚖️ Weigh In (Mondays only) + Oura</div><div class="reminder-sub">Monday: scale before eating. Every day: check HRV, sleep, readiness in Oura</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">11:00</div><div class="reminder-text"><div class="reminder-title">🥤 First Shake</div><div class="reminder-sub">Isopure Vanilla + leche de almendra — 25g proteína</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">12:30</div><div class="reminder-text"><div class="reminder-title">🍽️ Log Lunch + Steps Check</div><div class="reminder-sub">On pace for 7,500 steps?</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">6:00</div><div class="reminder-text"><div class="reminder-title">🏃 Movement Alert</div><div class="reminder-sub">Short on steps? Walk 30 min right now.</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">7:30</div><div class="reminder-text"><div class="reminder-title">🍽️ Comida principal</div><div class="reminder-sub">Pollo/carne/pescado + arroz + verduras</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">8:00</div><div class="reminder-text"><div class="reminder-title">🥛 ISO100 shake cierre</div><div class="reminder-sub">Dymatize ISO100 Cocoa Pebbles + leche 2% — 33g proteína</div></div></div>
+      <div class="reminder-item" style="border-color:#f9731640;"><div class="reminder-time" style="color:var(--accent)">9:00</div><div class="reminder-text"><div class="reminder-title">📊 DAILY LOG — MY COACH</div><div class="reminder-sub">Log tab → fill everything → Save + AI Analysis 🤖</div></div></div>
+      <div class="reminder-item"><div class="reminder-time">10:30</div><div class="reminder-text"><div class="reminder-title">📵 Sleep Mode — Phone Down</div><div class="reminder-sub">Target 7.5+ hrs. Pay back that sleep debt.</div></div></div>
     </div>
-
-    <div class="section-label">📋 WEEKLY REVIEW — CADA LUNES</div>
+    <div class="section-label">📋 WEEKLY REVIEW — EVERY MONDAY</div>
     <div class="log-card fade-in">
       <div class="log-title">Copia, llena, y pega a Claude</div>
       <div class="paste-box">
 SEMANA: __<br>
-PESO PROMEDIO: __ lbs<br>
+PESO (lunes): __ lbs<br>
 CALORIAS PROMEDIO: __ kcal<br>
 PROTEINA PROMEDIO: __ g<br>
 PASOS PROMEDIO: __<br>
 SUEÑO PROMEDIO: __ hrs<br>
+SLEEP DEBT ACUMULADO: __ hrs<br>
 HRV 7-DAY AVG: __ ms<br>
 RHR: __ bpm<br>
-READINESS SCORE: __<br>
-WORKOUTS: __ / 4<br>
-ZONE 2 SESSIONS: __ / 2<br>
+READINESS PROMEDIO: __<br>
 COMO ME SIENTO: __
       </div>
     </div>
@@ -499,256 +589,672 @@ COMO ME SIENTO: __
 
 <div class="tab-bar">
   <div class="tab active" onclick="switchTab('today',this)"><div class="tab-icon">🏠</div><div class="tab-label">Today</div></div>
+  <div class="tab" onclick="switchTab('workout',this)"><div class="tab-icon">💪</div><div class="tab-label">Workout</div></div>
+  <div class="tab" onclick="switchTab('nutrition',this)"><div class="tab-icon">🍽️</div><div class="tab-label">Nutrition</div></div>
   <div class="tab" onclick="switchTab('log',this)"><div class="tab-icon">📝</div><div class="tab-label">Log</div></div>
-  <div class="tab" onclick="switchTab('protocol',this)"><div class="tab-icon">📋</div><div class="tab-label">Protocol</div></div>
   <div class="tab" onclick="switchTab('reminders',this)"><div class="tab-icon">⏰</div><div class="tab-label">Reminders</div></div>
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
 const CLAUDE_URL = '/api/coach';
+const SHEET_URL_WRITE = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
+const START_WEIGHT = 197.8;
+const GOAL_WEIGHT = 170;
+const CAL_TARGET = 1700;
+const PROTEIN_TARGET = 170;
+const CARBS_TARGET = 128;
+const FAT_TARGET = 57;
+const SLEEP_TARGET = 7.5;
+const STEP_TARGET = 7500;
 
-const JORGE_PROFILE = `You are Jorge's personal Metabolic Performance Coach. Speak naturally — mix English with occasional Spanish phrases just like Jorge does (Spanglish). He's from McAllen TX, US-Mexico border.
+// ══════════════════════════════════════════
+// JORGE'S PROFILE FOR AI
+// ══════════════════════════════════════════
+const JORGE_PROFILE = `You are Jorge's personal AI Metabolic Performance Coach. Respond warmly and directly. Mix in natural Spanish phrases like Jorge talks — Spanglish is welcome.
 
 JORGE'S PROFILE:
-- Age: 33, Male, 5'5", Start weight: 197.8 lbs, Goal: 170 lbs
-- Beginner, desk job, sedentary. Wearable: Oura Ring
-- BMR: 1,768 kcal | TDEE: 2,350 kcal | Daily target: 1,900 kcal | Deficit: −450 kcal
-- Protein: 170g | Carbs: 159g | Fat: 65g
-- RHR: 62 bpm | Zone 2: 137–149 bpm | HRV baseline: 27ms (low)
-- Sleep debt: 5hrs HIGH | Step target: 7,500/day
-- Phase 1 plan: Mon/Thu strength 45min, Tue/Fri Zone 2 cardio 30min, rest days walking
+- Age: 33, Male, 5'5" (165cm), McAllen TX
+- Start weight: 197.8 lbs | Goal: 170 lbs | To lose: 27.8 lbs
+- Desk job, no time for gym, sedentary lifestyle
+- Protocol: 1,700 kcal/day | Protein: 170g | Carbs: 128g | Fat: 57g
+- Eating window: ~11am-8pm (flexible 16/8 approach)
+- Step target: 7,500/day | Sleep target: 7.5 hrs/night
+- Weighs in MONDAY ONLY — not daily
+- Supplements: Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles
+- Wearable: Oura Ring
 
-COACHING STYLE: Direct, data-driven, warm. Reference his exact numbers. Be honest. Keep it concise for mobile. Use bold and line breaks. End with ONE clear action for the next 12 hours.`;
+WORKOUT PLAN (10-min home workouts, 3x/week):
+- Monday: Upper body (pushups, shoulder press, rows)
+- Wednesday: Lower body (squats, lunges, glute bridges)
+- Friday: Full body (burpees, mountain climbers, plank)
+- Other days: Walk for steps, rest
 
-// Storage
+COACHING STYLE: Direct, data-driven, warm. Use Jorge's exact numbers. Mobile-friendly — short paragraphs, bold text, clear action items. End every message with ONE specific action.`;
+
+// ══════════════════════════════════════════
+// WORKOUT DATABASE
+// ══════════════════════════════════════════
+const WORKOUTS = {
+  MON: {
+    type: 'UPPER BODY 💪',
+    duration: '10 min',
+    exercises: [
+      { name: 'Push-Ups', sets: 3, reps: '10-15', rest: '45s', tip: 'Keep core tight, chest to floor', yt: 'https://youtube.com/results?search_query=push+ups+form+beginner' },
+      { name: 'Shoulder Taps', sets: 3, reps: '20 taps', rest: '30s', tip: 'Keep hips still, slow and controlled', yt: 'https://youtube.com/results?search_query=shoulder+taps+plank+exercise' },
+      { name: 'Tricep Dips (chair)', sets: 3, reps: '10-12', rest: '45s', tip: 'Use a sturdy chair, elbows close to body', yt: 'https://youtube.com/results?search_query=chair+tricep+dips+beginner' },
+      { name: 'Superman Hold', sets: 3, reps: '10 reps, 3s hold', rest: '30s', tip: 'Squeeze glutes and back at the top', yt: 'https://youtube.com/results?search_query=superman+exercise+back' },
+    ]
+  },
+  WED: {
+    type: 'LOWER BODY 🦵',
+    duration: '10 min',
+    exercises: [
+      { name: 'Bodyweight Squats', sets: 3, reps: '15-20', rest: '45s', tip: 'Knees over toes, sit back like a chair', yt: 'https://youtube.com/results?search_query=bodyweight+squat+form+beginner' },
+      { name: 'Reverse Lunges', sets: 3, reps: '10 each leg', rest: '45s', tip: 'Step back, front knee at 90°', yt: 'https://youtube.com/results?search_query=reverse+lunge+beginner+form' },
+      { name: 'Glute Bridges', sets: 3, reps: '15-20', rest: '30s', tip: 'Squeeze glutes hard at the top, hold 1 sec', yt: 'https://youtube.com/results?search_query=glute+bridge+exercise+beginner' },
+      { name: 'Calf Raises', sets: 3, reps: '20-25', rest: '30s', tip: 'Hold top for 1 second, full range of motion', yt: 'https://youtube.com/results?search_query=calf+raises+standing+beginner' },
+    ]
+  },
+  FRI: {
+    type: 'FULL BODY 🔥',
+    duration: '10 min',
+    exercises: [
+      { name: 'Jumping Jacks', sets: 3, reps: '30 sec', rest: '15s', tip: 'Warm-up exercise, get the heart rate up', yt: 'https://youtube.com/results?search_query=jumping+jacks+exercise' },
+      { name: 'Mountain Climbers', sets: 3, reps: '20 sec', rest: '20s', tip: 'Keep hips down, drive knees to chest fast', yt: 'https://youtube.com/results?search_query=mountain+climbers+exercise+form' },
+      { name: 'Squat to Press (water bottle)', sets: 3, reps: '12-15', rest: '45s', tip: 'Use 2 water bottles as weights, press overhead at top', yt: 'https://youtube.com/results?search_query=squat+overhead+press+dumbbell' },
+      { name: 'Plank Hold', sets: 3, reps: '20-30 sec', rest: '30s', tip: 'Hips level with shoulders, breathe steadily', yt: 'https://youtube.com/results?search_query=plank+exercise+form+beginner' },
+    ]
+  }
+};
+
+const REST_DAYS = {
+  TUE: { emoji: '🚶', title: 'ACTIVE RECOVERY', msg: 'Today is a rest day — but not a sedentary day. Your job is to hit 7,500 steps. Take a 30-minute walk after dinner. Your muscles are recovering and growing from Monday\'s workout.' },
+  THU: { emoji: '😴', title: 'REST + WALK', msg: 'Rest day. Focus on steps (7,500 minimum) and sleep tonight. Your body is recovering. The growth happens during rest, not during the workout.' },
+  SAT: { emoji: '🧘', title: 'ACTIVE RECOVERY', msg: 'Weekend rest day. Go for a longer walk if you can — 45-60 min at a comfortable pace counts as Zone 2 cardio. Stretch, move, enjoy the day.' },
+  SUN: { emoji: '😴', title: 'FULL REST', msg: 'Full rest day. Prioritize sleep tonight — aim for 8+ hours to start paying back that sleep debt. Tomorrow is Monday — weigh-in day and upper body workout.' },
+};
+
+// ══════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════
 const store = k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
 const save  = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
-let logs = store('jorge_logs') || [];
-let todayLogged = store('jorge_today') || { cals:0, protein:0, carbs:0, fat:0, steps:2253 };
-let aiCache = store('jorge_ai_cache') || {};
 
-// Date/time
+let logs = store('jorge_logs_v4') || [];
+let todayLogged = store('jorge_today_v4') || { cals:0, protein:0, carbs:0, fat:0 };
+let aiCache = store('jorge_ai_cache_v4') || {};
+let groceryChecked = store('jorge_grocery') || {};
+let chartMode = 'calories';
+
+// ══════════════════════════════════════════
+// DATE / TIME
+// ══════════════════════════════════════════
 const now = new Date();
 const DAYS   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+const dayName = DAYS[now.getDay()];
 const hour = now.getHours();
-document.getElementById('dateBadge').textContent = `${DAYS[now.getDay()]} ${MONTHS[now.getMonth()]} ${now.getDate()}`;
+const isMonday = now.getDay() === 1;
+
+document.getElementById('dateBadge').textContent = `${dayName} ${MONTHS[now.getMonth()]} ${now.getDate()}`;
 document.getElementById('greetingText').textContent = hour < 12 ? 'Good morning,' : hour < 17 ? 'Good afternoon,' : 'Good evening,';
 
-// Format AI text
-function fmt(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
+// ══════════════════════════════════════════
+// ZONE 2 CALCULATOR (Dynamic from RHR)
+// ══════════════════════════════════════════
+function calcZones(rhr) {
+  const maxHR = 220 - 33;
+  const hrr = maxHR - rhr;
+  return {
+    z1High: Math.round(rhr + hrr * 0.50),
+    z2Low:  Math.round(rhr + hrr * 0.60),
+    z2High: Math.round(rhr + hrr * 0.70),
+    z3High: Math.round(rhr + hrr * 0.80),
+    z4High: Math.round(rhr + hrr * 0.90),
+  };
 }
 
-// Call Claude API
+function updateZones(rhr) {
+  const z = calcZones(rhr);
+  document.getElementById('zone2Low').textContent = z.z2Low;
+  document.getElementById('zone2High').textContent = `– ${z.z2High} bpm`;
+  document.getElementById('rhrBadge').textContent = `RHR: ${rhr} bpm ✅`;
+  document.getElementById('zoneRanges').innerHTML = `<span>&lt;${z.z1High}</span><span>${z.z2Low}–${z.z2High}</span><span>${z.z2High+1}–${z.z3High}</span><span>${z.z3High+1}–${z.z4High}</span><span>${z.z4High+1}+</span>`;
+}
+
+// ══════════════════════════════════════════
+// SLEEP DEBT CALCULATOR
+// ══════════════════════════════════════════
+function calcSleepDebt() {
+  const last7 = logs.slice(-7);
+  if (last7.length === 0) return { hours: 5, label: '5.0 hrs HIGH', cls: 'high' }; // baseline from Oura
+  const debt = last7.reduce((acc, l) => acc + Math.max(0, SLEEP_TARGET - (l.sleep || 0)), 0);
+  const cls = debt <= 1 ? 'low' : debt <= 3 ? 'med' : 'high';
+  return { hours: debt.toFixed(1), label: `${debt.toFixed(1)} hrs ${debt <= 1 ? '✅ Good' : debt <= 3 ? '⚠️ Moderate' : '🔴 HIGH'}`, cls };
+}
+
+function updateSleepDebt() {
+  const d = calcSleepDebt();
+  const card = document.getElementById('sleepDebtCard');
+  card.className = `sleep-debt-card ${d.cls} fade-in`;
+  const icons = { low: '✅', med: '⚠️', high: '🔴' };
+  card.querySelector('.debt-icon').textContent = icons[d.cls];
+  document.getElementById('sleepDebtVal').textContent = d.label;
+  document.getElementById('sleepDebtSub').textContent = `Based on last ${Math.min(7,logs.length)} days vs ${SLEEP_TARGET}hr target`;
+}
+
+// ══════════════════════════════════════════
+// DYNAMIC ALERTS
+// ══════════════════════════════════════════
+function updateAlerts() {
+  const last = logs[logs.length-1];
+  const container = document.getElementById('alertsContainer');
+  const alerts = [];
+
+  const debt = calcSleepDebt();
+  if (parseFloat(debt.hours) >= 3) alerts.push({ cls:'red', icon:'🔴', msg:`Sleep debt ${debt.hours}hrs — bed by 10:30 PM tonight` });
+  else if (parseFloat(debt.hours) >= 1) alerts.push({ cls:'yellow', icon:'⚠️', msg:`Sleep debt ${debt.hours}hrs — prioritize sleep this week` });
+  else alerts.push({ cls:'green', icon:'✅', msg:'Sleep debt under control — great work!' });
+
+  if (last) {
+    if (last.hrv && last.hrv < 30) alerts.push({ cls:'red', icon:'⚠️', msg:`HRV ${last.hrv}ms — keep intensity LOW today` });
+    else if (last.hrv && last.hrv >= 45) alerts.push({ cls:'green', icon:'✅', msg:`HRV ${last.hrv}ms — strong recovery, push today` });
+    if (last.rhr) alerts.push({ cls:'green', icon:'❤️', msg:`RHR ${last.rhr} bpm — Zone 2 updated to match your current fitness` });
+    if (last.steps < STEP_TARGET) alerts.push({ cls:'yellow', icon:'🚶', msg:`Only ${last.steps.toLocaleString()} steps yesterday — hit 7,500 today` });
+  } else {
+    alerts.push({ cls:'blue', icon:'📝', msg:'Log Day 1 tonight to activate personalized alerts' });
+  }
+
+  if (isMonday) alerts.push({ cls:'blue', icon:'⚖️', msg:'It\'s Monday — weigh-in day! Log your weight in the Log tab' });
+
+  container.innerHTML = alerts.map(a =>
+    `<div class="alert ${a.cls} fade-in"><span>${a.icon}</span> ${a.msg}</div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════
+// READINESS
+// ══════════════════════════════════════════
+function updateReadiness(score, sleepSc, actSc, hrv, rhr) {
+  if (!score) return;
+  const color = score >= 85 ? 'var(--green)' : score >= 70 ? 'var(--accent2)' : score >= 50 ? 'var(--yellow)' : 'var(--red)';
+  const label = score >= 85 ? '✅ OPTIMAL' : score >= 70 ? '✅ GOOD' : score >= 50 ? '⚠️ PAY ATTENTION' : '🔴 LOW — REST DAY';
+  document.getElementById('readinessScore').textContent = score;
+  document.getElementById('readinessScore').style.color = color;
+  document.getElementById('readinessRingText').textContent = score;
+  document.getElementById('readinessLabel').textContent = label;
+  document.getElementById('readinessLabel').style.color = color;
+  document.getElementById('readinessRing').style.strokeDashoffset = 220-(score/100)*220;
+  if (hrv) {
+    const hrvPct = Math.min(100,(hrv/80)*100);
+    document.getElementById('hrvBar').style.width = hrvPct+'%';
+    document.getElementById('hrvBar').style.background = hrv>=50?'var(--green)':hrv>=30?'var(--yellow)':'var(--red)';
+    document.getElementById('hrvVal').textContent = hrv+' ms';
+  }
+  if (rhr) {
+    document.getElementById('rhrBar').style.width = '80%';
+    document.getElementById('rhrBar').style.background = 'var(--green)';
+    document.getElementById('rhrVal').textContent = rhr+' bpm';
+    updateZones(rhr);
+  }
+  if (sleepSc) {
+    document.getElementById('sleepScoreBar').style.width = sleepSc+'%';
+    document.getElementById('sleepScoreBar').style.background = sleepSc>=80?'var(--green)':sleepSc>=60?'var(--yellow)':'var(--red)';
+    document.getElementById('sleepScoreVal').textContent = sleepSc+' pts';
+  }
+  if (actSc) {
+    document.getElementById('activityBar').style.width = actSc+'%';
+    document.getElementById('activityBar').style.background = actSc>=70?'var(--green)':actSc>=50?'var(--yellow)':'var(--red)';
+    document.getElementById('activityVal').textContent = actSc+' pts';
+  }
+}
+
+// ══════════════════════════════════════════
+// WORKOUT PAGE
+// ══════════════════════════════════════════
+function buildWorkoutPage() {
+  const workout = WORKOUTS[dayName];
+  const rest = REST_DAYS[dayName];
+  const container = document.getElementById('workoutContent');
+  const label = document.getElementById('workoutDayLabel');
+
+  if (rest) {
+    label.textContent = `TODAY — ${rest.title}`;
+    container.innerHTML = `
+      <div class="workout-rest-day">
+        <div class="rest-emoji">${rest.emoji}</div>
+        <div class="rest-title">${rest.title}</div>
+        <div class="rest-sub">${rest.msg}</div>
+      </div>`;
+  } else if (workout) {
+    label.textContent = `TODAY'S WORKOUT — ${workout.type}`;
+    container.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="workout-day-badge">${dayName} — ${workout.type}</div>
+        <div style="font-size:12px;color:var(--muted)">⏱️ ${workout.duration}</div>
+      </div>
+      <div class="exercise-list">
+        ${workout.exercises.map(ex => `
+          <div class="exercise-item">
+            <div class="exercise-top">
+              <div class="exercise-name">${ex.name}</div>
+              <a href="${ex.yt}" target="_blank" class="exercise-link">▶️ Watch video</a>
+            </div>
+            <div class="exercise-detail">💡 ${ex.tip}</div>
+            <div class="exercise-sets">
+              <div class="set-badge">${ex.sets} sets</div>
+              <div class="set-badge">${ex.reps}</div>
+              <div class="rest-badge">Rest: ${ex.rest}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+  } else {
+    container.innerHTML = `<div class="workout-rest-day"><div class="rest-emoji">😴</div><div class="rest-title">REST DAY</div><div class="rest-sub">Focus on steps and sleep today.</div></div>`;
+  }
+
+  // Workout AI advice
+  loadWorkoutAdvice();
+}
+
+async function loadWorkoutAdvice() {
+  const cacheKey = `workout_${todayKey}`;
+  if (aiCache[cacheKey]) { document.getElementById('workoutAdviceMsg').innerHTML = fmt(aiCache[cacheKey]); return; }
+
+  const last = logs[logs.length-1];
+  const isWorkoutDay = !!WORKOUTS[dayName];
+  const prompt = `Give Jorge a SHORT workout briefing for ${dayName}.
+
+Today is ${isWorkoutDay ? WORKOUTS[dayName].type+' day' : 'a REST day'}.
+Last readiness: ${last?.readiness || 'no data yet'}
+Last HRV: ${last?.hrv || 'no data yet'} ms
+Last sleep: ${last?.sleep || 'no data yet'} hrs
+Sleep debt: ${calcSleepDebt().hours} hrs
+
+${isWorkoutDay ?
+  'Tell him: 1) Whether to push hard or take it easy based on HRV/readiness, 2) One form tip for the first exercise, 3) What to eat before/after the workout from his supplements (Isopure + ISO100).' :
+  'Tell him: 1) How to maximize this rest day, 2) Step goal reminder, 3) Sleep advice for tonight.'
+}
+
+Under 100 words. Direct. Spanglish tone.`;
+
+  try {
+    const response = await askClaude(prompt);
+    aiCache[cacheKey] = response;
+    save('jorge_ai_cache_v4', aiCache);
+    document.getElementById('workoutAdviceMsg').innerHTML = fmt(response);
+  } catch(e) {
+    document.getElementById('workoutAdviceMsg').innerHTML = isMonday ?
+      '<strong>Upper body day, Jorge.</strong> 3 rounds of pushups, shoulder taps, and tricep dips. 10 minutes. No excuses. Vamos. 💪' :
+      '<strong>Rest day.</strong> Hit your 7,500 steps and get to bed by 10:30 PM. Recovery is training.';
+  }
+}
+
+// ══════════════════════════════════════════
+// NUTRITION AI
+// ══════════════════════════════════════════
+async function generateMealPlan() {
+  const btn = document.querySelector('.ai-generate-btn');
+  const container = document.getElementById('mealPlanContent');
+  container.innerHTML = `<div class="loading-row" style="padding:20px 0;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Generating your meal plan...</div></div>`;
+
+  const last = logs[logs.length-1];
+  const prompt = `Generate Jorge's meal plan for today. His eating window is flexible ~11am-8pm.
+
+TARGETS: ${CAL_TARGET} kcal / ${PROTEIN_TARGET}g protein / ${CARBS_TARGET}g carbs / ${FAT_TARGET}g fat
+AVAILABLE: Isopure Vanilla protein powder, Dymatize ISO100 Cocoa Pebbles, leche de almendra, leche 2%
+LIFESTYLE: Desk job, no cooking until 6:30pm when he gets home, McAllen TX
+
+Create exactly 3 meals:
+1. 11am — something quick (shake or no-cook)
+2. 7:30pm — main meal (can cook now)
+3. 8pm — shake to close the window
+
+For each meal give: meal name, exact ingredients with amounts, macros (P/C/F/kcal), and one prep tip.
+
+Format as JSON only, no markdown:
+{"meals":[{"time":"11:00 AM","name":"...","ingredients":"...","protein":0,"carbs":0,"fat":0,"calories":0,"tip":"..."}]}`;
+
+  try {
+    const response = await askClaude(prompt);
+    const clean = response.replace(/```json|```/g,'').trim();
+    const data = JSON.parse(clean);
+    container.innerHTML = data.meals.map(m => `
+      <div class="meal-suggestion">
+        <div class="meal-time">${m.time}</div>
+        <div class="meal-name">${m.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin:6px 0;">${m.ingredients}</div>
+        <div class="meal-macros">${m.protein}g protein · ${m.carbs}g carbs · ${m.fat}g fat · ${m.calories} kcal</div>
+        <div style="font-size:11px;color:var(--accent2);margin-top:6px;">💡 ${m.tip}</div>
+      </div>`).join('');
+  } catch(e) {
+    container.innerHTML = `
+      <div class="meal-suggestion"><div class="meal-time">11:00 AM</div><div class="meal-name">Isopure Vanilla Shake</div><div style="font-size:12px;color:var(--muted);margin:6px 0;">1 scoop Isopure + 10oz leche de almendra unsweetened + 1 plátano</div><div class="meal-macros">~35g protein · 25g carbs · 3g fat · 270 kcal</div></div>
+      <div class="meal-suggestion"><div class="meal-time">7:30 PM</div><div class="meal-name">Pollo a la Plancha + Arroz + Verduras</div><div style="font-size:12px;color:var(--muted);margin:6px 0;">200g pollo + ½ taza arroz + brócoli al vapor</div><div class="meal-macros">~60g protein · 45g carbs · 8g fat · 500 kcal</div></div>
+      <div class="meal-suggestion"><div class="meal-time">8:00 PM</div><div class="meal-name">ISO100 Cocoa Pebbles Shake</div><div style="font-size:12px;color:var(--muted);margin:6px 0;">1 scoop ISO100 + 8oz leche 2%</div><div class="meal-macros">~33g protein · 12g carbs · 6g fat · 230 kcal</div></div>`;
+  }
+}
+
+async function generateGroceryList() {
+  const container = document.getElementById('groceryContent');
+  container.innerHTML = `<div class="loading-row" style="padding:20px 0;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Building your grocery list...</div></div>`;
+
+  const prompt = `Generate Jorge's weekly grocery list for 7 days of eating at 1,700 kcal / 170g protein.
+
+He already has: Isopure Vanilla protein, Dymatize ISO100 Cocoa Pebbles, leche de almendra
+He shops at: Walmart or HEB in McAllen TX
+He needs quick/easy meals — desk job, only cooks at night
+
+Create a practical grocery list organized by category. Include quantities for 7 days.
+
+Return JSON only, no markdown:
+{"categories":[{"name":"Proteins","items":[{"name":"Chicken breast","qty":"2 lbs"}]}]}`;
+
+  try {
+    const response = await askClaude(prompt);
+    const clean = response.replace(/```json|```/g,'').trim();
+    const data = JSON.parse(clean);
+    groceryChecked = store('jorge_grocery') || {};
+
+    container.innerHTML = data.categories.map(cat => `
+      <div style="margin-bottom:16px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px;">${cat.name}</div>
+        ${cat.items.map((item, i) => {
+          const key = `${cat.name}_${i}`;
+          const checked = groceryChecked[key];
+          return `<div class="grocery-item" onclick="toggleGrocery('${key}',this)">
+            <div class="grocery-check ${checked?'checked':''}" id="gc_${key}">${checked?'✓':''}</div>
+            <div class="grocery-name" style="${checked?'text-decoration:line-through;color:var(--muted)':''}">${item.name}</div>
+            <div class="grocery-qty">${item.qty}</div>
+          </div>`;
+        }).join('')}
+      </div>`).join('');
+  } catch(e) {
+    container.innerHTML = `
+      <div style="margin-bottom:16px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px;">Proteins</div>
+      ${[['Chicken breast','2 lbs'],['Lean ground beef 96%','1 lb'],['Tilapia fillets','1 lb'],['Eggs','1 dozen'],['Greek yogurt 0%','2 containers']].map(([n,q],i)=>`<div class="grocery-item"><div class="grocery-check"></div><div class="grocery-name">${n}</div><div class="grocery-qty">${q}</div></div>`).join('')}</div>
+      <div style="margin-bottom:16px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px;">Carbs</div>
+      ${[['White rice','2 lbs'],['Sweet potatoes','4 medium'],['Bananas','bunch'],['Corn tortillas','1 pack']].map(([n,q])=>`<div class="grocery-item"><div class="grocery-check"></div><div class="grocery-name">${n}</div><div class="grocery-qty">${q}</div></div>`).join('')}</div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px;">Veggies</div>
+      ${[['Broccoli','1 bag frozen'],['Spinach','1 bag'],['Bell peppers','3'],['Zucchini','2']].map(([n,q])=>`<div class="grocery-item"><div class="grocery-check"></div><div class="grocery-name">${n}</div><div class="grocery-qty">${q}</div></div>`).join('')}</div>`;
+  }
+}
+
+function toggleGrocery(key, row) {
+  groceryChecked[key] = !groceryChecked[key];
+  save('jorge_grocery', groceryChecked);
+  const check = document.getElementById('gc_'+key);
+  const nameEl = row.querySelector('.grocery-name');
+  if (groceryChecked[key]) {
+    check.classList.add('checked'); check.textContent = '✓';
+    nameEl.style.textDecoration = 'line-through'; nameEl.style.color = 'var(--muted)';
+  } else {
+    check.classList.remove('checked'); check.textContent = '';
+    nameEl.style.textDecoration = 'none'; nameEl.style.color = 'var(--text)';
+  }
+}
+
+// ══════════════════════════════════════════
+// CLAUDE API
+// ══════════════════════════════════════════
+function fmt(text) {
+  return text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+}
+
 async function askClaude(prompt) {
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system: JORGE_PROFILE,
-      prompt: prompt
-    })
+    body: JSON.stringify({ system: JORGE_PROFILE, prompt })
   });
   const data = await res.json();
   if (!data.text) throw new Error('No response');
   return data.text;
 }
 
-// Morning briefing
+// ══════════════════════════════════════════
+// MORNING BRIEFING
+// ══════════════════════════════════════════
 async function loadMorning() {
   const cacheKey = `morning_${todayKey}`;
-  if (aiCache[cacheKey]) {
-    document.getElementById('morningMsg').innerHTML = fmt(aiCache[cacheKey]);
-    return;
-  }
-  const yesterday = logs[logs.length - 1];
-  const last7 = logs.slice(-7);
-  const totalLost = last7.length > 0 ? (197.8 - last7[last7.length-1].weight).toFixed(1) : 0;
-  const dayName = DAYS[now.getDay()];
-  const weekPlan = { MON:'💪 Strength Day', TUE:'🚶 Zone 2 Cardio (137–149 bpm)', WED:'😴 Rest + Walk', THU:'💪 Strength Day', FRI:'🚶 Zone 2 Cardio (137–149 bpm)', SAT:'🧘 Active Recovery', SUN:'😴 Full Rest' };
+  if (aiCache[cacheKey]) { document.getElementById('morningMsg').innerHTML = fmt(aiCache[cacheKey]); return; }
+
+  const yesterday = logs[logs.length-1];
+  const totalLost = logs.length > 0 ? (START_WEIGHT - (logs.filter(l=>l.weight).slice(-1)[0]?.weight||START_WEIGHT)).toFixed(1) : 0;
+  const weekWorkouts = { MON:'💪 Upper Body (10 min home)', WED:'🦵 Lower Body (10 min home)', FRI:'🔥 Full Body (10 min home)' };
+  const debt = calcSleepDebt();
 
   const prompt = `Generate Jorge's MORNING BRIEFING for ${dayName} ${MONTHS[now.getMonth()]} ${now.getDate()}.
 
-Yesterday: ${yesterday ? `Weight ${yesterday.weight}lbs, ${yesterday.cals}kcal, ${yesterday.protein}g protein, ${yesterday.steps} steps, ${yesterday.sleep}hrs sleep, HRV ${yesterday.hrv}ms` : 'Day 1 — no previous data'}
-Total lost so far: ${totalLost} lbs | Day streak: ${logs.length} days
-Today's scheduled workout: ${weekPlan[dayName] || '🚶 Active rest'}
+Yesterday: ${yesterday ? `${yesterday.cals}kcal, ${yesterday.protein}g protein, ${yesterday.steps} steps, ${yesterday.sleep}hrs sleep, HRV ${yesterday.hrv}ms, Readiness ${yesterday.readiness}` : 'Day 1 — no data yet'}
+Total lost so far: ${totalLost} lbs | Sleep debt: ${debt.hours} hrs
+Today's workout: ${weekWorkouts[dayName] || '🚶 Rest day — focus on steps'}
+${isMonday ? '⚖️ TODAY IS MONDAY — remind him to weigh in!' : ''}
 
-Write a morning briefing with:
-1. Sharp opening based on yesterday's data (or Day 1 hype if no data)
-2. Today's exact targets: calories, protein, workout plan, step goal
-3. One specific focus for today based on trends
-4. Motivating Spanglish closing line
-
-Under 180 words. Use bold labels. Make it feel like a real coach talking to Jorge personally.`;
+Morning briefing (under 150 words):
+1. Sharp opener based on yesterday's data
+2. Today's exact targets: ${CAL_TARGET} kcal / ${PROTEIN_TARGET}g protein
+3. Today's workout reminder
+4. ONE specific focus for today
+5. Spanglish motivating closer`;
 
   try {
     const response = await askClaude(prompt);
     aiCache[cacheKey] = response;
-    save('jorge_ai_cache', aiCache);
+    save('jorge_ai_cache_v4', aiCache);
     document.getElementById('morningMsg').innerHTML = fmt(response);
   } catch(e) {
-    document.getElementById('morningMsg').innerHTML = '<strong>Coach offline</strong> — check connection. Tu meta hoy: <strong>1,900 kcal · 170g protein · 7,500 steps</strong>. Vamos Jorge 🔥';
+    document.getElementById('morningMsg').innerHTML = `<strong>Coach offline.</strong> Tu meta hoy: <strong>${CAL_TARGET} kcal · ${PROTEIN_TARGET}g proteína · ${STEP_TARGET.toLocaleString()} pasos</strong>. ${weekWorkouts[dayName] || 'Rest day — walk it out.'} Vamos Jorge 🔥`;
   }
 }
 
-// Night debrief
+// ══════════════════════════════════════════
+// NIGHT DEBRIEF
+// ══════════════════════════════════════════
 async function generateNightDebrief(entry) {
   document.getElementById('nightSection').style.display = 'block';
-  document.getElementById('nightMsg').innerHTML = `<div class="loading-row"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Analyzing your day with AI...</div></div>`;
+  document.getElementById('nightMsg').innerHTML = `<div class="loading-row"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Analyzing your day...</div></div>`;
 
-  const last7 = logs.slice(-7);
-  const weightChange = (entry.weight - 197.8).toFixed(1);
-  const trend = logs.length > 1 ? (entry.weight - logs[logs.length-2].weight).toFixed(1) : 'n/a';
-  const avgCals = last7.length > 1 ? Math.round(last7.reduce((a,b)=>a+(b.cals||0),0)/last7.length) : entry.cals;
-  const avgProtein = last7.length > 1 ? Math.round(last7.reduce((a,b)=>a+(b.protein||0),0)/last7.length) : entry.protein;
+  const weightChange = entry.weight ? (entry.weight - START_WEIGHT).toFixed(1) : 'no weigh-in today';
+  const debt = calcSleepDebt();
 
-  const prompt = `Generate Jorge's NIGHT DEBRIEF for Day ${entry.day}.
+  const prompt = `Generate Jorge's NIGHT DEBRIEF for today (${dayName}).
 
-TODAY:
-- Weight: ${entry.weight} lbs (${weightChange > 0 ? '+' : ''}${weightChange} from start, ${trend > 0 ? '+' : ''}${trend} vs yesterday)
-- Calories: ${entry.cals} kcal (target 1,900) → ${entry.cals <= 1900 ? '✅ On target' : '❌ Over by ' + (entry.cals-1900)}
-- Protein: ${entry.protein}g (target 170g) → ${entry.protein >= 160 ? '✅ Good' : '❌ LOW — muscle risk'}
-- Carbs: ${entry.carbs}g | Fat: ${entry.fat}g
-- Steps: ${entry.steps} (target 7,500) → ${entry.steps >= 7500 ? '✅ Hit it' : '❌ Short by ' + (7500-entry.steps)}
-- Sleep last night: ${entry.sleep}hrs (target 7.5) → ${entry.sleep >= 7.5 ? '✅' : '⚠️ Under target'}
-- HRV: ${entry.hrv}ms
+TODAY'S LOG:
+- Calories: ${entry.cals} kcal (target ${CAL_TARGET}) → ${entry.cals <= CAL_TARGET ? '✅' : '❌ over by '+(entry.cals-CAL_TARGET)}
+- Protein: ${entry.protein}g (target ${PROTEIN_TARGET}g) → ${entry.protein >= PROTEIN_TARGET*0.9 ? '✅' : '❌ LOW'}
+- Steps: ${entry.steps} (target ${STEP_TARGET}) → ${entry.steps >= STEP_TARGET ? '✅' : '❌ short by '+(STEP_TARGET-entry.steps)}
+- Sleep last night: ${entry.sleep}hrs → ${entry.sleep >= SLEEP_TARGET ? '✅' : '⚠️ under target'}
+- HRV: ${entry.hrv}ms | Readiness: ${entry.readiness}/100
+- Weight: ${entry.weight ? entry.weight+' lbs ('+weightChange+' from start)' : 'no weigh-in (not Monday)'}
+- Sleep debt: ${debt.hours} hrs accumulated
 
-7-DAY AVERAGES: ${avgCals} kcal/day · ${avgProtein}g protein/day
+Sections (under 180 words total):
+**GRADE:** [A/B/C/D/F] one sentence
+**WINS:** specific numbers  
+**FIX TOMORROW:** ONE thing
+**TOMORROW'S TARGETS:** exact kcal + protein
+**SLEEP ORDER:** exact bedtime + why
 
-Generate a debrief with these exact sections:
-**GRADE:** [A/B/C/D/F] — one sentence why
-**WINS:** What he did right today (specific numbers)
-**FIX TOMORROW:** ONE specific thing to change
-**TOMORROW'S TARGETS:** Exact kcal and protein based on today's performance
-**SLEEP ORDER:** Exact bedtime and why
-
-Under 200 words. Spanglish tone. Real and direct.`;
+Spanglish, direct, personal.`;
 
   try {
     const response = await askClaude(prompt);
     aiCache[`night_${todayKey}`] = response;
-    save('jorge_ai_cache', aiCache);
+    save('jorge_ai_cache_v4', aiCache);
     document.getElementById('nightMsg').innerHTML = fmt(response);
   } catch(e) {
-    document.getElementById('nightMsg').innerHTML = '<strong>Coach offline.</strong> Datos guardados ✅. Tu análisis AI estará listo mañana cuando cargues el app.';
+    document.getElementById('nightMsg').innerHTML = '<strong>Coach offline.</strong> Data saved ✅. Tu análisis estará listo mañana.';
   }
 }
 
-// Prediction engine
+// ══════════════════════════════════════════
+// PREDICTION ENGINE
+// ══════════════════════════════════════════
 function updatePrediction() {
-  const goalWeight = 170;
-  const startWeight = 197.8;
-  const totalToLose = startWeight - goalWeight;
-  if (logs.length < 3) {
+  const weightLogs = logs.filter(l => l.weight);
+  const totalToLose = START_WEIGHT - GOAL_WEIGHT;
+  document.getElementById('predRemain').textContent = totalToLose.toFixed(1);
+
+  if (weightLogs.length < 2) {
     document.getElementById('predDate').textContent = '— weeks';
-    document.getElementById('predSub').textContent = `Log ${Math.max(0,3-logs.length)} more day(s) to activate`;
-    document.getElementById('predRemain').textContent = totalToLose.toFixed(1);
+    document.getElementById('predSub').textContent = 'Log weight on 2+ Mondays to activate';
+    document.getElementById('predLost').textContent = '0.0';
     return;
   }
-  const recent = logs.slice(-7);
-  const lost = startWeight - recent[recent.length-1].weight;
-  const ratePerDay = lost / recent.length;
-  const ratePerWeek = ratePerDay * 7;
+  const lost = START_WEIGHT - weightLogs[weightLogs.length-1].weight;
+  const weeks = weightLogs.length - 1;
+  const ratePerWeek = lost / weeks;
   const remaining = totalToLose - lost;
   const weeksLeft = remaining > 0 ? Math.ceil(remaining / Math.max(0.1, ratePerWeek)) : 0;
   const goalDate = new Date();
   goalDate.setDate(goalDate.getDate() + weeksLeft * 7);
+
   document.getElementById('predDate').textContent = weeksLeft > 0 ? `${MONTHS[goalDate.getMonth()]} ${goalDate.getFullYear()}` : '🎯 GOAL!';
-  document.getElementById('predSub').textContent = ratePerWeek > 0 ? `At your current pace of ${ratePerWeek.toFixed(1)} lbs/week` : 'Keep logging to see your pace';
+  document.getElementById('predSub').textContent = ratePerWeek > 0 ? `At your current pace of ${ratePerWeek.toFixed(1)} lbs/week` : 'Keep logging';
   document.getElementById('predLost').textContent = Math.max(0,lost).toFixed(1);
   document.getElementById('predRate').textContent = ratePerWeek > 0 ? ratePerWeek.toFixed(1) : '—';
   document.getElementById('predRemain').textContent = Math.max(0,remaining).toFixed(1);
 }
 
-// Google Sheets
+// ══════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════
+function switchChart(mode, el) {
+  chartMode = mode;
+  document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  buildChart();
+}
+
+function buildChart() {
+  const c = document.getElementById('progressChart'); c.innerHTML = '';
+  const labels = ['M','T','W','T','F','S','S'];
+  const last7 = logs.slice(-7);
+  const maxVal = chartMode === 'calories' ? 2500 : chartMode === 'protein' ? 200 : 202;
+  const targetVal = chartMode === 'calories' ? CAL_TARGET : chartMode === 'protein' ? PROTEIN_TARGET : null;
+  const barClass = chartMode === 'calories' ? 'active' : chartMode === 'protein' ? 'protein-bar' : 'weight-bar';
+
+  for (let i = 0; i < 7; i++) {
+    const entry = last7[i];
+    const val = entry ? (chartMode === 'calories' ? entry.cals : chartMode === 'protein' ? entry.protein : entry.weight) : null;
+    const wrap = document.createElement('div'); wrap.className = 'chart-bar-wrap';
+    const bar = document.createElement('div');
+    bar.className = `chart-bar ${val ? barClass : ''}`;
+    bar.style.height = (val ? Math.max(6, ((val - (chartMode==='weight'?165:0)) / (maxVal - (chartMode==='weight'?165:0))) * 70) : 4) + 'px';
+    const lbl = document.createElement('div'); lbl.className = 'chart-day';
+    lbl.textContent = entry ? `${MONTHS[now.getMonth()].slice(0,1)}${(new Date(entry.date+'2026')||now).getDate()||labels[i]}` : labels[i];
+    wrap.appendChild(bar); wrap.appendChild(lbl); c.appendChild(wrap);
+  }
+}
+
+// ══════════════════════════════════════════
+// GOOGLE SHEETS
+// ══════════════════════════════════════════
 async function sendToSheets(entry) {
   try {
-    await fetch(SHEET_URL, {
+    await fetch(SHEET_URL_WRITE, {
       method:'POST', mode:'no-cors',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ date:entry.date, day:entry.day, weight:entry.weight, calories:entry.cals, protein:entry.protein, carbs:entry.carbs, fat:entry.fat, steps:entry.steps, sleep:entry.sleep, hrv:entry.hrv, readiness:entry.readiness, sleepScore:entry.sleepScore, activityScore:entry.activityScore })
+      body: JSON.stringify({ date:entry.date, day:entry.day, weight:entry.weight||'', calories:entry.cals, protein:entry.protein, carbs:entry.carbs, fat:entry.fat, steps:entry.steps, sleep:entry.sleep, hrv:entry.hrv, readiness:entry.readiness, sleepScore:entry.sleepScore, activityScore:entry.activityScore, rhr:entry.rhr })
     });
   } catch(e) { console.log('Sheets offline'); }
 }
 
-// Save log
+async function loadFromSheets() {
+  try {
+    const res = await fetch('/api/coach', { method: 'GET' });
+    const data = await res.json();
+    if (data.logs && data.logs.length > 0) {
+      logs = data.logs.map(row => ({
+        date: row.date, day: row.day,
+        weight: row.weight ? parseFloat(row.weight) : null,
+        cals: parseInt(row.calories)||0, protein: parseInt(row.protein)||0,
+        carbs: parseInt(row.carbs)||0, fat: parseInt(row.fat)||0,
+        steps: parseInt(row.steps)||0, sleep: parseFloat(row.sleep)||0,
+        hrv: parseInt(row.hrv)||0, rhr: parseInt(row.rhr)||62,
+        readiness: parseInt(row.readiness)||0, sleepScore: parseInt(row.sleepscore)||0,
+        activityScore: parseInt(row.activityscore)||0
+      }));
+      save('jorge_logs_v4', logs);
+      const latest = logs[logs.length-1];
+      if (latest) {
+        todayLogged = { cals:latest.cals, protein:latest.protein, carbs:latest.carbs, fat:latest.fat };
+        save('jorge_today_v4', todayLogged);
+        updateCalDisplay();
+        updateStreak();
+        buildChart();
+        buildHistory();
+        updatePrediction();
+        updateSleepDebt();
+        updateAlerts();
+        if (latest.readiness) updateReadiness(latest.readiness, latest.sleepScore, latest.activityScore, latest.hrv, latest.rhr||62);
+        if (latest.rhr) updateZones(latest.rhr);
+      }
+    }
+  } catch(e) { console.log('Sheets offline — using local cache'); }
+}
+
+// ══════════════════════════════════════════
+// SAVE LOG
+// ══════════════════════════════════════════
 async function saveLog() {
-  const weight  = parseFloat(document.getElementById('inputWeight').value) || 197.8;
-  const cals    = parseInt(document.getElementById('inputCals').value) || 0;
-  const protein = parseInt(document.getElementById('inputProtein').value) || 0;
-  const carbs   = parseInt(document.getElementById('inputCarbs').value) || 0;
-  const fat     = parseInt(document.getElementById('inputFat').value) || 0;
-  const steps   = parseInt(document.getElementById('inputSteps').value) || 0;
-  const sleep   = parseFloat(document.getElementById('inputSleep').value) || 0;
-  const hrv     = parseInt(document.getElementById('inputHRV').value) || 0;
-  const readiness     = parseInt(document.getElementById("inputReadiness").value) || 0;
-  const sleepScore    = parseInt(document.getElementById("inputSleepScore").value) || 0;
-  const activityScore = parseInt(document.getElementById("inputActivityScore").value) || 0;
+  const weightRaw = document.getElementById('inputWeight').value;
+  const weight = weightRaw ? parseFloat(weightRaw) : null;
+  const cals         = parseInt(document.getElementById('inputCals').value) || 0;
+  const protein      = parseInt(document.getElementById('inputProtein').value) || 0;
+  const carbs        = parseInt(document.getElementById('inputCarbs').value) || 0;
+  const fat          = parseInt(document.getElementById('inputFat').value) || 0;
+  const steps        = parseInt(document.getElementById('inputSteps').value) || 0;
+  const sleep        = parseFloat(document.getElementById('inputSleep').value) || 0;
+  const hrv          = parseInt(document.getElementById('inputHRV').value) || 0;
+  const rhr          = parseInt(document.getElementById('inputRHR').value) || 62;
+  const readiness    = parseInt(document.getElementById('inputReadiness').value) || 0;
+  const sleepScore   = parseInt(document.getElementById('inputSleepScore').value) || 0;
+  const activityScore= parseInt(document.getElementById('inputActivityScore').value) || 0;
 
   const btn = document.getElementById('saveBtn');
-  btn.textContent = '⏳ SAVING TO SHEETS...';
-  btn.style.opacity = '0.7';
+  btn.textContent = '⏳ SAVING...'; btn.style.opacity = '0.7';
 
   const dateStr = `${MONTHS[now.getMonth()]} ${now.getDate()}`;
-  const entry = { date:dateStr, day:logs.length+2, weight, cals, protein, carbs, fat, steps, sleep, hrv, readiness, sleepScore, activityScore };
+  const entry = { date:dateStr, day:logs.length+2, weight, cals, protein, carbs, fat, steps, sleep, hrv, rhr, readiness, sleepScore, activityScore };
   logs.push(entry);
-  save('jorge_logs', logs);
-  todayLogged = { cals, protein, carbs, fat, steps };
-  save('jorge_today', todayLogged);
+  save('jorge_logs_v4', logs);
+  todayLogged = { cals, protein, carbs, fat };
+  save('jorge_today_v4', todayLogged);
 
   await sendToSheets(entry);
-  btn.textContent = '🤖 GETTING AI ANALYSIS...';
-  btn.style.background = 'var(--accent2)';
+  btn.textContent = '🤖 AI IS ANALYZING...'; btn.style.background = 'var(--accent2)';
 
   updateCalDisplay();
   updateStreak();
   buildChart();
   buildHistory();
   updatePrediction();
-  updateReadiness(readiness, sleepScore, activityScore);
+  updateSleepDebt();
+  updateAlerts();
+  if (readiness) updateReadiness(readiness, sleepScore, activityScore, hrv, rhr);
+  if (rhr) updateZones(rhr);
 
   await generateNightDebrief(entry);
 
-  ['inputWeight','inputCals','inputProtein','inputCarbs','inputFat','inputSteps','inputSleep','inputHRV','inputReadiness','inputSleepScore','inputActivityScore'].forEach(id => document.getElementById(id).value='');
+  ['inputWeight','inputCals','inputProtein','inputCarbs','inputFat','inputSteps','inputSleep','inputHRV','inputRHR','inputReadiness','inputSleepScore','inputActivityScore']
+    .forEach(id => document.getElementById(id).value='');
 
-  btn.textContent = '✅ DONE — VER ANÁLISIS';
-  btn.style.background = 'var(--green)';
-  setTimeout(()=>{ btn.textContent='SAVE + GET AI ANALYSIS 🤖'; btn.style.background='var(--accent)'; btn.style.opacity='1'; },3000);
-
+  btn.textContent = '✅ DONE — VER ANÁLISIS'; btn.style.background = 'var(--green)';
+  setTimeout(()=>{ btn.textContent='SAVE + GET AI ANALYSIS 🤖'; btn.style.background='var(--accent)'; btn.style.opacity='1'; }, 3000);
   switchTab('today', document.querySelectorAll('.tab')[0]);
 }
 
-// UI helpers
-// Update readiness display dynamically
-function updateReadiness(score, sleepSc, actSc) {
-  if (!score) return;
-  const color = score >= 85 ? "var(--green)" : score >= 70 ? "var(--accent2)" : score >= 50 ? "var(--yellow)" : "var(--red)";
-  const label = score >= 85 ? "✅ OPTIMAL" : score >= 70 ? "✅ GOOD" : score >= 50 ? "⚠️ PAY ATTENTION" : "🔴 LOW — REST DAY";
-  document.getElementById("readinessScore").textContent = score;
-  document.getElementById("readinessScore").style.color = color;
-  document.getElementById("readinessRingText").textContent = score;
-  document.getElementById("readinessLabel").textContent = label;
-  document.getElementById("readinessLabel").style.color = color;
-  const offset = 220 - (score / 100) * 220;
-  document.querySelector(".ring-fill").style.strokeDashoffset = offset;
-  document.querySelector(".ring-fill").style.stroke = color;
-  if (sleepSc) {
-    document.getElementById("sleepScoreBar").style.width = sleepSc + "%";
-    document.getElementById("sleepScoreBar").style.background = sleepSc >= 80 ? "var(--green)" : sleepSc >= 60 ? "var(--yellow)" : "var(--red)";
-    document.getElementById("sleepScoreVal").textContent = sleepSc + " pts";
-  }
-  const alerts = document.querySelectorAll(".alert");
-  if (score < 50 && alerts[1]) alerts[1].innerHTML = "<span>🔴</span> Readiness " + score + " — rest day, no training today";
-  else if (score >= 85 && alerts[1]) alerts[1].innerHTML = "<span>✅</span> Readiness " + score + " — green light, push today!";
-}
-
+// ══════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════
 function updateCalDisplay() {
-  const pct = Math.min(100, Math.round((todayLogged.cals/1900)*100));
+  const pct = Math.min(100, Math.round((todayLogged.cals/CAL_TARGET)*100));
   document.getElementById('calPct').textContent = pct+'%';
   document.getElementById('calBar').style.width = pct+'%';
   document.getElementById('macroP').textContent = todayLogged.protein||0;
@@ -761,90 +1267,57 @@ function updateStreak() {
   const dots = document.getElementById('streakDots');
   dots.innerHTML='';
   for(let i=0;i<7;i++){const d=document.createElement('div');d.className='dot'+(i<streak?' done':i===streak?' today':'');dots.appendChild(d);}
-  document.getElementById('streakVal').textContent = streak===0 ? "DAY 1 — LET'S GO 🔥" : `${streak+1} DAYS STRONG 🔥`;
-}
-
-function buildChart() {
-  const c = document.getElementById('weekChart'); c.innerHTML='';
-  const labels=['M','T','W','T','F','S','S'];
-  for(let i=0;i<7;i++){
-    const entry=logs[logs.length-7+i];
-    const wrap=document.createElement('div'); wrap.className='chart-bar-wrap';
-    const bar=document.createElement('div'); bar.className='chart-bar'+(i===6?' today':'');
-    bar.style.height=(entry?Math.max(8,(entry.cals/2400)*70):6)+'px';
-    const lbl=document.createElement('div'); lbl.className='chart-day'; lbl.textContent=labels[i];
-    wrap.appendChild(bar); wrap.appendChild(lbl); c.appendChild(wrap);
-  }
+  document.getElementById('streakVal').textContent = streak===0?"DAY 1 — LET'S GO 🔥":`${streak+1} DAYS STRONG 🔥`;
 }
 
 function buildHistory() {
-  const c=document.getElementById('historyList');
-  const recent=logs.slice(-7).reverse();
-  if(!recent.length) return;
-  c.innerHTML='';
-  recent.forEach((entry,i)=>{
-    const prev=recent[i+1];
-    const delta=prev?(entry.weight-prev.weight).toFixed(1):null;
-    const cls=!delta?'same':delta<0?'down':'up';
-    const str=!delta?'START':(delta>0?'+':'')+delta+' lbs';
-    c.innerHTML+=`<div class="history-item"><div><div class="history-date">${entry.date} — Day ${entry.day}</div><div style="font-size:10px;color:var(--muted)">${entry.cals} kcal · ${entry.protein}g prot · ${entry.steps} steps</div></div><div class="history-w">${entry.weight}<span style="font-size:11px;color:var(--muted)"> lbs</span></div><div class="hdelta ${cls}">${str}</div></div>`;
+  const c = document.getElementById('historyList');
+  const weightLogs = logs.filter(l => l.weight).reverse();
+  if (!weightLogs.length) return;
+  c.innerHTML = '';
+  weightLogs.forEach((entry, i) => {
+    const prev = weightLogs[i+1];
+    const delta = prev ? (entry.weight - prev.weight).toFixed(1) : null;
+    const cls = !delta ? 'same' : delta < 0 ? 'down' : 'up';
+    const str = !delta ? 'START' : (delta>0?'+':'')+delta+' lbs';
+    c.innerHTML += `<div class="history-item"><div><div class="history-date">${entry.date} — Monday</div><div style="font-size:10px;color:var(--muted)">${entry.cals} kcal · ${entry.protein}g protein</div></div><div class="history-w">${entry.weight}<span style="font-size:11px;color:var(--muted)"> lbs</span></div><div class="hdelta ${cls}">${str}</div></div>`;
   });
-  c.innerHTML+=`<div class="history-item"><div><div class="history-date">APR 21 — DAY 1</div><div style="font-size:10px;color:var(--muted)">Baseline</div></div><div class="history-w">197.8<span style="font-size:11px;color:var(--muted)"> lbs</span></div><div class="hdelta same">START</div></div>`;
+  c.innerHTML += `<div class="history-item"><div><div class="history-date">APR 21 — Baseline</div></div><div class="history-w">197.8<span style="font-size:11px;color:var(--muted)"> lbs</span></div><div class="hdelta same">START</div></div>`;
 }
 
-function switchTab(name,el) {
+function switchTab(name, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
+  if (name === 'workout') buildWorkoutPage();
 }
 
-// Load logs from Google Sheets as source of truth
-async function loadFromSheets() {
-  try {
-    const res = await fetch("/api/coach", { method: "GET" });
-    const data = await res.json();
-    if (data.logs && data.logs.length > 0) {
-      logs = data.logs.map(row => ({
-        date: row.date,
-        day: row.day,
-        weight: parseFloat(row.weight) || 0,
-        cals: parseInt(row.calories) || 0,
-        protein: parseInt(row.protein) || 0,
-        carbs: parseInt(row.carbs) || 0,
-        fat: parseInt(row.fat) || 0,
-        steps: parseInt(row.steps) || 0,
-        sleep: parseFloat(row.sleep) || 0,
-        hrv: parseInt(row.hrv) || 0,
-        readiness: parseInt(row.readiness) || 0,
-        sleepScore: parseInt(row.sleepscore) || 0,
-        activityScore: parseInt(row.activityscore) || 0
-      }));
-      save("jorge_logs", logs);
-      const latest = logs[logs.length - 1];
-      if (latest) {
-        todayLogged = { cals:latest.cals, protein:latest.protein, carbs:latest.carbs, fat:latest.fat, steps:latest.steps };
-        save("jorge_today", todayLogged);
-        updateCalDisplay();
-        updateStreak();
-        buildChart();
-        buildHistory();
-        updatePrediction();
-        if (latest.readiness) updateReadiness(latest.readiness, latest.sleepScore, latest.activityScore);
-      }
-    }
-  } catch(e) {
-    console.log("Sheets offline - using local cache");
-  }
-}
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+updateCalDisplay();
+updateStreak();
+buildChart();
+buildHistory();
+updatePrediction();
+updateSleepDebt();
+updateAlerts();
+updateZones(62); // default until RHR loaded from log
 
-// Init
-updateCalDisplay(); updateStreak(); buildChart(); buildHistory(); updatePrediction();
 const lastLog = logs[logs.length-1];
-if(lastLog && lastLog.readiness) updateReadiness(lastLog.readiness, lastLog.sleepScore, lastLog.activityScore);
-if(aiCache[`night_${todayKey}`]){document.getElementById('nightSection').style.display='block';document.getElementById('nightMsg').innerHTML=fmt(aiCache[`night_${todayKey}`]);}
+if (lastLog) {
+  if (lastLog.readiness) updateReadiness(lastLog.readiness, lastLog.sleepScore, lastLog.activityScore, lastLog.hrv, lastLog.rhr||62);
+  if (lastLog.rhr) updateZones(lastLog.rhr);
+}
+if (aiCache[`night_${todayKey}`]) {
+  document.getElementById('nightSection').style.display='block';
+  document.getElementById('nightMsg').innerHTML=fmt(aiCache[`night_${todayKey}`]);
+}
+
 loadMorning();
 loadFromSheets();
 </script>
+
 </body>
 </html>
