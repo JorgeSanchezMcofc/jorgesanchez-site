@@ -12,9 +12,12 @@ export default async function handler(req, res) {
       const today = new Date().toISOString().split('T')[0];
       const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
-      // Fetch all Oura data in parallel
-      const [sleepRes, readinessRes, activityRes] = await Promise.all([
+      // Fetch all Oura endpoints in parallel
+      const [sleepRes, sleepDetailRes, readinessRes, activityRes] = await Promise.all([
         fetch(`https://api.ouraring.com/v2/usercollection/daily_sleep?start_date=${yesterday}&end_date=${today}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        fetch(`https://api.ouraring.com/v2/usercollection/sleep?start_date=${yesterday}&end_date=${today}`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
         fetch(`https://api.ouraring.com/v2/usercollection/daily_readiness?start_date=${yesterday}&end_date=${today}`, {
@@ -25,30 +28,45 @@ export default async function handler(req, res) {
         })
       ]);
 
-      const [sleepData, readinessData, activityData] = await Promise.all([
+      const [sleepData, sleepDetailData, readinessData, activityData] = await Promise.all([
         sleepRes.json(),
+        sleepDetailRes.json(),
         readinessRes.json(),
         activityRes.json()
       ]);
 
-      // Get latest entries
+      // Latest daily sleep score
       const latestSleep = sleepData.data?.[sleepData.data.length - 1] || {};
+
+      // Detailed sleep — find longest session (main sleep)
+      const sleepSessions = sleepDetailData.data || [];
+      const mainSleep = sleepSessions
+        .filter(s => s.type === 'long_sleep' || s.type === 'sleep')
+        .sort((a, b) => (b.total_sleep_duration || 0) - (a.total_sleep_duration || 0))[0] || {};
+
+      // Readiness
       const latestReadiness = readinessData.data?.[readinessData.data.length - 1] || {};
+
+      // Activity
       const latestActivity = activityData.data?.[activityData.data.length - 1] || {};
 
       const ouraData = {
-        // Sleep
-        totalSleep: latestSleep.total_sleep_duration
-          ? Math.round((latestSleep.total_sleep_duration / 3600) * 10) / 10
-          : null,
+        // Sleep — from daily_sleep (score) + sleep (details)
         sleepScore: latestSleep.score || null,
-        deepSleep: latestSleep.deep_sleep_duration
-          ? Math.round((latestSleep.deep_sleep_duration / 3600) * 10) / 10
+        totalSleep: mainSleep.total_sleep_duration
+          ? Math.round((mainSleep.total_sleep_duration / 3600) * 10) / 10
           : null,
-        remSleep: latestSleep.rem_sleep_duration
-          ? Math.round((latestSleep.rem_sleep_duration / 3600) * 10) / 10
+        deepSleep: mainSleep.deep_sleep_duration
+          ? Math.round((mainSleep.deep_sleep_duration / 3600) * 10) / 10
           : null,
-        sleepEfficiency: latestSleep.efficiency || null,
+        remSleep: mainSleep.rem_sleep_duration
+          ? Math.round((mainSleep.rem_sleep_duration / 3600) * 10) / 10
+          : null,
+        lightSleep: mainSleep.light_sleep_duration
+          ? Math.round((mainSleep.light_sleep_duration / 3600) * 10) / 10
+          : null,
+        sleepEfficiency: mainSleep.efficiency || null,
+        sleepLatency: mainSleep.latency ? Math.round(mainSleep.latency / 60) : null,
 
         // Readiness
         readinessScore: latestReadiness.score || null,
@@ -113,7 +131,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ text: data.content[0].text });
 
     } catch (error) {
-      return res.status(500).json({ error: 'Coach offline — check your API key in Vercel' });
+      return res.status(500).json({ error: 'Coach offline' });
     }
   }
 
