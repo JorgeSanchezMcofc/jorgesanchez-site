@@ -70,10 +70,12 @@ export default async function handler(req, res) {
 
         // Readiness
         readinessScore: latestReadiness.score || null,
-        hrv: latestReadiness.contributors?.hrv_balance
-          ? Math.round(latestReadiness.contributors.hrv_balance)
+        // HRV real ms — from sleep session average_hrv (NOT hrv_balance which is 0-100 score)
+        hrv: mainSleep.average_hrv
+          ? Math.round(mainSleep.average_hrv)
           : null,
-        rhr: latestReadiness.contributors?.resting_heart_rate || 62,
+        // RHR — from readiness lowest_heart_rate field
+        rhr: latestReadiness.lowest_heart_rate || 62,
         bodyTemp: latestReadiness.temperature_deviation || null,
 
         // Activity
