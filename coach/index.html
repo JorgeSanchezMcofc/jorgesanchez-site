@@ -1554,8 +1554,11 @@ function applyOura(d) {
 
   // HRV
   if (d.hrv) {
-    const c=d.hrv>=60?'var(--green)':d.hrv>=40?'var(--yellow)':'var(--red)';
-    document.getElementById('hrvFill').style.cssText=`width:${Math.min(100,(d.hrv/120)*100)}%;background:${c}`;
+    // HRV real ms ranges for 33yo sedentary male:
+    // <20ms = low, 20-40ms = normal/average, 40-60ms = good, 60+ = excellent
+    const c=d.hrv>=40?'var(--green)':d.hrv>=20?'var(--yellow)':'var(--red)';
+    const pct=Math.min(100,(d.hrv/80)*100); // 80ms = excellent ceiling
+    document.getElementById('hrvFill').style.cssText=`width:${pct}%;background:${c}`;
     document.getElementById('hrvVal').textContent=d.hrv+' ms';
   }
 
@@ -1620,9 +1623,10 @@ function updateAlerts() {
     if (d.readinessScore>=85) a.push({t:'green',i:'✅',m:`Readiness ${d.readinessScore} — optimal today. Push hard.`});
     else if (d.readinessScore>=70) a.push({t:'blue',i:'💙',m:`Readiness ${d.readinessScore} — good. Normal training intensity.`});
     else if (d.readinessScore) a.push({t:'yellow',i:'⚠️',m:`Readiness ${d.readinessScore} — low. Keep intensity easy today.`});
-    if (d.hrv>=60) a.push({t:'green',i:'❤️',m:`HRV ${d.hrv}ms — excellent recovery.`});
-    else if (d.hrv>=40) a.push({t:'blue',i:'💙',m:`HRV ${d.hrv}ms — good recovery.`});
-    else if (d.hrv) a.push({t:'yellow',i:'⚠️',m:`HRV ${d.hrv}ms — below optimal. Easy day.`});
+    // HRV real ms thresholds for 33yo male
+    if (d.hrv>=40) a.push({t:'green',i:'❤️',m:`HRV ${d.hrv}ms — good recovery. Above average for your age.`});
+    else if (d.hrv>=20) a.push({t:'blue',i:'💙',m:`HRV ${d.hrv}ms — normal range for your age and fitness level.`});
+    else if (d.hrv) a.push({t:'yellow',i:'⚠️',m:`HRV ${d.hrv}ms — low. Prioritize sleep and recovery today.`});
     if (d.totalSleep && d.totalSleep<SLEEP_T) a.push({t:'red',i:'😴',m:`${d.totalSleep}hrs sleep — ${(SLEEP_T-d.totalSleep).toFixed(1)}hrs short. Bed by 10:30 PM.`});
     else if (d.totalSleep>=SLEEP_T) a.push({t:'green',i:'✅',m:`${d.totalSleep}hrs sleep — target hit.`});
     if (d.steps && d.steps<STEPS_T) a.push({t:'yellow',i:'🚶',m:`${d.steps.toLocaleString()} steps — ${(STEPS_T-d.steps).toLocaleString()} more needed today.`});
