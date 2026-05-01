@@ -1520,7 +1520,7 @@ function setZones(rhr) {
 // ══ OURA ══
 async function fetchOura() {
   const ck=`oura_${dk}`, cached=cache[ck];
-  if (cached?.fetchedAt && (Date.now()-new Date(cached.fetchedAt).getTime())/60000<30) {
+  if (cached?.fetchedAt && (Date.now()-new Date(cached.fetchedAt).getTime())/60000<5) {
     oura=cached; applyOura(oura); return;
   }
   try {
