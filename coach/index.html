@@ -1251,12 +1251,12 @@ body {
       <div class="target-card accent">
         <div class="target-eyebrow">Calories</div>
         <div class="target-value">1,700</div>
-        <div class="target-sub">−650 kcal deficit</div>
+        <div class="target-sub">−490 kcal deficit</div>
       </div>
       <div class="target-card">
         <div class="target-eyebrow">Protein</div>
-        <div class="target-value">170g</div>
-        <div class="target-sub">3 meals × 57g</div>
+        <div class="target-value">122g</div>
+        <div class="target-sub">3 meals × 40g</div>
       </div>
     </div>
 
@@ -1297,9 +1297,9 @@ body {
         <div class="nutrition-fill" id="calBar" style="width:0%"></div>
       </div>
       <div class="macros-grid">
-        <div class="macro-cell"><div class="macro-label">Protein</div><div class="macro-value" id="macroP">0</div><div class="macro-target">/ 170g</div></div>
-        <div class="macro-cell"><div class="macro-label">Carbs</div><div class="macro-value" id="macroC">0</div><div class="macro-target">/ 128g</div></div>
-        <div class="macro-cell"><div class="macro-label">Fat</div><div class="macro-value" id="macroF">0</div><div class="macro-target">/ 57g</div></div>
+        <div class="macro-cell"><div class="macro-label">Protein</div><div class="macro-value" id="macroP">0</div><div class="macro-target">/ 122g</div></div>
+        <div class="macro-cell"><div class="macro-label">Carbs</div><div class="macro-value" id="macroC">0</div><div class="macro-target">/ 90g</div></div>
+        <div class="macro-cell"><div class="macro-label">Fat</div><div class="macro-value" id="macroF">0</div><div class="macro-target">/ 46g</div></div>
       </div>
     </div>
 
@@ -1332,7 +1332,7 @@ body {
       <span class="gen-btn-icon">🤖</span> Generate Today's Meal Plan
     </button>
     <div id="mealPlanContent">
-      <div style="text-align:center;padding:24px 20px;color:var(--text-3);font-size:12px;">1,700 kcal · 170g protein · tailored to your supplements</div>
+      <div style="text-align:center;padding:24px 20px;color:var(--text-3);font-size:12px;">1,258 kcal · 122g protein · tailored to your supplements</div>
     </div>
 
     <div class="section-label">Weekly Grocery List</div>
@@ -1361,22 +1361,22 @@ body {
       <div class="log-section">🍽️ Nutrition — from Cronometer</div>
       <div class="log-field">
         <div class="log-label">Calories</div>
-        <input class="log-input" type="number" id="inputCals" placeholder="1700">
+        <input class="log-input" type="number" id="inputCals" placeholder="1258">
         <div class="log-unit">kcal</div>
       </div>
       <div class="log-field">
         <div class="log-label">Protein</div>
-        <input class="log-input" type="number" id="inputProtein" placeholder="170">
+        <input class="log-input" type="number" id="inputProtein" placeholder="122">
         <div class="log-unit">g</div>
       </div>
       <div class="log-field">
         <div class="log-label">Carbs</div>
-        <input class="log-input" type="number" id="inputCarbs" placeholder="128">
+        <input class="log-input" type="number" id="inputCarbs" placeholder="90">
         <div class="log-unit">g</div>
       </div>
       <div class="log-field">
         <div class="log-label">Fat</div>
-        <input class="log-input" type="number" id="inputFat" placeholder="57">
+        <input class="log-input" type="number" id="inputFat" placeholder="46">
         <div class="log-unit">g</div>
       </div>
 
@@ -1446,11 +1446,11 @@ COMO ME SIENTO: __
 // ══ CONFIG ══
 const CLAUDE_URL  = '/api/coach';
 const SHEET_WRITE = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
-const CAL=1700, PROT=170, CARB=128, FAT=57, SLEEP_T=7.5, STEPS_T=7500, SW=197.8, GW=170;
+const CAL=1258, PROT=122, CARB=90, FAT=46, SLEEP_T=7.5, STEPS_T=7500, SW=197.8, GW=170;
 
 const JORGE = `You are Jorge's personal AI Metabolic Performance Coach. Speak naturally — Spanglish welcome. McAllen TX.
 
-JORGE: 33yo Male, 5'5", Start 197.8 lbs, Goal 170 lbs. Desk job, no gym. Protocol: 1,700 kcal | 170g protein | 128g carbs | 57g fat. Eating window 11am-8pm. Steps 7,500/day. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
+JORGE: 33yo Male, 5'5", Start 197.8 lbs, Goal 170 lbs. Desk job, no gym. Protocol: 1,258 kcal | 122g protein | 128g carbs | 57g fat. Eating window 11am-8pm. Steps 7,500/day. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
 
 WORKOUTS (10-min home, 3x/week): Mon=Upper body, Wed=Lower body, Fri=Full body. Other days: walk.
 
@@ -1663,13 +1663,13 @@ Sleep debt: ${debt.hrs}hrs | Lost so far: ${lost}lbs | Streak: ${logs.length} da
 Today: ${wp[dn]||'🚶 Rest day — walk for steps'} | Zone 2: ${z?z.z2l+'–'+z.z2h+' bpm':'calculating'}
 ${isMon?'⚖️ MONDAY — remind to weigh in!':''}
 
-Under 160 words. Open with one specific Oura insight. Targets: 1,700kcal/170g protein. Workout advice based on HRV/readiness. One focus. Spanglish closer.`;
+Under 160 words. Open with one specific Oura insight. Targets: 1,700kcal/122g protein. Workout advice based on HRV/readiness. One focus. Spanglish closer.`;
 
   try {
     const r=await ai(p); cache[k]=r; sv('jcache_v5',cache);
     document.getElementById('morningMsg').innerHTML=fmt(r);
   } catch(e) {
-    document.getElementById('morningMsg').innerHTML=`<strong>Coach offline.</strong> Metas hoy: <strong>1,700 kcal · 170g proteína · 7,500 pasos</strong>. ${wp[dn]||'Rest day.'} Vamos 🔥`;
+    document.getElementById('morningMsg').innerHTML=`<strong>Coach offline.</strong> Metas hoy: <strong>1,258 kcal · 122g proteína · 7,500 pasos</strong>. ${wp[dn]||'Rest day.'} Vamos 🔥`;
   }
 }
 
