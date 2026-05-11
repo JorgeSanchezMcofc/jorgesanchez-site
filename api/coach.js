@@ -74,8 +74,12 @@ export default async function handler(req, res) {
         hrv: mainSleep.average_hrv
           ? Math.round(mainSleep.average_hrv)
           : null,
-        // RHR — from readiness lowest_heart_rate field
-        rhr: latestReadiness.lowest_heart_rate || 62,
+        // RHR — try multiple Oura v2 fields in order of accuracy
+        // lowest_heart_rate = lowest during sleep, most accurate for RHR
+        // average_hrv is on sleep session, not readiness
+        rhr: mainSleep.lowest_heart_rate
+          || latestReadiness.lowest_heart_rate
+          || null,
         bodyTemp: latestReadiness.temperature_deviation || null,
 
         // Activity
@@ -83,6 +87,14 @@ export default async function handler(req, res) {
         activityScore: latestActivity.score || null,
         activeCalories: latestActivity.active_calories || null,
         totalCalories: latestActivity.total_calories || null,
+
+        // Debug — raw values to verify correct fields
+        _debug: {
+          sleep_lowest_hr: mainSleep.lowest_heart_rate,
+          readiness_lowest_hr: latestReadiness.lowest_heart_rate,
+          sleep_average_hrv: mainSleep.average_hrv,
+          readiness_hrv_balance: latestReadiness.contributors?.hrv_balance,
+        },
 
         // Meta
         date: yesterday,
