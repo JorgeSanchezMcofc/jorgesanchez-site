@@ -1647,26 +1647,29 @@ async function ai(prompt) {
 
 // ══ MORNING ══
 async function loadMorning() {
-  const k=`morning_${dk}`;
-  if (cache[k]) { document.getElementById('morningMsg').innerHTML=fmt(cache[k]); return; }
-  const d=oura, yest=logs[logs.length-1];
+  // No cache — always generate fresh with latest data
+  const d=oura, yest=logs[logs.length-1]; // Always latest log regardless of weight
   const debt=debtCalc();
   const wp={MON:'💪 Upper Body (10 min)',WED:'🦵 Lower Body (10 min)',FRI:'🔥 Full Body (10 min)'};
-  const lost=logs.filter(l=>l.weight).length>0?(SW-logs.filter(l=>l.weight).slice(-1)[0].weight).toFixed(1):0;
+  // Use latest weight log for lost calculation
+  const weightLogs = logs.filter(l=>l.weight);
+  const lost = weightLogs.length>0 ? (SW-weightLogs[weightLogs.length-1].weight).toFixed(1) : 0;
   const z=d?.rhr?zones(d.rhr):null;
 
   const p=`Morning briefing for Jorge — ${dn} ${MONS[now.getMonth()]} ${now.getDate()}.
 
 LIVE OURA: Readiness ${d?.readinessScore||'—'} | HRV ${d?.hrv||'—'}ms | RHR ${d?.rhr||'—'}bpm | Sleep ${d?.totalSleep||'—'}hrs (score ${d?.sleepScore||'—'}) | Deep ${d?.deepSleep||'—'}h | REM ${d?.remSleep||'—'}h | Steps ${d?.steps||'—'} | Temp ${d?.bodyTemp!=null?(d.bodyTemp>0?'+':'')+d.bodyTemp+'°F':'—'}
-YESTERDAY: ${yest?`${yest.cals}kcal, ${yest.prot}g protein`:'No data yet'}
-Sleep debt: ${debt.hrs}hrs | Lost so far: ${lost}lbs | Streak: ${logs.length} days
+YESTERDAY (${yest?.date||'no data'}): ${yest?`${yest.cals}kcal, ${yest.prot}g protein, ${yest.carb}g carbs, ${yest.fat}g fat, ${yest.sleep}hrs sleep`:'No data yet'}
+Last 7 days avg calories: ${logs.slice(-7).length>0?Math.round(logs.slice(-7).reduce((a,l)=>a+(l.cals||0),0)/logs.slice(-7).length):0}kcal
+Last 7 days avg protein: ${logs.slice(-7).length>0?Math.round(logs.slice(-7).reduce((a,l)=>a+(l.prot||0),0)/logs.slice(-7).length):0}g
+Sleep debt: ${debt.hrs}hrs | Lost so far: ${lost}lbs | Total logged days: ${logs.length}
 Today: ${wp[dn]||'🚶 Rest day — walk for steps'} | Zone 2: ${z?z.z2l+'–'+z.z2h+' bpm':'calculating'}
 ${isMon?'⚖️ MONDAY — remind to weigh in!':''}
 
 Under 160 words. Open with one specific Oura insight. Targets: 1,258kcal/122g protein. Workout advice based on HRV/readiness. One focus. Spanglish closer.`;
 
   try {
-    const r=await ai(p); cache[k]=r; sv('jcache_v5',cache);
+    const r=await ai(p);
     document.getElementById('morningMsg').innerHTML=fmt(r);
   } catch(e) {
     document.getElementById('morningMsg').innerHTML=`<strong>Coach offline.</strong> Metas hoy: <strong>1,258 kcal · 122g proteína · 7,500 pasos</strong>. ${wp[dn]||'Rest day.'} Vamos 🔥`;
@@ -1858,6 +1861,13 @@ function switchTab(name,el){
 }
 
 // ══ INIT ══
+// Clear old morning cache keys from previous versions
+Object.keys(cache).forEach(k => {
+  if (k.startsWith('morning_') && !k.includes('_')) {
+    delete cache[k]; // remove old format keys
+  }
+});
+
 updateCal(); updateStreak(); buildChart(); buildHistory(); updatePred(); updateDebt(); updateAlerts();
 if(cache[`night_${dk}`]){document.getElementById('nightSection').style.display='block';document.getElementById('nightMsg').innerHTML=fmt(cache[`night_${dk}`]);}
 fetchOura().then(()=>loadMorning());
