@@ -1250,7 +1250,7 @@ body {
     <div class="targets-grid fade">
       <div class="target-card accent">
         <div class="target-eyebrow">Calories</div>
-        <div class="target-value">1,700</div>
+        <div class="target-value">1,258</div>
         <div class="target-sub">−490 kcal deficit</div>
       </div>
       <div class="target-card">
@@ -1450,7 +1450,7 @@ const CAL=1258, PROT=122, CARB=90, FAT=46, SLEEP_T=7.5, STEPS_T=7500, SW=197.8, 
 
 const JORGE = `You are Jorge's personal AI Metabolic Performance Coach. Speak naturally — Spanglish welcome. McAllen TX.
 
-JORGE: 33yo Male, 5'5", Start 197.8 lbs, Goal 170 lbs. Desk job, no gym. Protocol: 1,258 kcal | 122g protein | 128g carbs | 57g fat. Eating window 11am-8pm. Steps 7,500/day. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
+JORGE: 33yo Male, 5'5", Start 197.8 lbs, Goal 170 lbs. Desk job, no gym. Protocol: 1,258 kcal | 122g protein | 90g carbs | 46g fat. Eating window 11am-8pm. Steps 7,500/day. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
 
 WORKOUTS (10-min home, 3x/week): Mon=Upper body, Wed=Lower body, Fri=Full body. Other days: walk.
 
@@ -1663,7 +1663,7 @@ Sleep debt: ${debt.hrs}hrs | Lost so far: ${lost}lbs | Streak: ${logs.length} da
 Today: ${wp[dn]||'🚶 Rest day — walk for steps'} | Zone 2: ${z?z.z2l+'–'+z.z2h+' bpm':'calculating'}
 ${isMon?'⚖️ MONDAY — remind to weigh in!':''}
 
-Under 160 words. Open with one specific Oura insight. Targets: 1,700kcal/122g protein. Workout advice based on HRV/readiness. One focus. Spanglish closer.`;
+Under 160 words. Open with one specific Oura insight. Targets: 1,258kcal/122g protein. Workout advice based on HRV/readiness. One focus. Spanglish closer.`;
 
   try {
     const r=await ai(p); cache[k]=r; sv('jcache_v5',cache);
