@@ -838,22 +838,40 @@ function getPrograms(key){
 }
 
 // ── GOOGLE SHEETS SUBMIT ─────────────────────────────────────────────────────
+// Reemplaza la función submitToSheets completa
+var _submitted = false; // guard global
+
 function submitToSheets(payload){
+  // Evita doble submit
+  if(_submitted) return;
+  _submitted = true;
+
   var statusEl = document.getElementById('submitStatus');
-  if(statusEl){ statusEl.className='submit-status loading'; statusEl.textContent='Saving your results...'; }
+  if(statusEl){ 
+    statusEl.className='submit-status loading'; 
+    statusEl.textContent='Saving your results...'; 
+  }
 
   fetch(SHEETS_URL, {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain evita preflight CORS
     body: JSON.stringify(payload)
-  }).then(function(){
-    if(statusEl){ statusEl.className='submit-status ok'; statusEl.textContent='Your results have been saved. Michelle will be in touch soon!'; }
-  }).catch(function(){
-    if(statusEl){ statusEl.className='submit-status err'; statusEl.textContent='Could not save automatically. Please email mrodriguez@mcallenchamber.com directly.'; }
+  })
+  .then(function(){
+    if(statusEl){ 
+      statusEl.className='submit-status ok'; 
+      statusEl.textContent='Your results have been saved. Michelle will be in touch soon!'; 
+    }
+  })
+  .catch(function(){
+    if(statusEl){ 
+      statusEl.className='submit-status err'; 
+      statusEl.textContent='Could not save automatically. Please email mrodriguez@mcallenchamber.com directly.'; 
+    }
+    // Si falla, permite reintentar
+    _submitted = false;
   });
 }
-
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function goResults(){
   saveContact();
