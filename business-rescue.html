@@ -37,8 +37,22 @@ body{font-family:'Barlow',sans-serif;color:var(--txt);background:#fff;min-height
 .land-stats{display:flex;gap:40px;justify-content:center;margin-bottom:36px}
 .ls-n{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;color:#fff}
 .ls-l{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-.btn-go{background:#fff;color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:18px 56px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s}
-.btn-go:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.btn-go{
+  background:transparent;
+  color:#fff;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  padding:18px 56px;
+  border:1px solid rgba(255,255,255,0.3);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:border-color 0.3s;
+}
+.btn-go:hover{border-color:#26429B;}
 .land-fine{margin-top:16px;font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
 
 /* ASSESSMENT */
@@ -468,7 +482,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
         <div class="land-stat"><div class="ls-n">Free</div><div class="ls-l">Always</div></div>
       </div>
       <div class="btn-go-wrap">
-        <button class="btn-go" id="startBtn"><span>Start My Assessment <span class="btn-go-arrow">&#8594;</span></span></button>
+        <button class="btn-go" id="startBtn" onclick="goStart();return false;"><span>Start My Assessment <span class="btn-go-arrow">&#8594;</span></span></button>
       </div>
       <p class="land-fine">No account required &nbsp;·&nbsp; Your information is only used to connect you with programs</p>
     </div>
@@ -682,6 +696,10 @@ function showScr(id) {
 function setP(pct){ document.getElementById('pf').style.width = pct+'%'; }
 
 function goStart(){ showScr('s-asmt'); renderSec(0); setP(0); }
+window.goStart = goStart;
+window.goNext = goNext;
+window.goResults = goResults;
+window.goRestart = goRestart;
 
 // ── RENDER SECTION ────────────────────────────────────────────────────────────
 function renderSec(idx){
