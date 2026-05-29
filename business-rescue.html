@@ -147,7 +147,7 @@ footer p{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.04em}
         <div><div class="ls-n">17</div><div class="ls-l">Questions</div></div>
         <div><div class="ls-n">Free</div><div class="ls-l">Always</div></div>
       </div>
-      <button class="btn-go" onclick="goStart()">Start My Assessment</button>
+      <button class="btn-go" id="startBtn">Start My Assessment</button>
       <p class="land-fine">No account required &nbsp;·&nbsp; Your information is only used to match you with programs</p>
     </div>
   </div>
@@ -315,6 +315,7 @@ var PROGRAMS = {
   ]
 };
 
+
 // ── SCREEN CONTROL ────────────────────────────────────────────────────────────
 function showScr(id) {
   var all = ['s-land','s-asmt','s-res'];
@@ -325,14 +326,12 @@ function showScr(id) {
 }
 function setP(pct) { document.getElementById('pf').style.width = pct+'%'; }
 
-// ── START ─────────────────────────────────────────────────────────────────────
 function goStart() {
   showScr('s-asmt');
   renderSec(0);
   setP(0);
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
 function renderSec(idx) {
   curSec = idx;
   var sec = SECS[idx];
@@ -341,10 +340,10 @@ function renderSec(idx) {
   for (var qi=0; qi<sec.qs.length; qi++) {
     var q = sec.qs[qi];
     if (q.type === 'opts') {
-      h += '<div class="qblk"><div class="qlbl">'+q.lbl+'</div><div class="opts">';
+      h += '<div class="qblk"><div class="qlbl">'+q.lbl+'</div><div class="opts" data-group="'+q.id+'">';
       for (var oi=0; oi<q.opts.length; oi++) {
         var sel = ans[q.id]===oi ? ' sel' : '';
-        h += '<button class="opt'+sel+'" onclick="pick(''+q.id+'','+oi+',this)"><span class="odot"></span>'+q.opts[oi]+'</button>';
+        h += '<button class="opt'+sel+'" data-qid="'+q.id+'" data-val="'+oi+'"><span class="odot"></span>'+q.opts[oi]+'</button>';
       }
       h += '</div></div>';
     } else if (q.type === 'slider') {
@@ -352,7 +351,7 @@ function renderSec(idx) {
       if (ans[q.id]===undefined) ans[q.id]=3;
       h += '<div class="slblk"><div class="slq">'+q.lbl+'</div>';
       h += '<div class="slrow"><span class="sllbl">Not urgent</span>';
-      h += '<input type="range" min="1" max="5" step="1" value="'+v+'" oninput="updSl(''+q.id+'',this.value)">';
+      h += '<input type="range" min="1" max="5" step="1" value="'+v+'" data-slid="'+q.id+'">';
       h += '<span class="sllbl">Critical</span><span class="slval" id="sv_'+q.id+'">'+v+'</span></div></div>';
     } else if (q.type === 'contact') {
       var c = ans.contact||{};
@@ -369,35 +368,55 @@ function renderSec(idx) {
 
   var isFirst = idx===0, isLast = idx===SECS.length-1;
   h += '<div class="navrow">';
-  h += isFirst ? '<span></span>' : '<button class="btn-bk" onclick="renderSec(curSec-1)">&#8592; Back</button>';
+  h += isFirst ? '<span></span>' : '<button class="btn-bk" id="btnBack">&#8592; Back</button>';
   h += '<span class="stepind">'+(idx+1)+' of '+SECS.length+'</span>';
   h += isLast
-    ? '<button class="btn-nx" onclick="goResults()">See My Results &#8594;</button>'
-    : '<button class="btn-nx" onclick="goNext()">Continue &#8594;</button>';
+    ? '<button class="btn-nx" id="btnResults">See My Results &#8594;</button>'
+    : '<button class="btn-nx" id="btnNext">Continue &#8594;</button>';
   h += '</div>';
 
   document.getElementById('asmtWrap').innerHTML = h;
   setP(Math.round((idx/SECS.length)*100));
-}
 
-function pick(qid, val, el) {
-  ans[qid] = val;
-  var btns = document.querySelectorAll('[onclick*="pick(''+qid+''"]');
-  for(var i=0;i<btns.length;i++) btns[i].className='opt';
-  el.className='opt sel';
-}
+  // Attach events via event delegation on the wrapper
+  var wrap = document.getElementById('asmtWrap');
 
-function updSl(qid, val) {
-  ans[qid] = parseInt(val);
-  var el = document.getElementById('sv_'+qid);
-  if(el) el.textContent = val;
+  wrap.addEventListener('click', function(e) {
+    // Option buttons
+    var opt = e.target.closest('.opt');
+    if (opt && opt.dataset.qid) {
+      var qid = opt.dataset.qid;
+      var val = parseInt(opt.dataset.val);
+      ans[qid] = val;
+      var group = wrap.querySelectorAll('[data-qid="'+qid+'"]');
+      for (var i=0; i<group.length; i++) group[i].className = 'opt';
+      opt.className = 'opt sel';
+      return;
+    }
+    // Back button
+    if (e.target.id === 'btnBack') { renderSec(curSec-1); return; }
+    // Next button
+    if (e.target.id === 'btnNext') { goNext(); return; }
+    // Results button
+    if (e.target.id === 'btnResults') { goResults(); return; }
+  });
+
+  // Slider events
+  wrap.addEventListener('input', function(e) {
+    if (e.target.dataset.slid) {
+      var qid = e.target.dataset.slid;
+      ans[qid] = parseInt(e.target.value);
+      var el = document.getElementById('sv_'+qid);
+      if (el) el.textContent = e.target.value;
+    }
+  });
 }
 
 function goNext() {
   var sec = SECS[curSec];
-  for(var i=0;i<sec.qs.length;i++){
-    var q=sec.qs[i];
-    if(q.type==='opts' && ans[q.id]===undefined){
+  for (var i=0; i<sec.qs.length; i++) {
+    var q = sec.qs[i];
+    if (q.type==='opts' && ans[q.id]===undefined) {
       alert('Please answer all questions before continuing.');
       return;
     }
@@ -410,93 +429,92 @@ function saveContact() {
   ans.contact = {first:g('c_first'),last:g('c_last'),biz:g('c_biz'),email:g('c_email'),phone:g('c_phone'),ref:g('c_ref')};
 }
 
-// ── SCORING ───────────────────────────────────────────────────────────────────
 function calcScores() {
   sc = {vis:0,cap:0,inno:0,ops:0,work:0,intel:0};
   var qids = Object.keys(SCORE_MAP);
-  for(var i=0;i<qids.length;i++){
+  for (var i=0; i<qids.length; i++) {
     var qid=qids[i], a=ans[qid];
-    if(a!==undefined && SCORE_MAP[qid][a]){
+    if (a!==undefined && SCORE_MAP[qid][a]) {
       var dims=Object.keys(SCORE_MAP[qid][a]);
-      for(var d=0;d<dims.length;d++) sc[dims[d]]=(sc[dims[d]]||0)+SCORE_MAP[qid][a][dims[d]];
+      for (var d=0; d<dims.length; d++) sc[dims[d]]=(sc[dims[d]]||0)+SCORE_MAP[qid][a][dims[d]];
     }
   }
   var slmap={q13:'cap',q14:'vis',q15:'ops',q16:'inno'};
   var slkeys=Object.keys(slmap);
-  for(var i=0;i<slkeys.length;i++){
+  for (var i=0; i<slkeys.length; i++) {
     var qid=slkeys[i],dim=slmap[qid],val=ans[qid]||3,m=val/3;
     sc[dim]=Math.round((sc[dim]||0)*m);
-    if(qid==='q15') sc.work=Math.round((sc.work||0)*m);
-    if(qid==='q16') sc.intel=Math.round((sc.intel||0)*m);
+    if (qid==='q15') sc.work=Math.round((sc.work||0)*m);
+    if (qid==='q16') sc.intel=Math.round((sc.intel||0)*m);
   }
 }
 
 function getBundleKey() {
-  if(ans.q4===0) return 'trailblazer';
+  if (ans.q4===0) return 'trailblazer';
   var keys=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a];});
   var top2=keys[0]+'_'+keys[1];
   var M={vis_cap:'pioneer',cap_vis:'pioneer',vis_inno:'catalyst',inno_vis:'catalyst',intel_inno:'catalyst',inno_intel:'catalyst',vis_intel:'connector',intel_vis:'connector',cap_ops:'resilience',ops_cap:'resilience',intel_ops:'resilience',ops_intel:'resilience',cap_inno:'momentum',inno_cap:'momentum',ops_work:'builder',work_ops:'builder',work_intel:'builder',intel_work:'builder',cap_intel:'trailblazer',intel_cap:'trailblazer'};
   return M[top2]||'resilience';
 }
 
-// ── RESULTS ───────────────────────────────────────────────────────────────────
 function goResults() {
   saveContact();
   calcScores();
   var key=getBundleKey(), bundle=BUNDLES[key];
   var progs=(PROGRAMS[key]||[]).slice();
-  if(ans.q1===0){
-    progs.push({name:'Taste McAllen',org:'ch',desc:'Signature food festival showcasing McAllen's culinary scene — great visibility for food businesses.'});
+  if (ans.q1===0) {
+    progs.push({name:'Taste McAllen',org:'ch',desc:'Signature food festival showcasing McAllen's culinary scene \u2014 great visibility for food businesses.'});
     progs.push({name:'Food Truck Park',org:'ch',desc:'Incubation program for food entrepreneurs to test concepts and build toward a brick-and-mortar.'});
   }
   var contact=ans.contact||{}, first=contact.first||'', biz=contact.biz||'your business';
   var maxSc=1;
   var scVals=Object.keys(sc);
-  for(var i=0;i<scVals.length;i++) if(sc[scVals[i]]>maxSc) maxSc=sc[scVals[i]];
+  for (var i=0; i<scVals.length; i++) if(sc[scVals[i]]>maxSc) maxSc=sc[scVals[i]];
   var norm={};
-  for(var i=0;i<scVals.length;i++) norm[scVals[i]]=Math.round((sc[scVals[i]]/maxSc)*100);
+  for (var i=0; i<scVals.length; i++) norm[scVals[i]]=Math.round((sc[scVals[i]]/maxSc)*100);
   var dimSorted=Object.keys(norm).sort(function(a,b){return norm[b]-norm[a];});
   var dimLbls={vis:'Visibility',cap:'Capital',inno:'Innovation',ops:'Operations',work:'Workforce',intel:'Intelligence'};
   var brImg=document.querySelector('.hdr-br').src;
 
   var h='';
-  h+='<div class="rhero">';
-  h+='<img class="rhero-logo" src="'+brImg+'" alt="Business Rescue">';
+  h+='<div class="rhero"><img class="rhero-logo" src="'+brImg+'" alt="Business Rescue">';
   h+='<div class="rhero-txt"><div class="rgreet">'+(first?first+', here's your path forward':'Here's your path forward')+'</div>';
-  h+='<div class="rbundle">'+bundle.name+'</div>';
-  h+='<div class="rdesc">'+bundle.desc+'</div></div></div>';
+  h+='<div class="rbundle">'+bundle.name+'</div><div class="rdesc">'+bundle.desc+'</div></div></div>';
 
   h+='<div class="shdr">Your Business Profile</div>';
-  for(var i=0;i<dimSorted.length;i++){
+  for (var i=0; i<dimSorted.length; i++) {
     var d=dimSorted[i];
     h+='<div class="dimrow"><span class="dimlbl">'+dimLbls[d]+'</span><div class="dimbar"><div class="dimfill" id="df_'+d+'" style="width:0%"></div></div><span class="dimpct">'+norm[d]+'%</span></div>';
   }
 
   var chP=progs.filter(function(p){return p.org==='ch';}), utP=progs.filter(function(p){return p.org==='ut';});
   h+='<div class="shdr">McAllen Chamber Programs</div>';
-  for(var i=0;i<chP.length;i++) h+='<div class="pcard ch"><div class="pname">'+chP[i].name+'</div><div class="pdesc">'+chP[i].desc+'</div><span class="pbadge pb-ch">McAllen Chamber</span></div>';
+  for (var i=0; i<chP.length; i++) h+='<div class="pcard ch"><div class="pname">'+chP[i].name+'</div><div class="pdesc">'+chP[i].desc+'</div><span class="pbadge pb-ch">McAllen Chamber</span></div>';
   h+='<div class="shdr">UTRGV Resources</div>';
-  for(var i=0;i<utP.length;i++) h+='<div class="pcard ut"><div class="pname">'+utP[i].name+'</div><div class="pdesc">'+utP[i].desc+'</div><span class="pbadge pb-ut">UTRGV</span></div>';
+  for (var i=0; i<utP.length; i++) h+='<div class="pcard ut"><div class="pname">'+utP[i].name+'</div><div class="pdesc">'+utP[i].desc+'</div><span class="pbadge pb-ut">UTRGV</span></div>';
 
   h+='<div class="cta"><div class="cta-ttl">Ready to Take the Next Step?</div>';
   h+='<div class="cta-sub">One person connects you to everything. Reach out to Michelle and she'll get you enrolled in the right programs for '+biz+'.</div>';
   h+='<div class="cta-person"><div class="cta-av">MR</div><div class="cta-info">';
   h+='<div class="cta-role">Economic Development Coordinator</div>';
   h+='<div class="cta-name">Michelle Rodriguez</div>';
-  h+='<div class="cta-email">mrodriguez@mcallenchamber.com</div>';
-  h+='</div></div></div>';
+  h+='<div class="cta-email">mrodriguez@mcallenchamber.com</div></div></div></div>';
 
-  h+='<div class="actrow"><button class="btn-pr" onclick="window.print()">Print / Save as PDF</button>';
-  h+='<button class="btn-rs" onclick="goRestart()">Start Over</button></div>';
+  h+='<div class="actrow"><button id="btnPrint" class="btn-pr">Print / Save as PDF</button>';
+  h+='<button id="btnRestart" class="btn-rs">Start Over</button></div>';
 
-  document.getElementById('resWrap').innerHTML=h;
+  document.getElementById('resWrap').innerHTML = h;
   showScr('s-res');
   setP(100);
 
+  // Wire results buttons
+  document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
+  document.getElementById('btnRestart').addEventListener('click', function(){ goRestart(); });
+
   setTimeout(function(){
-    for(var i=0;i<dimSorted.length;i++){
+    for (var i=0; i<dimSorted.length; i++) {
       var el=document.getElementById('df_'+dimSorted[i]);
-      if(el) el.style.width=norm[dimSorted[i]]+'%';
+      if (el) el.style.width=norm[dimSorted[i]]+'%';
     }
   },120);
 }
@@ -506,6 +524,13 @@ function goRestart() {
   showScr('s-land');
   setP(0);
 }
+
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('startBtn').addEventListener('click', function() {
+    goStart();
+  });
+});
 </script>
 </body>
 </html>
