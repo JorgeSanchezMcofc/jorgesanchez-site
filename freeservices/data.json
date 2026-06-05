@@ -1,1 +1,103 @@
-
+{
+  "lastUpdated": "2026-06-05T17:39:58.980Z",
+  "members": [
+    {
+      "name": "Sandra Rios-Gonzalez",
+      "business": "SRG CPA PLLC",
+      "city": "McAllen, TX",
+      "email": "srios@srgtaxcpa.com",
+      "phone": "956-663-1925",
+      "services": "Accounting, Tax Prep, Tax Planning, Business Consulting, Bookkeeping, Payroll",
+      "categories": [
+        "Accounting"
+      ],
+      "duration": "30 minutes",
+      "availability": "Both",
+      "contactMethod": "https://calendly.com/srgcpapllc/30min",
+      "availableDay": "Any day is ok; best to use the link to schedule an appointment. I keep it up to date with my availability.",
+      "initials": "SR"
+    },
+    {
+      "name": "Joseph Oviedo",
+      "business": "The Unit Consulting",
+      "city": "Edinburg, TX",
+      "email": "jdo@theunitconsulting.com",
+      "phone": "956-230-6866",
+      "services": "HR services, HR consulting",
+      "categories": [
+        "HR"
+      ],
+      "duration": "1 hour",
+      "availability": "Both",
+      "contactMethod": "Email",
+      "availableDay": "Any day is fine, including weekends and after hours",
+      "initials": "JO"
+    },
+    {
+      "name": "Rafael V. \"Rafa\" Baca, Esquire",
+      "business": "The R Baca Law Firm PLLC",
+      "city": "San Antonio, TX",
+      "email": "info@southwestpatents.com",
+      "phone": "8005956745",
+      "services": "Se habla Espanol.  Startup legal matters; Trademark Branding & Patent Law; Social Media & Internet Law; AI Law; Cybersecurity issues.",
+      "categories": [
+        "Legal",
+        "Marketing",
+        "Finance"
+      ],
+      "duration": "30 minutes",
+      "availability": "Virtual",
+      "contactMethod": "Email",
+      "availableDay": "M-Sat each week, except Holidays",
+      "initials": "RE"
+    },
+    {
+      "name": "Joe Martinez",
+      "business": "Supreme Credit Services",
+      "city": "5202 N. 10th St. Mcallen Tx 78504",
+      "email": "bigjoe@bigjoecredit.com",
+      "phone": "9566270706",
+      "services": "Credit Repair / Credit Score Boosting / Credit Education",
+      "categories": [
+        "Credit"
+      ],
+      "duration": "30 minutes",
+      "availability": "Both",
+      "contactMethod": "Phone",
+      "availableDay": "Monday - Friday",
+      "initials": "JM"
+    },
+    {
+      "name": "Juan Carlos Cuevas",
+      "business": "JC Advisory Group",
+      "city": "Mission, TX",
+      "email": "juanc.cuevasmtz@gmail.com",
+      "phone": "956-769-2413",
+      "services": "B2B Advisory Services in Relationship banking, International Trade, Equipment Finance, Fractional CFO, Working Capital Solutions and International Business Development",
+      "categories": [
+        "Finance"
+      ],
+      "duration": "30 minutes",
+      "availability": "Both",
+      "contactMethod": "Email and Whatsapp",
+      "availableDay": "Monday trough Friday",
+      "initials": "JC"
+    },
+    {
+      "name": "Gabriela Nunnery",
+      "business": "HUB International Texas Inc",
+      "city": "W Pecan McAllen, TX",
+      "email": "gaby.nunnery@hubinternationa.com",
+      "phone": "956-682-2841",
+      "services": "HUB International is a leading full-service global insurance broker and financial services firm providing risk management, insurance, employee benefits, retirement and wealth management products and services",
+      "categories": [
+        "Insurance"
+      ],
+      "duration": "30 minutes",
+      "availability": "Both",
+      "contactMethod": "Email",
+      "availableDay": "Monday - Friday",
+      "initials": "GN"
+    }
+  ]
+}
