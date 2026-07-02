@@ -264,7 +264,6 @@
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycby8hOgZLImVaVtpfNLDVxRtC9CSIkj6MpyGGV0UHDazDK5eAfFo7KoBD2tn7oxCpvXHTw/exec";
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
-const LOANS_KEY = "jorge_loans_spending";
 const CARD_COLORS = ["#2a78d6","#1baf7a","#eda100","#4a3aa7","#e34948","#eb6834","#e87ba4","#008300"];
 const CAT_COLORS = {"Subscriptions":"#2a78d6","Retail":"#1baf7a","Transfers":"#eda100","Restaurants":"#4a3aa7","Entertainment":"#e34948","Other":"#898781","Gas":"#eb6834","Groceries":"#008300","Travel":"#e87ba4","Health":"#d55181"};
 
@@ -276,11 +275,22 @@ const fmt = n => "$" + Number(n).toLocaleString("en-US", {minimumFractionDigits:
 const shortCard = s => s.replace("Capital One ","Cap1 ").replace("Bank of America","BofA").replace("Amex ","");
 const badgeClass = cat => ({Transfers:"transfers",Restaurants:"restaurants",Retail:"retail",Entertainment:"entertainment"})[cat]||"";
 
-function loadLoans() {
-  try { LOANS = JSON.parse(localStorage.getItem(LOANS_KEY)||"[]"); } catch { LOANS = []; }
+async function loadLoans() {
+  try {
+    const res = await fetch(API_URL + "?action=getLoans");
+    const data = await res.json();
+    LOANS = data.loans || [];
+  } catch { LOANS = []; }
+  renderLoans();
 }
-function saveLoans() {
-  localStorage.setItem(LOANS_KEY, JSON.stringify(LOANS));
+
+async function saveLoans() {
+  try {
+    await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "saveLoans", loans: LOANS })
+    });
+  } catch(e) { console.error("Error saving loans:", e); }
 }
 
 async function loadData() {
@@ -500,7 +510,6 @@ async function sendChat() {
 
 // Init
 loadLoans();
-renderLoans();
 loadData();
 </script>
 </body>
