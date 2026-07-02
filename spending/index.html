@@ -286,14 +286,9 @@ async function loadLoans() {
 
 async function saveLoans() {
   try {
-    const body = new URLSearchParams({
-      action: 'saveLoans',
-      loans: JSON.stringify(LOANS)
-    });
     await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: body.toString()
+      body: JSON.stringify({ action: "saveLoans", loans: LOANS })
     });
   } catch(e) { console.error("Error saving loans:", e); }
 }
@@ -499,16 +494,23 @@ async function sendChat() {
   thinking.className = "msg bot thinking"; thinking.textContent = "Pensando...";
   wrap.appendChild(thinking); wrap.scrollTop = wrap.scrollHeight;
 
-  const ctx = `You are a personal finance assistant for Jorge Sanchez. His transactions: ${JSON.stringify(TX)}. His loans: ${JSON.stringify(LOANS)}. Answer in the same language as the user (Spanish or English). Be specific with numbers. Format dollar amounts as $X.XX. No markdown formatting, plain text only.`;
+  const ctx = `You are a personal finance assistant for Jorge Sanchez. Transactions: ${JSON.stringify(TX)}. Loans: ${JSON.stringify(LOANS)}. Answer in the same language as the user. Format amounts as $X.XX. No markdown.`;
+  const hist = chatHistory.slice(1,-1).map(m=>({role:m.role==="user"?"user":"assistant",content:m.text}));
+  const messages = [...hist, {role:"user", content:msg}];
+
   try {
-    const hist = chatHistory.slice(1,-1).map(m=>({role:m.role==="user"?"user":"assistant",content:m.text}));
-    const res = await fetch(ANTHROPIC_API, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:ctx,messages:[...hist,{role:"user",content:msg}]})});
+    const params = new URLSearchParams({
+      action: "chat",
+      messages: JSON.stringify(messages),
+      system: ctx
+    });
+    const res = await fetch(API_URL + "?" + params.toString());
     const data = await res.json();
     thinking.remove();
     chatHistory.push({role:"assistant", text: data.content?.[0]?.text || "No pude procesar tu pregunta."});
   } catch {
     thinking.remove();
-    chatHistory.push({role:"assistant", text:"Error de conexión. Intenta de nuevo."});
+    chatHistory.push({role:"assistant", text:"Error de conexion. Intenta de nuevo."});
   }
   renderChat();
 }
