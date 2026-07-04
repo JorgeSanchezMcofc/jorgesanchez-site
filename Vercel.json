@@ -10,5 +10,11 @@
       "destination": "/?page=practices",
       "permanent": false
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/snapshot",
+      "schedule": "59 23 * * *"
+    }
   ]
 }
