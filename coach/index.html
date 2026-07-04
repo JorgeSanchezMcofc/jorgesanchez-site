@@ -1784,7 +1784,7 @@ function buildChart(){
 
 // ══ SHEETS ══
 async function sendSheets(entry){
-  try{await fetch(SHEET_WRITE,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:entry.date,day:entry.day,weight:entry.weight||'',calories:entry.cals,protein:entry.prot,carbs:entry.carb,fat:entry.fat,steps:oura?.steps||'',sleep:oura?.totalSleep||'',hrv:oura?.hrv||'',readiness:oura?.readinessScore||'',sleepScore:oura?.sleepScore||'',activityScore:oura?.activityScore||'',rhr:oura?.rhr||''})});}catch(e){}
+  try{await fetch(SHEET_WRITE,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:entry.date,day:entry.day,weight:entry.weight||'',calories:entry.cals,protein:entry.prot,carbs:entry.carb,fat:entry.fat,steps:oura?.steps||'',sleep:oura?.totalSleep||'',hrv:oura?.hrv||'',readiness:oura?.readinessScore||'',sleepScore:oura?.sleepScore||'',activityScore:oura?.activityScore||'',rhr:oura?.rhr||'',merge:true,source:'manual'})});}catch(e){}
 }
 async function loadSheets(){
   try{
