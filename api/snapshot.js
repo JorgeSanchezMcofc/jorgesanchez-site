@@ -1,17 +1,15 @@
 // api/snapshot.js
-// Cron job — runs at 11:59 PM every day
-// Pulls Oura data and saves to Google Sheets automatically
+// Cron job — runs at 11:59 PM CST every day
+// Pulls Oura data and merges into existing row or creates new one
 
 export default async function handler(req, res) {
-  // Only allow cron calls from Vercel or manual GET for testing
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const token = process.env.OURA_ACCESS_TOKEN;
+    const token    = process.env.OURA_ACCESS_TOKEN;
     const sheetUrl = process.env.SHEET_URL;
 
     const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
     // Fetch all Oura endpoints in parallel
     const [sleepRes, sleepDetailRes, readinessRes, activityRes] = await Promise.all([
@@ -30,13 +28,9 @@ export default async function handler(req, res) {
     ]);
 
     const [sleepData, sleepDetailData, readinessData, activityData] = await Promise.all([
-      sleepRes.json(),
-      sleepDetailRes.json(),
-      readinessRes.json(),
-      activityRes.json()
+      sleepRes.json(), sleepDetailRes.json(), readinessRes.json(), activityRes.json()
     ]);
 
-    // Extract data
     const latestSleep     = sleepData.data?.[sleepData.data.length - 1] || {};
     const sleepSessions   = sleepDetailData.data || [];
     const mainSleep       = sleepSessions
@@ -45,57 +39,42 @@ export default async function handler(req, res) {
     const latestReadiness = readinessData.data?.[readinessData.data.length - 1] || {};
     const latestActivity  = activityData.data?.[activityData.data.length - 1] || {};
 
-    const snapshot = {
-      date:          today,
-      day:           'auto',
-      weight:        '',  // not available from Oura
-      calories:      '',  // not available from Oura
-      protein:       '',  // not available from Oura
-      carbs:         '',  // not available from Oura
-      fat:           '',  // not available from Oura
-      steps:         latestActivity.steps || '',
-      sleep:         mainSleep.total_sleep_duration
-                       ? Math.round((mainSleep.total_sleep_duration / 3600) * 10) / 10
-                       : '',
-      hrv:           mainSleep.average_hrv
-                       ? Math.round(mainSleep.average_hrv)
-                       : '',
-      readiness:     latestReadiness.score || '',
-      sleepScore:    latestSleep.score || '',
-      activityScore: latestActivity.score || '',
-      rhr:           mainSleep.lowest_heart_rate
-                       || latestReadiness.lowest_heart_rate
-                       || '',
-      // Extra Oura fields
-      deepSleep:     mainSleep.deep_sleep_duration
-                       ? Math.round((mainSleep.deep_sleep_duration / 3600) * 10) / 10
-                       : '',
-      remSleep:      mainSleep.rem_sleep_duration
-                       ? Math.round((mainSleep.rem_sleep_duration / 3600) * 10) / 10
-                       : '',
+    const ouraFields = {
+      steps:           latestActivity.steps || '',
+      sleep:           mainSleep.total_sleep_duration
+                         ? Math.round((mainSleep.total_sleep_duration / 3600) * 10) / 10 : '',
+      hrv:             mainSleep.average_hrv ? Math.round(mainSleep.average_hrv) : '',
+      readiness:       latestReadiness.score || '',
+      sleepScore:      latestSleep.score || '',
+      activityScore:   latestActivity.score || '',
+      rhr:             mainSleep.lowest_heart_rate || latestReadiness.lowest_heart_rate || '',
+      deepSleep:       mainSleep.deep_sleep_duration
+                         ? Math.round((mainSleep.deep_sleep_duration / 3600) * 10) / 10 : '',
+      remSleep:        mainSleep.rem_sleep_duration
+                         ? Math.round((mainSleep.rem_sleep_duration / 3600) * 10) / 10 : '',
       sleepEfficiency: mainSleep.efficiency || '',
-      bodyTemp:      latestReadiness.temperature_deviation || '',
-      activeCalories: latestActivity.active_calories || '',
-      source:        'oura_auto'  // marks this row as auto-generated
+      bodyTemp:        latestReadiness.temperature_deviation || '',
+      activeCalories:  latestActivity.active_calories || '',
     };
 
-    // Send to Google Sheets
+    // Send to Sheets with merge flag — Apps Script will handle upsert
+    const payload = {
+      date:   today,
+      day:    'auto',
+      source: 'oura_auto',
+      merge:  true,  // tells Apps Script to update existing row if date exists
+      ...ouraFields
+    };
+
     await fetch(sheetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(snapshot)
+      body: JSON.stringify(payload)
     });
 
-    console.log(`[snapshot] ${today} — saved to Sheets`, snapshot);
-
-    return res.status(200).json({
-      success: true,
-      date: today,
-      data: snapshot
-    });
+    return res.status(200).json({ success: true, date: today, data: payload });
 
   } catch (error) {
-    console.error('[snapshot] Error:', error);
     return res.status(500).json({ error: error.message });
   }
 }
