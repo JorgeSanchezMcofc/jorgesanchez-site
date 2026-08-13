@@ -593,27 +593,32 @@ var dataLoaded = false;
 function fetchSheet(sheetName, callback) {
   var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
             '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(sheetName);
+  var timer = setTimeout(function(){ callback(new Error('timeout'), null); }, 8000);
   fetch(url)
     .then(function(r){ return r.text(); })
     .then(function(text){
-      var clean = text.replace(/^[\s\S]*?google\.visualization\.Query\.setResponse\(/, '').replace(/\);?\s*$/, '');
-      var json = JSON.parse(clean);
-      var cols = json.table.cols.map(function(c){ return c.label; });
-      var result = json.table.rows.map(function(r){
+      clearTimeout(timer);
+      // gviz wraps: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+      var start = text.indexOf('{');
+      var end = text.lastIndexOf('}');
+      if (start === -1 || end === -1) { callback(new Error('bad response'), null); return; }
+      var json = JSON.parse(text.substring(start, end+1));
+      var cols = json.table.cols.map(function(c){ return c.label || ''; });
+      var result = (json.table.rows || []).map(function(row){
         var obj = {};
         cols.forEach(function(col, i){
-          obj[col] = (r.c && r.c[i] && r.c[i].v !== null && r.c[i].v !== undefined) ? r.c[i].v : '';
+          obj[col] = (row.c && row.c[i] && row.c[i].v !== null && row.c[i].v !== undefined) ? row.c[i].v : '';
         });
         return obj;
       });
       callback(null, result);
     })
-    .catch(function(err){ callback(err, null); });
+    .catch(function(err){ clearTimeout(timer); callback(err, null); });
 }
 
 function loadSheetData(onComplete) {
   var pending = 4;
-  function done() { if (--pending === 0) { dataLoaded = true; onComplete(); } }
+  function done() { if (--pending === 0) { onComplete(); } }
 
   // Chamber Programs
   fetchSheet('Chamber Programs', function(err, rows) {
@@ -698,15 +703,34 @@ function setP(pct){ document.getElementById('pf').style.width = pct+'%'; }
 function goStart(){
   if (dataLoaded) {
     showScr('s-asmt'); renderSec(0); setP(0);
-  } else {
-    // Show loading state on button
-    var btn = document.getElementById('startBtn');
-    if (btn) { btn.querySelector('span').textContent = 'Loading...'; btn.disabled = true; }
-    loadSheetData(function(){
-      if (btn) { btn.disabled = false; }
-      showScr('s-asmt'); renderSec(0); setP(0);
-    });
+    return;
   }
+  var btn = document.getElementById('startBtn');
+  var span = btn ? btn.querySelector('span') : null;
+  var origText = span ? span.innerHTML : '';
+  if (btn) { btn.disabled = true; }
+  if (span) { span.textContent = 'Loading...'; }
+
+  var done = false;
+  function proceed() {
+    if (done) return;
+    done = true;
+    dataLoaded = true;
+    if (btn) { btn.disabled = false; }
+    if (span) { span.innerHTML = origText; }
+    showScr('s-asmt'); renderSec(0); setP(0);
+  }
+
+  // Safety net: if loadSheetData takes more than 5s, start anyway with whatever loaded
+  var safetyTimer = setTimeout(function(){
+    console.warn('Sheet load timeout — starting with available data');
+    proceed();
+  }, 5000);
+
+  loadSheetData(function(){
+    clearTimeout(safetyTimer);
+    proceed();
+  });
 }
 window.goStart = goStart;
 window.goNext = goNext;
