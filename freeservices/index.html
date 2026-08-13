@@ -28,6 +28,87 @@
     min-height: 100vh;
   }
 
+  /* PASSWORD GATE */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 24px;
+  }
+  #gate.hidden { display: none; }
+  .gate-box {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .gate-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .gate-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .gate-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .gate-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    color: var(--text);
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  .gate-input:focus { border-color: var(--navy); }
+  .gate-input.error { border-color: #ef4444; }
+  .gate-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    padding: 12px;
+    background: var(--navy);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--navy-light); }
+  .gate-error {
+    font-size: 12px;
+    color: #ef4444;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+  .gate-hint {
+    font-size: 11px;
+    color: #bbb;
+    margin-top: 20px;
+  }
+
   /* HERO */
   .hero {
     background: var(--navy);
@@ -88,12 +169,7 @@
   }
   .hero-badge::before { content: '★'; font-size: 10px; }
 
-  /* FILTERS */
-  .filters {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
   .filter-btn {
     font-family: 'DM Sans', sans-serif;
     font-size: 12px;
@@ -114,24 +190,16 @@
     font-weight: 500;
   }
 
-  /* MAIN */
   .main { max-width: 820px; margin: 0 auto; padding: 28px 20px 60px; }
-
-  .count-bar {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-  }
+  .count-bar { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
   .count-bar span { color: var(--navy); font-weight: 500; }
 
-  /* GRID */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
     gap: 16px;
   }
 
-  /* CARD */
   .card {
     background: var(--card-bg);
     border-radius: 14px;
@@ -149,138 +217,98 @@
     border-bottom: 1px solid #f4f2ee;
   }
   .avatar {
-    width: 46px;
-    height: 46px;
+    width: 46px; height: 46px;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 500;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 500; flex-shrink: 0;
   }
   .card-name { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
   .card-biz { font-size: 12px; color: var(--text-muted); }
 
-  .card-tags {
-    padding: 12px 18px 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  .tag {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 99px;
-  }
+  .card-tags { padding: 12px 18px 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; }
 
   .card-body { padding: 4px 18px 14px; }
-  .card-services {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
+  .card-services { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
   .meta { display: flex; flex-direction: column; gap: 5px; }
-  .meta-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 7px;
-    font-size: 11px;
-    color: #9ca3af;
-    line-height: 1.4;
-  }
+  .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; color: #9ca3af; line-height: 1.4; }
   .meta-icon { margin-top: 1px; flex-shrink: 0; }
 
   .card-footer {
     padding: 12px 18px;
     border-top: 1px solid #f4f2ee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
   }
   .consult-pill {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--navy);
-    background: #e8f0f8;
-    padding: 4px 10px;
-    border-radius: 99px;
+    font-size: 11px; font-weight: 500;
+    color: var(--navy); background: #e8f0f8;
+    padding: 4px 10px; border-radius: 99px;
   }
   .contact-btn {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    color: #ffffff;
-    background: var(--navy);
-    border: none;
-    padding: 6px 16px;
-    border-radius: 99px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.15s ease;
-    display: inline-block;
+    font-size: 12px; font-weight: 500;
+    color: #ffffff; background: var(--navy);
+    border: none; padding: 6px 16px; border-radius: 99px;
+    cursor: pointer; text-decoration: none;
+    transition: background 0.15s ease; display: inline-block;
   }
   .contact-btn:hover { background: var(--navy-light); }
 
-  /* EMPTY STATE */
-  .empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 14px; }
+  .loading { text-align: center; padding: 80px 20px; color: var(--text-muted); font-size: 14px; }
 
-  /* LOADING */
-  .loading {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
-
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 11px;
-    color: #bbb;
-    border-top: 1px solid var(--border);
-    margin-top: 20px;
-  }
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: #bbb; border-top: 1px solid var(--border); margin-top: 20px; }
   .footer a { color: var(--navy); text-decoration: none; }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-inner">
-    <p class="hero-eyebrow">McAllen Chamber of Commerce</p>
-    <h1 class="hero-title">Free Services<br>for Our Members</h1>
-    <p class="hero-sub">Fellow Chamber members offering complimentary consultations — included with your membership. Connect directly with experts across legal, HR, finance, and more.</p>
-    <div class="hero-badge">Exclusive member benefit</div>
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-cat="all">All services</button>
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <p class="gate-eyebrow">McAllen Chamber of Commerce</p>
+    <h1 class="gate-title">Member Access</h1>
+    <p class="gate-sub">This directory is an exclusive benefit for Chamber members. Enter your member password to continue.</p>
+    <input type="password" id="pw-input" class="gate-input" placeholder="Enter member password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="gate-btn" onclick="checkPassword()">Access Directory</button>
+    <p class="gate-error" id="gate-error"></p>
+    <p class="gate-hint">Not a member? <a href="https://mcallenchamber.com" style="color:var(--navy);">Join the Chamber</a></p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content" style="display:none;">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">McAllen Chamber of Commerce</p>
+      <h1 class="hero-title">Free Services<br>for Our Members</h1>
+      <p class="hero-sub">Fellow Chamber members offering complimentary consultations — included with your membership. Connect directly with experts across legal, HR, finance, and more.</p>
+      <div class="hero-badge">Exclusive member benefit</div>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-cat="all">All services</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="main">
-  <p class="count-bar" id="count-bar">Loading...</p>
-  <div class="grid" id="grid">
-    <div class="loading">Loading member directory...</div>
+  <div class="main">
+    <p class="count-bar" id="count-bar">Loading...</p>
+    <div class="grid" id="grid">
+      <div class="loading">Loading member directory...</div>
+    </div>
   </div>
-</div>
 
-<div class="footer">
-  Updated daily &middot; <a href="https://mcallenchamber.com">McAllen Chamber of Commerce</a> &middot; <a href="https://jorgesanchez.me">jorgesanchez.me</a>
+  <div class="footer">
+    Updated daily &middot; <a href="https://mcallenchamber.com">McAllen Chamber of Commerce</a> &middot; <a href="https://jorgesanchez.me">jorgesanchez.me</a>
+  </div>
+
 </div>
 
 <script>
+const PASSWORD = '5starchamber';
+const SESSION_KEY = 'chamber_access';
 const DATA_URL = 'https://gist.githubusercontent.com/JorgeSanchezMcofc/26937570ba0250cec4703fe1f60f7374/raw/data.json';
+
 const CAT_COLORS = {
   'Legal':      { bg: '#eeedfe', color: '#3c3489' },
   'HR':         { bg: '#e1f5ee', color: '#085041' },
@@ -305,6 +333,30 @@ const AVATAR_COLORS = [
 let allMembers = [];
 let activeFilter = 'all';
 
+// Check if already authenticated this session
+if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+  unlockContent();
+}
+
+function checkPassword() {
+  const input = document.getElementById('pw-input');
+  const error = document.getElementById('gate-error');
+  if (input.value.trim() === PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    unlockContent();
+  } else {
+    input.classList.add('error');
+    error.textContent = 'Incorrect password. Contact the Chamber for access.';
+    setTimeout(() => { input.classList.remove('error'); error.textContent = ''; }, 3000);
+  }
+}
+
+function unlockContent() {
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('content').style.display = 'block';
+  loadData();
+}
+
 async function loadData() {
   try {
     const res = await fetch(DATA_URL + '?t=' + Date.now());
@@ -321,12 +373,10 @@ async function loadData() {
 function buildFilters() {
   const cats = new Set();
   allMembers.forEach(m => (m.categories || []).forEach(c => cats.add(c)));
-
   const container = document.getElementById('filters');
   const allBtn = container.querySelector('[data-cat="all"]');
   container.innerHTML = '';
   container.appendChild(allBtn);
-
   Array.from(cats).sort().forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'filter-btn';
@@ -335,7 +385,6 @@ function buildFilters() {
     btn.onclick = () => setFilter(cat, btn);
     container.appendChild(btn);
   });
-
   allBtn.onclick = () => setFilter('all', allBtn);
 }
 
@@ -352,8 +401,7 @@ function renderGrid() {
     ? allMembers
     : allMembers.filter(m => (m.categories || []).includes(activeFilter));
 
-  const countBar = document.getElementById('count-bar');
-  countBar.innerHTML = '<span>' + filtered.length + ' provider' + (filtered.length !== 1 ? 's' : '') + '</span> available';
+  document.getElementById('count-bar').innerHTML = '<span>' + filtered.length + ' provider' + (filtered.length !== 1 ? 's' : '') + '</span> available';
 
   if (!filtered.length) {
     grid.innerHTML = '<div class="empty">No providers found for this category.</div>';
@@ -374,8 +422,7 @@ function renderGrid() {
     const contactLabel = m.contactMethod && m.contactMethod.toLowerCase().includes('calendly')
       ? 'Schedule'
       : m.contactMethod && m.contactMethod.toLowerCase().includes('phone')
-      ? 'Call'
-      : 'Contact';
+      ? 'Call' : 'Contact';
 
     const metaRows = [];
     if (m.city) metaRows.push(`<div class="meta-row"><span class="meta-icon">📍</span>${m.city}</div>`);
@@ -408,8 +455,6 @@ function truncate(str, max) {
   if (!str) return '';
   return str.length > max ? str.substring(0, max).trim() + '...' : str;
 }
-
-loadData();
 </script>
 </body>
 </html>
