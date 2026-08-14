@@ -482,7 +482,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
       <p class="land-sub">Tell us about your business in about 5 minutes. We'll match you with the right programs and resources — right now.</p>
       <div class="land-stats">
         <div class="land-stat"><div class="ls-n">5</div><div class="ls-l">Minutes</div></div>
-        <div class="land-stat"><div class="ls-n">12</div><div class="ls-l">Questions</div></div>
+        <div class="land-stat"><div class="ls-n">16</div><div class="ls-l">Questions</div></div>
         <div class="land-stat"><div class="ls-n">52</div><div class="ls-l">Programs</div></div>
         <div class="land-stat"><div class="ls-n">Free</div><div class="ls-l">Always</div></div>
       </div>
@@ -532,7 +532,15 @@ var SECS = [
       {id:'q3',type:'opts',lbl:'How many people work in your business, including yourself?',
        opts:['Just me','2–5 people','6–20 people','More than 20 people']},
       {id:'q4',type:'opts',lbl:'Is your business woman-owned or woman-led?',
-       opts:['Yes','No','Prefer not to say']}
+       opts:['Yes','No','Prefer not to say']},
+      {id:'q17',type:'opts',lbl:'Does your business need access to financing or capital right now?',
+       opts:["Yes, it\'s one of my biggest challenges","Possibly, I\'m not sure what options exist","No, financing is not the issue right now"]},
+      {id:'q18',type:'opts',lbl:'Does your business sell to customers in Mexico or across the border?',
+       opts:["Yes, cross-border trade is part of our business","Not yet but I would like to expand that way","No, we focus entirely on the local market"]},
+      {id:'q19',type:'opts',lbl:'Are you a veteran, active military, or military spouse?',
+       opts:['Yes','No']},
+      {id:'q20',type:'opts',lbl:'Does your business have a unique product or technology you developed?',
+       opts:["Yes, we have proprietary products or technology","We are developing something unique","No, we use standard products or services"]}
     ]
   },
   { num:'Section 2 of 4', title:'Your Business Reality',
@@ -585,9 +593,106 @@ var SCORE_MAP = {
 
 // ── SHEET DATA — loaded live from Google Sheets ────────────────────────────
 var SHEET_ID = '1wDA_LHUnob8Z7VuBLDvVxIqTtKAciPzIw3cXO3EOKFk';
-var ALL_PROGRAMS = {};
-var BUNDLES = {};
-var BUNDLE_PROGRAMS = {};
+
+// Hardcoded defaults — always work even if Sheet fails
+var ALL_PROGRAMS = {
+  consulting:{name:"Business Consulting",org:"ch",cat:"Economic Dev",desc:"Personalized one-on-one consulting: business planning, market strategy, and roadmaps from concept to launch."},
+  itx:{name:"Innovation Texas (ITX)",org:"ch",cat:"Economic Dev",desc:"Three-phase accelerator — Discover, Incubation, Acceleration — providing education, mentorship, and access to capital."},
+  oneMC:{name:"1 Million Cups (1MC)",org:"ch",cat:"Economic Dev",desc:"Free monthly platform to present your business, get community feedback, and make connections. Every second Wednesday."},
+  latinaHope:{name:"Latina Hope",org:"ch",cat:"Economic Dev",desc:"Hands-on workshops and pitch funding for women entrepreneurs. Winners receive up to $956 in seed money."},
+  sizeup:{name:"SizeUp Business Intelligence",org:"ch",cat:"Economic Dev",desc:"Data platform with competitive analysis, market research, and 50+ guided industry topics."},
+  sizeupAdv:{name:"SizeUp Small Business Advisor",org:"ch",cat:"Economic Dev",desc:"Guided one-on-one market intelligence sessions to plan your next business move."},
+  satop:{name:"SATOP",org:"ch",cat:"Economic Dev",desc:"Up to 40 hours of free technical assistance from Texas A&M engineering students."},
+  epulse:{name:"Economic Pulse Monthly Report",org:"ch",cat:"Economic Dev",desc:"Monthly economic data and analysis on trends shaping the McAllen region."},
+  coli:{name:"Cost of Living Index (COLI)",org:"ch",cat:"Economic Dev",desc:"Tracks and compares cost of living among metro areas nationwide."},
+  certs:{name:"Certificates of Origin",org:"ch",cat:"Economic Dev",desc:"Chamber certificates verifying country of manufacture for exported goods."},
+  virtualOff:{name:"Virtual Offices",org:"ch",cat:"Economic Dev",desc:"Use the McAllen Creative Incubator as your registered business address."},
+  linkup:{name:"Link-Up Speed Networking",org:"ch",cat:"Membership",desc:"Monthly speed networking with 55-75 local business professionals."},
+  ribbons:{name:"Ribbon Cuttings & Grand Openings",org:"ch",cat:"Membership",desc:"Chamber Ambassadors celebrate your grand opening with the full membership."},
+  ambassador:{name:"Ambassador Program",org:"ch",cat:"Membership",desc:"Network of Chamber representatives who advocate for business interests."},
+  ofrenda:{name:"McAllen Remembers: Ofrenda Comunitaria",org:"ch",cat:"Membership",desc:"Dia de los Muertos community event honoring champions of McAllen business."},
+  holiday:{name:"Holiday Open House Fizz the Season",org:"ch",cat:"Membership",desc:"Annual festive celebration featuring local vendors and member networking."},
+  foodieTour:{name:"Foodie Tour",org:"ch",cat:"Member Marketing",desc:"Citywide campaign highlighting McAllen's diverse restaurant scene."},
+  shopHop:{name:"Shop Hop",org:"ch",cat:"Member Marketing",desc:"Interactive retail promotion driving foot traffic to local stores."},
+  fitFall:{name:"Fit for Fall Tour",org:"ch",cat:"Member Marketing",desc:"Seasonal wellness campaign spotlighting fitness and healthy dining businesses."},
+  holShopping:{name:"Holiday Shopping Tour",org:"ch",cat:"Member Marketing",desc:"Festive campaign driving local spending at Chamber-member retailers."},
+  jumpstart:{name:"Jumpstart Career Expo",org:"ch",cat:"Workforce",desc:"Annual event connecting employers with job seekers. 6,500+ jobs available."},
+  mxlan:{name:"MXLAN Economic Summit",org:"ch",cat:"Workforce",desc:"Annual gathering on cross-border trade and economic growth opportunities."},
+  epMag:{name:"Economic Pulse Magazine",org:"ch",cat:"Workforce",desc:"Bi-annual publication covering local economy and workforce development."},
+  siteSelect:{name:"Site Selector Event",org:"ch",cat:"Workforce",desc:"Positions McAllen as a premier business expansion destination."},
+  indPicnic:{name:"Industry Picnic",org:"ch",cat:"Workforce",desc:"Annual appreciation event celebrating McAllen's industrial employers."},
+  tradeTalks:{name:"Trade Talks",org:"ch",cat:"Workforce",desc:"Quarterly roundtable on trade, logistics, and binational collaboration."},
+  rgvLead:{name:"RGV Lead LMI Initiative",org:"ch",cat:"Workforce",desc:"Analyzing Labor Market Information to align educational programs with workforce demands."},
+  homeTexas:{name:"Home to Texas Internship Initiative",org:"ch",cat:"Workforce",desc:"Partnership bringing college students home for summer internships."},
+  r1pace:{name:"Region One PACE Program",org:"ch",cat:"Workforce",desc:"Career pathways and experiential learning for high school students."},
+  tamuNursing:{name:"Texas A&M Nursing Educator Initiative",org:"ch",cat:"Workforce",desc:"Supports nursing education pipelines to address healthcare workforce shortages."},
+  legendary:{name:"Legendary McAllen Women",org:"ch",cat:"Leadership",desc:"Annual gala recognizing trailblazing women who shaped McAllen. 400 attendees."},
+  adminPro:{name:"Administrative Professionals Day Luncheon",org:"ch",cat:"Leadership",desc:"Annual luncheon honoring administrative professionals. 328 attendees."},
+  womanMag:{name:"McAllen Woman Magazine",org:"ch",cat:"Leadership",desc:"Publication celebrating women-owned businesses and influential McAllen leaders."},
+  goodMorning:{name:"Good Morning McAllen Breakfast",org:"ch",cat:"Signature Events",desc:"Quarterly breakfast for networking and collaboration. 545 small business attendees."},
+  goodDay:{name:"Good Day McAllen Luncheon",org:"ch",cat:"Signature Events",desc:"Quarterly luncheon welcoming new members. 1,031 small business attendees."},
+  manWoman:{name:"Man and Woman of the Year Awards",org:"ch",cat:"Signature Events",desc:"Annual gala honoring exemplary service to McAllen. 400 attendees."},
+  mayorsCup:{name:"Mayor's Cup Golf Tournament",org:"ch",cat:"Signature Events",desc:"Annual 18-hole golf tournament. Great for B2B relationship building."},
+  xmas:{name:"McAllen Holiday Parade",org:"ch",cat:"Signature Events",desc:"Annual two-day family celebration with 50,000+ attendees."},
+  tasteMcAllen:{name:"Taste McAllen",org:"ch",cat:"Tourism",desc:"Signature food festival showcasing McAllen's diverse culinary scene."},
+  marketMain:{name:"Market on Main",org:"ch",cat:"Tourism",desc:"Monthly art and culture event at the McAllen Creative Incubator."},
+  travelTourism:{name:"National Travel & Tourism Week",org:"ch",cat:"Tourism",desc:"Annual celebration recognizing tourism's impact on McAllen's economy."},
+  whiskey:{name:"Whiskey Business",org:"ch",cat:"Tourism",desc:"Tasting event with premium whiskeys and culinary pairings from member restaurants."},
+  govAffairs:{name:"Government Affairs Series",org:"ch",cat:"Government",desc:"Speaker series connecting elected officials with the business community."},
+  dcDay:{name:"McAllen Day in Washington D.C.",org:"ch",cat:"Government",desc:"Annual trip giving Chamber members direct access to U.S. officials."},
+  hospTask:{name:"McAllen Hospitality Task Force",org:"ch",cat:"Visit McAllen",desc:"Forum for hospitality professionals to strengthen partnerships."},
+  meetings:{name:"Sales: Meetings & Conventions",org:"ch",cat:"Visit McAllen",desc:"Attracts conferences generating $5.6M+ in economic impact annually."},
+  sports:{name:"Sales: Sports Events",org:"ch",cat:"Visit McAllen",desc:"Promotes McAllen as a sports destination with $15.9M+ economic impact."},
+  scanSave:{name:"Scan & Save Visitor Discount Program",org:"ch",cat:"Visit McAllen",desc:"QR code initiative connecting local businesses with visitors."},
+  hospTrain:{name:"Hospitality Training Certification Program",org:"ch",cat:"Visit McAllen",desc:"Partnership with UTRGV equipping hospitality employees with customer service skills."},
+  foodTruck:{name:"Food Truck Park",org:"ch",cat:"Other",desc:"Incubation program for food entrepreneurs to test their concept."},
+  incubator:{name:"McAllen Creative Incubator",org:"ch",cat:"Other",desc:"Hub for creative businesses offering space and virtual offices."},
+  oldChurch:{name:"Old Church",org:"ch",cat:"Other",desc:"Unique Chamber-managed venue for events and community programming."},
+  sbdc:{name:"UTRGV SBDC",org:"ut",desc:"Free one-on-one business advising, financial analysis, and loan packaging support."},
+  apex:{name:"UTRGV APEX Accelerator",org:"ut",desc:"Procurement technical assistance for government contracting."},
+  ecc:{name:"UTRGV ECC",org:"ut",desc:"Entrepreneurship and Commercialization Center — incubation and workspace."},
+  vboc:{name:"UTRGV VBOC",org:"ut",desc:"Veterans Business Outreach Center — resources for veterans and military spouses."},
+  pewd:{name:"UTRGV PEWD",org:"ut",desc:"Professional Education and Workforce Development — industry certificates."},
+  disc:{name:"UTRGV DISC",org:"ut",desc:"Data and Information Systems Center — economic research and market maps."},
+  liftfund:{name:"LiftFund",org:"eco",cat:"Capital Access",desc:"CDFI offering small business loans from $500-$1M for businesses that don't qualify for traditional bank financing.",website:"liftfund.org",tier:"Referral"},
+  accion:{name:"Accion Opportunity Fund",org:"eco",cat:"Capital Access",desc:"National CDFI providing small business loans and coaching to underserved entrepreneurs.",website:"accionopportunityfund.org",tier:"Public Resource"},
+  sba7a:{name:"SBA 7(a) Loan Program",org:"eco",cat:"Capital Access",desc:"The SBA's primary loan program. Guarantees up to $5M for working capital and equipment.",website:"sba.gov",tier:"Public Resource"},
+  sbamicro:{name:"SBA Microloan Program",org:"eco",cat:"Capital Access",desc:"SBA loans up to $50,000 for startups and small businesses needing small amounts of capital.",website:"sba.gov",tier:"Public Resource"},
+  lsnb:{name:"Lone Star National Bank",org:"eco",cat:"Capital Access",desc:"Community bank with deep RGV roots offering SBA loans and commercial lending.",website:"lsnb.com",tier:"Referral"},
+  ibc:{name:"IBC Bank",org:"eco",cat:"Capital Access",desc:"Regional bank with strong McAllen presence offering small business loans.",website:"ibc.com",tier:"Referral"},
+  score:{name:"SCORE McAllen",org:"eco",cat:"Business Advising",desc:"Free mentorship from experienced executives. One-on-one and group sessions.",website:"score.org/chapter/score-mcallen",tier:"Public Resource"},
+  txwbc:{name:"Texas Women's Business Center",org:"eco",cat:"Business Advising",desc:"Business training and access to capital programs for women entrepreneurs.",website:"texaswbc.org",tier:"Public Resource"},
+  wfsrgv:{name:"Workforce Solutions RGV",org:"eco",cat:"Workforce & HR",desc:"State workforce agency providing recruitment and on-the-job training subsidies.",website:"workforcesolutions.net",tier:"Public Resource"},
+  region1:{name:"Region One ESC",org:"eco",cat:"Workforce & HR",desc:"Educational service center providing workforce training across the RGV.",website:"esc1.net",tier:"Referral"},
+  launchrgv:{name:"Launch RGV",org:"eco",cat:"Innovation & Tech",desc:"RGV-based startup accelerator supporting tech and innovation-focused founders.",website:"launchrgv.com",tier:"Referral"},
+  txip:{name:"Texas Emerging Technology Fund",org:"eco",cat:"Innovation & Tech",desc:"State funding for technology commercialization and innovation-focused businesses.",website:"gov.texas.gov/innovation",tier:"Public Resource"},
+  mcallenedc:{name:"McAllen Economic Development Corp",org:"eco",cat:"Real Estate & Space",desc:"City of McAllen's economic development arm supporting site selection and expansion.",website:"mcallenedc.com",tier:"Referral"},
+  vltp:{name:"Volunteer Lawyers & Professionals",org:"eco",cat:"Legal & Compliance",desc:"Free and low-cost legal services for small businesses.",website:"vltp.org",tier:"Public Resource"},
+  uspto:{name:"U.S. Patent & Trademark Office",org:"eco",cat:"Legal & Compliance",desc:"Federal agency for trademark and patent registration.",website:"uspto.gov",tier:"Public Resource"}
+};
+
+var BUNDLES = {
+  pioneer:     {name:"The Pioneer Bundle",     desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
+  catalyst:    {name:"The Catalyst Bundle",    desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
+  connector:   {name:"The Connector Bundle",   desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
+  resilience:  {name:"The Resilience Bundle",  desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
+  momentum:    {name:"The Momentum Bundle",    desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
+  builder:     {name:"The Builder Bundle",     desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
+  intelligence:{name:"The Intelligence Bundle",desc:"Your next move starts with clarity. This bundle gives you market data, strategic advising, and research tools to make confident decisions."},
+  trailblazer: {name:"The Trailblazer Bundle", desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
+};
+
+var BUNDLE_PROGRAMS = {
+  pioneer:     ["oneMC","itx","consulting","sizeup","epulse","linkup","sbdc","liftfund","score","accion"],
+  catalyst:    ["itx","oneMC","satop","consulting","sizeup","epulse","ecc","sbdc","launchrgv","txip","uspto"],
+  connector:   ["linkup","ambassador","ribbons","sizeup","oneMC","epulse","mxlan","disc","sbdc","score"],
+  resilience:  ["consulting","itx","sizeup","virtualOff","epulse","tradeTalks","sbdc","liftfund","accion","sbamicro","score"],
+  momentum:    ["itx","satop","sizeupAdv","consulting","sizeup","ecc","sbdc","liftfund","txip","launchrgv"],
+  builder:     ["consulting","jumpstart","linkup","sizeup","tradeTalks","rgvLead","pewd","sbdc","wfsrgv","region1","score"],
+  intelligence:["consulting","sizeup","epulse","epMag","mxlan","coli","disc","sbdc","score"],
+  trailblazer: ["latinaHope","consulting","itx","oneMC","legendary","womanMag","sbdc","ecc","txwbc","accion","liftfund"]
+};
+
 var dataLoaded = false;
 
 function fetchSheet(sheetName, callback) {
@@ -682,13 +787,26 @@ function getBundleDesc(key) {
 
 // Gate rules — appended based on q1/q4 answer
 var GATE_RULES = [
+  // Business type gates (q1)
   { q:'q1', val:0, add:['tasteMcAllen','foodTruck','foodieTour'] },
   { q:'q1', val:1, add:['shopHop','holShopping','marketMain'] },
   { q:'q1', val:3, add:['marketMain','incubator'] },
   { q:'q1', val:4, add:['tradeTalks','dcDay','mxlan','apex'] },
   { q:'q1', val:5, add:['fitFall'] },
   { q:'q1', val:6, add:['satop','itx','ecc'] },
-  { q:'q4', val:0, add:['latinaHope','legendary','womanMag'] }
+  // Woman-owned (q4)
+  { q:'q4', val:0, add:['latinaHope','legendary','womanMag','txwbc'] },
+  // Needs financing (q17 val:0=yes, val:1=maybe)
+  { q:'q17', val:0, add:['liftfund','accion','sba7a','sbamicro','sbdc','lsnb'] },
+  { q:'q17', val:1, add:['sbdc','score','liftfund'] },
+  // Cross-border trade (q18 val:0=yes, val:1=wants to)
+  { q:'q18', val:0, add:['tradeTalks','mxlan','uscommerce','nafta','dcDay','apex'] },
+  { q:'q18', val:1, add:['tradeTalks','mxlan','uscommerce'] },
+  // Veteran (q19 val:0=yes)
+  { q:'q19', val:0, add:['vboc','sbdc'] },
+  // Proprietary product/tech (q20 val:0=yes, val:1=developing)
+  { q:'q20', val:0, add:['uspto','txip','ecc','launchrgv'] },
+  { q:'q20', val:1, add:['ecc','launchrgv','satop'] }
 ];
 
 // ── SCREEN HELPERS ────────────────────────────────────────────────────────────
@@ -765,10 +883,10 @@ function renderSec(idx){
     } else if(q.type==='contact'){
       var c = ans.contact||{};
       h += '<div class="qblk"><div class="igrid">';
-      h += '<div class="iblk"><label>First Name</label><input id="c_first" type="text" value="'+(c.first||'')+'" placeholder="Maria"></div>';
+      h += '<div class="iblk"><label>First Name <span style="color:#dc2626">*</span></label><input id="c_first" type="text" value="'+(c.first||'')+'" placeholder="Maria"></div>';
       h += '<div class="iblk"><label>Last Name</label><input id="c_last" type="text" value="'+(c.last||'')+'" placeholder="Garza"></div>';
       h += '<div class="iblk full"><label>Business Name</label><input id="c_biz" type="text" value="'+(c.biz||'')+'" placeholder="Your business name"></div>';
-      h += '<div class="iblk full"><label>Email Address</label><input id="c_email" type="email" value="'+(c.email||'')+'" placeholder="you@yourbusiness.com"></div>';
+      h += '<div class="iblk full"><label>Email Address <span style="color:#dc2626">*</span></label><input id="c_email" type="email" value="'+(c.email||'')+'" placeholder="you@yourbusiness.com"></div>';
       h += '<div class="iblk"><label>Phone (optional)</label><input id="c_phone" type="tel" value="'+(c.phone||'')+'" placeholder="(956) 000-0000"></div>';
       h += '<div class="iblk"><label>How did you hear about us?</label><input id="c_ref" type="text" value="'+(c.ref||'')+'" placeholder="Chamber website, friend..."></div>';
       h += '</div></div>';
@@ -872,7 +990,10 @@ function getPrograms(key){
 }
 
 // ── GOOGLE SHEETS SUBMIT ─────────────────────────────────────────────────────
+var _submitted = false;
 function submitToSheets(payload){
+  if (_submitted) return; // prevent double submit
+  _submitted = true;
   var statusEl = document.getElementById('submitStatus');
   if(statusEl){ statusEl.className='submit-status loading'; statusEl.textContent='Saving your results...'; }
 
@@ -891,6 +1012,25 @@ function submitToSheets(payload){
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function goResults(){
   saveContact();
+  // Validate required fields
+  var c = ans.contact || {};
+  var firstName = (c.first || '').trim();
+  var email = (c.email || '').trim();
+  var emailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+
+  if (!firstName) {
+    var el = document.getElementById('c_first');
+    if (el) { el.style.borderColor = '#dc2626'; el.focus(); el.placeholder = 'Required'; }
+    var lbl = document.querySelector('label[for="c_first"]');
+    alert('Please enter your first name to continue.');
+    return;
+  }
+  if (!email || !emailValid) {
+    var el = document.getElementById('c_email');
+    if (el) { el.style.borderColor = '#dc2626'; el.focus(); el.placeholder = 'Required'; }
+    alert('Please enter a valid email address to continue.');
+    return;
+  }
   calcScores();
   var key=getBundleKey();
 
@@ -938,14 +1078,8 @@ function goResults(){
     ecc:{name:"UTRGV ECC",org:"ut",desc:"Entrepreneurship and Commercialization Center — incubation programs."}
   };
 
-  // Use Sheet data if loaded, fallback otherwise
-  var bundle = (BUNDLES[key] && BUNDLES[key].name) ? BUNDLES[key] : BUNDLE_FALLBACK[key] || BUNDLE_FALLBACK.resilience;
-
-  // If ALL_PROGRAMS is empty, load fallback
-  if (Object.keys(ALL_PROGRAMS).length === 0) {
-    ALL_PROGRAMS = PROG_NAMES_FALLBACK;
-    BUNDLE_PROGRAMS = PROG_FALLBACK;
-  }
+  // Get bundle — always defined since hardcoded defaults are loaded at startup
+  var bundle = BUNDLES[key] || BUNDLES.resilience;
   var progs=getPrograms(key);
   var contact=ans.contact||{}, first=contact.first||'', biz=contact.biz||'your business';
 
@@ -1059,7 +1193,7 @@ function goResults(){
 }
 
 function goRestart(){
-  ans={}; sc={vis:0,cap:0,inno:0,ops:0,work:0,intel:0}; curSec=0;
+  ans={}; sc={vis:0,cap:0,inno:0,ops:0,work:0,intel:0}; curSec=0; _submitted=false;
   showScr('s-land'); setP(0);
 }
 
