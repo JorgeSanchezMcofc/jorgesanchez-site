@@ -528,7 +528,7 @@ var SECS = [
       {id:'q1',type:'opts',lbl:'What best describes your business?',
        opts:['Food, beverage, or restaurant','Retail or boutique','Professional services (legal, accounting, consulting, etc.)','Creative, arts, or media','Manufacturing, logistics, or trade','Health, wellness, or fitness','Technology or innovation','Other']},
       {id:'q2',type:'opts',lbl:'How long have you been in business?',
-       opts:["I have an idea but haven\'t launched yet","Less than 1 year","1–3 years","4–10 years","More than 10 years"]},
+       opts:["I have an idea but haven't launched yet","Less than 1 year","1–3 years","4–10 years","More than 10 years"]},
       {id:'q3',type:'opts',lbl:'How many people work in your business, including yourself?',
        opts:['Just me','2–5 people','6–20 people','More than 20 people']},
       {id:'q4',type:'opts',lbl:'Is your business woman-owned or woman-led?',
@@ -543,9 +543,9 @@ var SECS = [
       {id:'q6',type:'opts',lbl:'If you could fix one thing in your business tomorrow, what would it be?',
        opts:['More customers walking through the door','Access to funding or capital','A better system for how we run things internally','A clearer strategy for where we\'re going']},
       {id:'q7',type:'opts',lbl:'Which of these situations sounds most like yours right now?',
-       opts:["We\'ve been around a while but revenue has been declining","We\'re new and trying to get our first real traction","We were doing well but something changed — market, competition, economy","We have a new idea or product we want to launch"]},
+       opts:["We've been around a while but revenue has been declining","We're new and trying to get our first real traction","We were doing well but something changed — market, competition, economy","We have a new idea or product we want to launch"]},
       {id:'q8',type:'opts',lbl:'When it comes to your team, which is closest to your reality?',
-       opts:["I\'m doing everything myself and it\'s not sustainable","I have a team but we\'re not operating efficiently","I need to hire but can\'t find or afford the right people","My team is fine — the challenge is elsewhere"]},
+       opts:["I'm doing everything myself and it's not sustainable","I have a team but we're not operating efficiently","I need to hire but can't find or afford the right people","My team is fine — the challenge is elsewhere"]},
       {id:'q9',type:'opts',lbl:'How would you describe your relationship with your customers right now?',
        opts:['I need to find completely new customers','I have customers but I\'m losing them and don\'t know why','I need to reach a bigger or different audience','My customer base is stable — the issue is something else']},
       {id:'q10',type:'opts',lbl:'When you think about the next 90 days, what feels most urgent?',
@@ -892,7 +892,60 @@ function submitToSheets(payload){
 function goResults(){
   saveContact();
   calcScores();
-  var key=getBundleKey(), bundle=BUNDLES[key];
+  var key=getBundleKey();
+
+  // Fallback bundle data if Sheet hasn't loaded
+  var BUNDLE_FALLBACK = {
+    pioneer:     {name:"The Pioneer Bundle",     desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
+    catalyst:    {name:"The Catalyst Bundle",    desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
+    connector:   {name:"The Connector Bundle",   desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
+    resilience:  {name:"The Resilience Bundle",  desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
+    momentum:    {name:"The Momentum Bundle",    desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
+    builder:     {name:"The Builder Bundle",     desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
+    intelligence:{name:"The Intelligence Bundle",desc:"Your next move starts with clarity. This bundle gives you access to market data, strategic advising, and research tools to make confident decisions."},
+    trailblazer: {name:"The Trailblazer Bundle", desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
+  };
+
+  // Fallback programs if Sheet failed
+  var PROG_FALLBACK = {
+    pioneer:     ["oneMC","itx","consulting","sizeup","linkup","sbdc"],
+    catalyst:    ["itx","oneMC","satop","consulting","ecc","sbdc"],
+    connector:   ["linkup","ambassador","sizeup","oneMC","mxlan","disc","sbdc"],
+    resilience:  ["consulting","itx","sizeup","epulse","sbdc"],
+    momentum:    ["itx","satop","consulting","sizeup","ecc","sbdc"],
+    builder:     ["consulting","jumpstart","sizeup","pewd","sbdc"],
+    intelligence:["consulting","sizeup","epulse","mxlan","disc","sbdc"],
+    trailblazer: ["latinaHope","consulting","itx","oneMC","legendary","sbdc","ecc"]
+  };
+
+  // Fallback ALL_PROGRAMS if Sheet failed
+  var PROG_NAMES_FALLBACK = {
+    consulting:{name:"Business Consulting",org:"ch",desc:"Personalized one-on-one consulting for business planning and strategy."},
+    itx:{name:"Innovation Texas (ITX)",org:"ch",desc:"Three-phase accelerator providing education, mentorship, and access to capital."},
+    oneMC:{name:"1 Million Cups (1MC)",org:"ch",desc:"Free monthly platform to present your business and make connections."},
+    latinaHope:{name:"Latina Hope",org:"ch",desc:"Workshops and pitch funding for women entrepreneurs. Up to $956 in seed money."},
+    sizeup:{name:"SizeUp Business Intelligence",org:"ch",desc:"Data platform with competitive analysis and market research."},
+    satop:{name:"SATOP",org:"ch",desc:"Up to 40 hours of free technical assistance from Texas A&M students."},
+    epulse:{name:"Economic Pulse Monthly Report",org:"ch",desc:"Monthly economic data on trends shaping the McAllen region."},
+    linkup:{name:"Link-Up Speed Networking",org:"ch",desc:"Monthly speed networking with 55-75 local business professionals."},
+    ambassador:{name:"Ambassador Program",org:"ch",desc:"Chamber representatives who advocate for business interests."},
+    mxlan:{name:"MXLAN Economic Summit",org:"ch",desc:"Annual gathering on cross-border trade and economic growth."},
+    disc:{name:"UTRGV DISC",org:"ut",desc:"Economic research, market maps, analysis and impact reports."},
+    jumpstart:{name:"Jumpstart Career Expo",org:"ch",desc:"Annual event connecting employers with job seekers. 6,500+ jobs available."},
+    legendary:{name:"Legendary McAllen Women",org:"ch",desc:"Annual gala recognizing trailblazing women in McAllen."},
+    pewd:{name:"UTRGV PEWD",org:"ut",desc:"Professional Education and Workforce Development — industry certificates."},
+    sbdc:{name:"UTRGV SBDC",org:"ut",desc:"Free one-on-one business advising, financial analysis, and loan packaging."},
+    ecc:{name:"UTRGV ECC",org:"ut",desc:"Entrepreneurship and Commercialization Center — incubation programs."}
+  };
+
+  // Use Sheet data if loaded, fallback otherwise
+  var bundle = (BUNDLES[key] && BUNDLES[key].name) ? BUNDLES[key] : BUNDLE_FALLBACK[key] || BUNDLE_FALLBACK.resilience;
+
+  // If ALL_PROGRAMS is empty, load fallback
+  if (Object.keys(ALL_PROGRAMS).length === 0) {
+    ALL_PROGRAMS = PROG_NAMES_FALLBACK;
+    BUNDLE_PROGRAMS = PROG_FALLBACK;
+  }
   var progs=getPrograms(key);
   var contact=ans.contact||{}, first=contact.first||'', biz=contact.biz||'your business';
 
