@@ -672,14 +672,14 @@ var ALL_PROGRAMS = {
 };
 
 var BUNDLES = {
-  pioneer:     {name:"The Pioneer Bundle",     desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
-  catalyst:    {name:"The Catalyst Bundle",    desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
-  connector:   {name:"The Connector Bundle",   desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
-  resilience:  {name:"The Resilience Bundle",  desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
-  momentum:    {name:"The Momentum Bundle",    desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
-  builder:     {name:"The Builder Bundle",     desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
-  intelligence:{name:"The Intelligence Bundle",desc:"Your next move starts with clarity. This bundle gives you market data, strategic advising, and research tools to make confident decisions."},
-  trailblazer: {name:"The Trailblazer Bundle", desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
+  pioneer:     {name:"The Pioneer Bundle",     dim1:"vis",dim2:"cap",   desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
+  catalyst:    {name:"The Catalyst Bundle",    dim1:"vis",dim2:"inno",  desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
+  connector:   {name:"The Connector Bundle",   dim1:"vis",dim2:"intel", desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
+  resilience:  {name:"The Resilience Bundle",  dim1:"cap",dim2:"ops",   desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
+  momentum:    {name:"The Momentum Bundle",    dim1:"cap",dim2:"inno",  desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
+  builder:     {name:"The Builder Bundle",     dim1:"ops",dim2:"work",  desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
+  intelligence:{name:"The Intelligence Bundle",dim1:"intel",dim2:"ops", desc:"Your next move starts with clarity. This bundle gives you market data, strategic advising, and research tools to make confident decisions."},
+  trailblazer: {name:"The Trailblazer Bundle", dim1:"vis",dim2:"cap",   desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
 };
 
 var BUNDLE_PROGRAMS = {
@@ -752,7 +752,11 @@ function loadSheetData(onComplete) {
     if (rows) rows.forEach(function(r) {
       var active = r['Active'];
       if (active === true || active === 'TRUE' || active === 'true') {
-        ALL_PROGRAMS[r['Key']] = { name: r['Name'], org: 'eco', cat: r['Category'], desc: r['Description'], website: r['Website'], tier: r['Tier'] };
+        ALL_PROGRAMS[r['Key']] = {
+          name: r['Name'], org: 'eco', cat: r['Category'],
+          desc: r['Description'], website: r['Website'], tier: r['Tier'],
+          dims: r['Dimensions'] ? r['Dimensions'].split(',').map(function(d){ return d.trim(); }) : []
+        };
       }
     });
     done();
@@ -765,7 +769,12 @@ function loadSheetData(onComplete) {
       if (!key) return;
       BUNDLE_PROGRAMS[key] = r['Program Keys (comma-separated)'] ?
         r['Program Keys (comma-separated)'].split(',').map(function(k){ return k.trim(); }) : [];
-      BUNDLES[key] = { name: r['Bundle Name'], desc: getBundleDesc(key) };
+      BUNDLES[key] = {
+        name: r['Bundle Name'],
+        desc: getBundleDesc(key),
+        dim1: r['Primary Dimension'] || '',
+        dim2: r['Secondary Dimension'] || ''
+      };
     });
     done();
   });
@@ -976,12 +985,36 @@ function getBundleKey(){
 }
 
 function getPrograms(key){
+  // Step 1: Start with fixed Chamber + UTRGV programs from bundle mapping
   var keys = (BUNDLE_PROGRAMS[key]||[]).slice();
+
+  // Step 2: Get this bundle's top 2 dimensions
+  var bundle = BUNDLES[key] || {};
+  var bundleDim1 = bundle.dim1 || '';
+  var bundleDim2 = bundle.dim2 || '';
+
+  // Step 3: Auto-add ALL active ecosystem partners that match bundle dimensions
+  // This means any eco partner added to the Sheet appears automatically
+  Object.keys(ALL_PROGRAMS).forEach(function(k){
+    var p = ALL_PROGRAMS[k];
+    if (p.org !== 'eco') return; // only ecosystem partners are dynamic
+    if (keys.indexOf(k) !== -1) return; // already in list
+    var dims = p.dims || [];
+    // Include if partner's dimensions overlap with bundle's top 2 dimensions
+    var matches = dims.some(function(d){
+      return d === bundleDim1 || d === bundleDim2;
+    });
+    if (matches) keys.push(k);
+  });
+
+  // Step 4: Apply gate rules (business type, cross-border, veteran, etc.)
   GATE_RULES.forEach(function(rule){
     if(ans[rule.q]===rule.val){
       rule.add.forEach(function(k){ if(keys.indexOf(k)===-1) keys.push(k); });
     }
   });
+
+  // Step 5: Build result array, deduped
   var seen={}, result=[];
   keys.forEach(function(k){
     if(ALL_PROGRAMS[k] && !seen[k]){ seen[k]=true; result.push(ALL_PROGRAMS[k]); }
