@@ -20,7 +20,26 @@ body{font-family:'Barlow',sans-serif;color:var(--txt);background:#fff;min-height
 .hdr-sep{width:1px;height:30px;background:var(--bdr);margin:0 18px;flex-shrink:0}
 .hdr-br{height:48px;display:block;max-width:none;min-width:200px}
 
-/* PROGRESS */
+/* ── RESULTS SECTIONS ─────────────────────────────── */
+.res-section{margin-bottom:16px;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;}
+.res-sec-hdr{display:flex;align-items:center;padding:14px 18px;background:#f9fafb;cursor:pointer;user-select:none;gap:10px;}
+.res-sec-hdr:hover{background:#f3f4f6;}
+.res-sec-title{font-size:14px;font-weight:700;color:#111;flex:1;}
+.res-sec-count{font-size:12px;color:#6b7280;background:#e5e7eb;padding:2px 8px;border-radius:10px;}
+.res-sec-arrow{font-size:16px;color:#6b7280;transition:transform .2s;}
+.res-sec-body{padding:16px;}
+/* Tabs */
+.res-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;}
+.res-tab{font-size:12px;font-weight:600;padding:5px 12px;border:1px solid #e5e7eb;border-radius:20px;background:#fff;color:#6b7280;cursor:pointer;white-space:nowrap;}
+.res-tab:hover{border-color:#26429B;color:#26429B;}
+.res-tab.active{background:#26429B;color:#fff;border-color:#26429B;}
+.tab-count{font-weight:400;opacity:.75;}
+/* Eco card extras */
+.eco-link{font-size:13px;color:#1a6b3a;display:inline-block;margin-top:4px;}
+.eco-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+
+/* ── PROGRESS */
+
 .prog{height:4px;background:var(--navy-md);position:sticky;top:59px;z-index:199}
 .prog-fill{height:100%;background:var(--navy);width:0%;transition:width .4s ease}
 
@@ -654,21 +673,21 @@ var ALL_PROGRAMS = {
   vboc:{name:"UTRGV VBOC",org:"ut",desc:"Veterans Business Outreach Center — resources for veterans and military spouses."},
   pewd:{name:"UTRGV PEWD",org:"ut",desc:"Professional Education and Workforce Development — industry certificates."},
   disc:{name:"UTRGV DISC",org:"ut",desc:"Data and Information Systems Center — economic research and market maps."},
-  liftfund:{name:"LiftFund",org:"eco",cat:"Capital Access",desc:"CDFI offering small business loans from $500-$1M for businesses that don't qualify for traditional bank financing.",website:"liftfund.org",tier:"Referral"},
-  accion:{name:"Accion Opportunity Fund",org:"eco",cat:"Capital Access",desc:"National CDFI providing small business loans and coaching to underserved entrepreneurs.",website:"accionopportunityfund.org",tier:"Public Resource"},
-  sba7a:{name:"SBA 7(a) Loan Program",org:"eco",cat:"Capital Access",desc:"The SBA's primary loan program. Guarantees up to $5M for working capital and equipment.",website:"sba.gov",tier:"Public Resource"},
-  sbamicro:{name:"SBA Microloan Program",org:"eco",cat:"Capital Access",desc:"SBA loans up to $50,000 for startups and small businesses needing small amounts of capital.",website:"sba.gov",tier:"Public Resource"},
-  lsnb:{name:"Lone Star National Bank",org:"eco",cat:"Capital Access",desc:"Community bank with deep RGV roots offering SBA loans and commercial lending.",website:"lsnb.com",tier:"Referral"},
-  ibc:{name:"IBC Bank",org:"eco",cat:"Capital Access",desc:"Regional bank with strong McAllen presence offering small business loans.",website:"ibc.com",tier:"Referral"},
-  score:{name:"SCORE McAllen",org:"eco",cat:"Business Advising",desc:"Free mentorship from experienced executives. One-on-one and group sessions.",website:"score.org/chapter/score-mcallen",tier:"Public Resource"},
-  txwbc:{name:"Texas Women's Business Center",org:"eco",cat:"Business Advising",desc:"Business training and access to capital programs for women entrepreneurs.",website:"texaswbc.org",tier:"Public Resource"},
-  wfsrgv:{name:"Workforce Solutions RGV",org:"eco",cat:"Workforce & HR",desc:"State workforce agency providing recruitment and on-the-job training subsidies.",website:"workforcesolutions.net",tier:"Public Resource"},
-  region1:{name:"Region One ESC",org:"eco",cat:"Workforce & HR",desc:"Educational service center providing workforce training across the RGV.",website:"esc1.net",tier:"Referral"},
-  launchrgv:{name:"Launch RGV",org:"eco",cat:"Innovation & Tech",desc:"RGV-based startup accelerator supporting tech and innovation-focused founders.",website:"launchrgv.com",tier:"Referral"},
-  txip:{name:"Texas Emerging Technology Fund",org:"eco",cat:"Innovation & Tech",desc:"State funding for technology commercialization and innovation-focused businesses.",website:"gov.texas.gov/innovation",tier:"Public Resource"},
-  mcallenedc:{name:"McAllen Economic Development Corp",org:"eco",cat:"Real Estate & Space",desc:"City of McAllen's economic development arm supporting site selection and expansion.",website:"mcallenedc.com",tier:"Referral"},
-  vltp:{name:"Volunteer Lawyers & Professionals",org:"eco",cat:"Legal & Compliance",desc:"Free and low-cost legal services for small businesses.",website:"vltp.org",tier:"Public Resource"},
-  uspto:{name:"U.S. Patent & Trademark Office",org:"eco",cat:"Legal & Compliance",desc:"Federal agency for trademark and patent registration.",website:"uspto.gov",tier:"Public Resource"}
+  liftfund:{name:"LiftFund",org:"eco",cat:"Capital Access",desc:"CDFI offering small business loans from $500-$1M for businesses that don't qualify for traditional bank financing.",website:"liftfund.org",tier:"Referral",scope:"local"},
+  accion:{name:"Accion Opportunity Fund",org:"eco",cat:"Capital Access",desc:"National CDFI providing small business loans and coaching to underserved entrepreneurs.",website:"accionopportunityfund.org",tier:"Public Resource",scope:"local"},
+  sba7a:{name:"SBA 7(a) Loan Program",org:"eco",cat:"Capital Access",desc:"The SBA's primary loan program. Guarantees up to $5M for working capital and equipment.",website:"sba.gov",tier:"Public Resource",scope:"national"},
+  sbamicro:{name:"SBA Microloan Program",org:"eco",cat:"Capital Access",desc:"SBA loans up to $50,000 for startups and small businesses needing small amounts of capital.",website:"sba.gov",tier:"Public Resource",scope:"national"},
+  lsnb:{name:"Lone Star National Bank",org:"eco",cat:"Capital Access",desc:"Community bank with deep RGV roots offering SBA loans and commercial lending.",website:"lsnb.com",tier:"Referral",scope:"local"},
+  ibc:{name:"IBC Bank",org:"eco",cat:"Capital Access",desc:"Regional bank with strong McAllen presence offering small business loans.",website:"ibc.com",tier:"Referral",scope:"local"},
+  score:{name:"SCORE McAllen",org:"eco",cat:"Business Advising",desc:"Free mentorship from experienced executives. One-on-one and group sessions.",website:"score.org/chapter/score-mcallen",tier:"Public Resource",scope:"local"},
+  txwbc:{name:"Texas Women's Business Center",org:"eco",cat:"Business Advising",desc:"Business training and access to capital programs for women entrepreneurs.",website:"texaswbc.org",tier:"Public Resource",scope:"statewide"},
+  wfsrgv:{name:"Workforce Solutions RGV",org:"eco",cat:"Workforce & HR",desc:"State workforce agency providing recruitment and on-the-job training subsidies.",website:"workforcesolutions.net",tier:"Public Resource",scope:"local"},
+  region1:{name:"Region One ESC",org:"eco",cat:"Workforce & HR",desc:"Educational service center providing workforce training across the RGV.",website:"esc1.net",tier:"Referral",scope:"local"},
+  launchrgv:{name:"Launch RGV",org:"eco",cat:"Innovation & Tech",desc:"RGV-based startup accelerator supporting tech and innovation-focused founders.",website:"launchrgv.com",tier:"Referral",scope:"local"},
+  txip:{name:"Texas Emerging Technology Fund",org:"eco",cat:"Innovation & Tech",desc:"State funding for technology commercialization and innovation-focused businesses.",website:"gov.texas.gov/innovation",tier:"Public Resource",scope:"statewide"},
+  mcallenedc:{name:"McAllen Economic Development Corp",org:"eco",cat:"Real Estate & Space",desc:"City of McAllen's economic development arm supporting site selection and expansion.",website:"mcallenedc.com",tier:"Referral",scope:"local"},
+  vltp:{name:"Volunteer Lawyers & Professionals",org:"eco",cat:"Legal & Compliance",desc:"Free and low-cost legal services for small businesses.",website:"vltp.org",tier:"Public Resource",scope:"statewide"},
+  uspto:{name:"U.S. Patent & Trademark Office",org:"eco",cat:"Legal & Compliance",desc:"Federal agency for trademark and patent registration.",website:"uspto.gov",tier:"Public Resource",scope:"national"}
 };
 
 var BUNDLES = {
@@ -755,6 +774,7 @@ function loadSheetData(onComplete) {
         ALL_PROGRAMS[r['Key']] = {
           name: r['Name'], org: 'eco', cat: r['Category'],
           desc: r['Description'], website: r['Website'], tier: r['Tier'],
+          scope: (r['Scope'] || 'local').trim().toLowerCase(),
           dims: r['Dimensions'] ? r['Dimensions'].split(',').map(function(d){ return d.trim(); }) : []
         };
       }
@@ -1000,7 +1020,7 @@ function getPrograms(key){
     if (p.org !== 'eco') return; // only ecosystem partners are dynamic
     if (keys.indexOf(k) !== -1) return; // already in list
     var dims = p.dims || [];
-    // Include if partner's dimensions overlap with bundle's top 2 dimensions
+    // Include if partner dimensions overlap with bundle top 2 dimensions
     var matches = dims.some(function(d){
       return d === bundleDim1 || d === bundleDim2;
     });
@@ -1020,6 +1040,111 @@ function getPrograms(key){
     if(ALL_PROGRAMS[k] && !seen[k]){ seen[k]=true; result.push(ALL_PROGRAMS[k]); }
   });
   return result;
+}
+
+// ── RESULTS RENDER HELPERS ───────────────────────────────────────────────────
+function renderSection(title, color, programs, cardFn, tabKey) {
+  if (!programs || programs.length === 0) return '';
+  var uid = 'sec_' + Math.random().toString(36).substr(2,6);
+  var h = '<div class="res-section" id="'+uid+'">';
+  h += '<div class="res-sec-hdr" style="border-left:4px solid '+color+'" onclick="toggleSection(\''+uid+'\')">';
+  h += '<span class="res-sec-title">'+title+'</span>';
+  h += '<span class="res-sec-count">'+programs.length+' resources</span>';
+  h += '<span class="res-sec-arrow" id="arr_'+uid+'">▾</span>';
+  h += '</div>';
+  h += '<div class="res-sec-body" id="body_'+uid+'">';
+  programs.forEach(function(p){ h += cardFn(p); });
+  h += '</div></div>';
+  return h;
+}
+
+function renderSectionWithTabs(title, color, programs, prefix) {
+  if (!programs || programs.length === 0) return '';
+  var uid = prefix + '_' + Math.random().toString(36).substr(2,6);
+
+  // Build category tabs
+  var cats = {};
+  programs.forEach(function(p){
+    var cat = p.cat || 'Other';
+    if (!cats[cat]) cats[cat] = [];
+    cats[cat].push(p);
+  });
+  var catKeys = Object.keys(cats).sort();
+
+  var h = '<div class="res-section" id="'+uid+'">';
+  h += '<div class="res-sec-hdr" style="border-left:4px solid '+color+'" onclick="toggleSection(\''+uid+'\')">';
+  h += '<span class="res-sec-title">'+title+'</span>';
+  h += '<span class="res-sec-count">'+programs.length+' resources</span>';
+  h += '<span class="res-sec-arrow" id="arr_'+uid+'">▾</span>';
+  h += '</div>';
+  h += '<div class="res-sec-body" id="body_'+uid+'">';
+
+  // Tab bar
+  h += '<div class="res-tabs" id="tabs_'+uid+'">';
+  h += '<button class="res-tab active" onclick="switchTab(\''+uid+'\',\'all\')" data-tab="all">All</button>';
+  catKeys.forEach(function(cat){
+    var slug = cat.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+    h += '<button class="res-tab" onclick="switchTab(\''+uid+'\',\''+slug+'\')" data-tab="'+slug+'">'+cat+' <span class="tab-count">('+cats[cat].length+')</span></button>';
+  });
+  h += '</div>';
+
+  // All programs (default view)
+  h += '<div class="res-tab-content" id="tab_'+uid+'_all">';
+  programs.forEach(function(p){ h += renderEcoCard(p, color); });
+  h += '</div>';
+
+  // Per-category views
+  catKeys.forEach(function(cat){
+    var slug = cat.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+    h += '<div class="res-tab-content" id="tab_'+uid+'_'+slug+'" style="display:none">';
+    cats[cat].forEach(function(p){ h += renderEcoCard(p, color); });
+    h += '</div>';
+  });
+
+  h += '</div></div>';
+  return h;
+}
+
+function renderEcoCard(p, color) {
+  var scopeLabel = {local:'McAllen / RGV',regional:'South Texas RGV',statewide:'Texas',national:'National'}[p.scope] || 'RGV';
+  var scopeColor = {local:'#26429B',regional:'#1a6b3a',statewide:'#7c3aed',national:'#b45309'}[p.scope] || '#555';
+  var c = '<div class="pcard eco" style="border-left:4px solid '+(color||'#1a6b3a')+'">';
+  c += '<div class="pname">'+p.name+'</div>';
+  c += '<div class="pdesc">'+p.desc+'</div>';
+  if(p.website){
+    var url = p.website.indexOf('http')===0 ? p.website : 'https://'+p.website;
+    c += '<a href="'+url+'" target="_blank" class="eco-link">'+p.website+' ↗</a>';
+  }
+  c += '<div class="eco-meta">';
+  if(p.tier) c += '<span class="pbadge" style="background:#f0fdf4;color:#1a6b3a;">'+p.tier+'</span>';
+  c += '<span class="pbadge" style="background:#f5f3ff;color:'+scopeColor+';">'+scopeLabel+'</span>';
+  c += '</div></div>';
+  return c;
+}
+
+function toggleSection(uid) {
+  var body = document.getElementById('body_'+uid);
+  var arr = document.getElementById('arr_'+uid);
+  if (!body) return;
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (arr) arr.textContent = isOpen ? '▸' : '▾';
+}
+
+function switchTab(uid, tab) {
+  // Hide all tab contents for this section
+  var body = document.getElementById('body_'+uid);
+  if (!body) return;
+  body.querySelectorAll('.res-tab-content').forEach(function(el){ el.style.display='none'; });
+  body.querySelectorAll('.res-tab').forEach(function(el){ el.classList.remove('active'); });
+  // Show selected
+  var target = document.getElementById('tab_'+uid+'_'+tab);
+  if (target) target.style.display = 'block';
+  // Activate button
+  var tabs = document.getElementById('tabs_'+uid);
+  if (tabs) {
+    tabs.querySelectorAll('[data-tab="'+tab+'"]').forEach(function(b){ b.classList.add('active'); });
+  }
 }
 
 // ── GOOGLE SHEETS SUBMIT ─────────────────────────────────────────────────────
@@ -1291,36 +1416,38 @@ function goResults(){
     h += '<span class="dimpct">'+norm[d]+'%</span></div>';
   });
 
-  // Chamber programs
-  h += '<div class="shdr">McAllen Chamber Programs</div>';
-  chP.forEach(function(p){
-    h += '<div class="pcard ch"><div class="pname">'+p.name+'</div>';
-    h += '<div class="pdesc">'+p.desc+'</div>';
-    h += '<span class="pbadge pb-ch">McAllen Chamber</span></div>';
-  });
+  // ── SECTION 1: CHAMBER PROGRAMS ─────────────────────────────────────────────
+  h += renderSection('McAllen Chamber Programs', '#26429B', chP, function(p){
+    var c = '<div class="pcard ch"><div class="pname">'+p.name+'</div>';
+    c += '<div class="pdesc">'+p.desc+'</div>';
+    c += '<span class="pbadge pb-ch">McAllen Chamber</span></div>';
+    return c;
+  }, null);
 
-  // UTRGV programs
-  h += '<div class="shdr">UTRGV Resources</div>';
-  utP.forEach(function(p){
-    h += '<div class="pcard ut"><div class="pname">'+p.name+'</div>';
-    h += '<div class="pdesc">'+p.desc+'</div>';
-    if(p.phone) h += '<div style="font-size:13px;color:#E87722;margin-top:4px;">'+p.phone+'</div>';
-    h += '<span class="pbadge pb-ut">UTRGV</span></div>';
-  });
+  // ── SECTION 2: UTRGV RESOURCES ───────────────────────────────────────────────
+  h += renderSection('UTRGV Resources', '#E87722', utP, function(p){
+    var c = '<div class="pcard ut"><div class="pname">'+p.name+'</div>';
+    c += '<div class="pdesc">'+p.desc+'</div>';
+    if(p.phone) c += '<div style="font-size:13px;color:#E87722;margin-top:4px;">'+p.phone+'</div>';
+    c += '<span class="pbadge pb-ut">UTRGV</span></div>';
+    return c;
+  }, null);
 
-  // Ecosystem Partners
-  if(ecoP.length > 0){
-    h += '<div class="shdr">Ecosystem Resource Partners</div>';
-    ecoP.forEach(function(p){
-      h += '<div class="pcard" style="border-left:4px solid #1a6b3a"><div class="pname">'+p.name+'</div>';
-      h += '<div class="pdesc">'+p.desc+'</div>';
-      if(p.website){
-      var url = p.website.indexOf('http') === 0 ? p.website : 'https://' + p.website;
-      h += '<a href="'+url+'" target="_blank" style="font-size:13px;color:#1a6b3a;margin-top:4px;display:inline-block;">'+p.website+' ↗</a>';
-    }
-      var tierColor = p.tier === 'Referral' ? '#1a6b3a' : '#555';
-      h += '<span class="pbadge" style="background:#e8f5e9;color:'+tierColor+';">'+p.tier+'</span></div>';
-    });
+  // ── SECTION 3: RGV ECOSYSTEM (local + regional) ───────────────────────────────
+  var rgvEco = ecoP.filter(function(p){ return p.scope==='local'||p.scope==='regional'||!p.scope; });
+  if(rgvEco.length > 0){
+    h += renderSectionWithTabs('RGV Ecosystem Partners', '#1a6b3a', rgvEco, 'rgv');
+  }
+
+  // ── SECTION 4: BEYOND MCALLEN (statewide + national) — only when relevant ────
+  var beyondEco = ecoP.filter(function(p){ return p.scope==='statewide'||p.scope==='national'; });
+  var showBeyond = beyondEco.length > 0 && (
+    bundle.dim1==='inno' || bundle.dim2==='inno' ||
+    bundle.dim1==='cap'  || bundle.dim2==='cap'  ||
+    ans.q20===0 || ans.q20===1
+  );
+  if(showBeyond){
+    h += renderSectionWithTabs('Beyond McAllen — Texas &amp; National Resources', '#7c3aed', beyondEco, 'beyond');
   }
 
   // CTA
