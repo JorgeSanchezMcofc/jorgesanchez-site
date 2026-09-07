@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Money Trading Intelligence Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .trend-positive {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .trend-negative {
+            background: #fef2f2;
+            color: #7f1d1d;
+        }
+
+        .trend-neutral {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .table-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .table-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            border-bottom: 2px solid var(--border);
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-win {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .badge-loss {
+            background: #fef2f2;
+            color: #7f1d1d;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .pl-positive {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .pl-negative {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .pl-neutral {
+            color: var(--text-secondary);
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #0369a1;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.875rem;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.75rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Smart Money Trading Intelligence</h1>
+            <p>Real-time whale detection and performance tracking</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid" id="kpiContainer"></div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <!-- Profit Chart -->
+            <div class="chart-card">
+                <h3>Profit Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="profitChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Win/Loss Pie -->
+            <div class="chart-card">
+                <h3>Win/Loss Breakdown</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="stats-container" id="statsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Recommendations Table -->
+        <div class="table-card">
+            <h3>Daily Recommendations</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Whale</th>
+                        <th>Market</th>
+                        <th>Confidence</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">P&L</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <div class="footer-note">
+                💡 Click any recommendation to cycle its status between Pending → Win → Loss
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data (This will connect to Google Sheets API later)
+        let recommendations = [
+            { id: 1, date: '2026-09-07', whale: 'BrotherObama', market: 'BTC $100K by EOY', status: 'win', confidence: 92, profit: 2450 },
+            { id: 2, date: '2026-09-06', whale: 'ColomboHex', market: 'ETH $3000', status: 'loss', confidence: 85, profit: -890 },
+            { id: 3, date: '2026-09-05', whale: '0xwise', market: 'Polymarket Growth', status: 'win', confidence: 88, profit: 1650 },
+            { id: 4, date: '2026-09-04', whale: 'Talvez10', market: 'Trump Re-election', status: 'pending', confidence: 79, profit: 0 },
+            { id: 5, date: '2026-09-03', whale: 'pleaseplease123', market: 'AI Regulation', status: 'win', confidence: 81, profit: 3200 },
+            { id: 6, date: '2026-09-02', whale: 'Flaznorp', market: 'Tech Sector Rally', status: 'win', confidence: 87, profit: 2100 },
+            { id: 7, date: '2026-09-01', whale: 'flawfence', market: 'Market Crash', status: 'loss', confidence: 84, profit: -450 },
+        ];
+
+        const profitData = [
+            { date: '9/1', cumulative: 1200 },
+            { date: '9/2', cumulative: 3300 },
+            { date: '9/3', cumulative: 6500 },
+            { date: '9/4', cumulative: 5610 },
+            { date: '9/5', cumulative: 7260 },
+            { date: '9/6', cumulative: 6370 },
+            { date: '9/7', cumulative: 8820 },
+        ];
+
+        let profitChart, pieChart;
+
+        function calculateMetrics() {
+            const wins = recommendations.filter(r => r.status === 'win').length;
+            const losses = recommendations.filter(r => r.status === 'loss').length;
+            const pending = recommendations.filter(r => r.status === 'pending').length;
+            const totalTrades = wins + losses;
+            const winRate = totalTrades > 0 ? Math.round((wins / totalTrades) * 100) : 0;
+            const totalProfit = recommendations.reduce((sum, r) => sum + r.profit, 0);
+            const avgProfit = totalTrades > 0 ? Math.round(totalProfit / totalTrades) : 0;
+            const bestTrade = Math.max(...recommendations.filter(r => r.status !== 'pending').map(r => r.profit), 0);
+            const roi = Math.round((totalProfit / 5000) * 100);
+
+            return { wins, losses, pending, totalTrades, winRate, totalProfit, avgProfit, bestTrade, roi };
+        }
+
+        function renderKPIs() {
+            const metrics = calculateMetrics();
+            const kpis = [
+                { label: 'Total Profit', value: `$${metrics.totalProfit.toLocaleString()}`, trend: metrics.totalProfit > 0 ? 'positive' : 'negative' },
+                { label: 'Win Rate', value: `${metrics.winRate}%`, trend: metrics.winRate >= 60 ? 'positive' : 'neutral' },
+                { label: 'Avg Trade', value: `$${metrics.avgProfit.toLocaleString()}`, trend: metrics.avgProfit > 0 ? 'positive' : 'negative' },
+                { label: 'Best Trade', value: `$${metrics.bestTrade.toLocaleString()}`, trend: 'positive' },
+                { label: 'ROI', value: `${metrics.roi}%`, trend: metrics.roi > 0 ? 'positive' : 'negative' },
+                { label: 'Completed Trades', value: metrics.totalTrades, trend: 'neutral' },
+            ];
+
+            const kpiHTML = kpis.map(kpi => `
+                <div class="kpi-card">
+                    <div class="kpi-label">${kpi.label}</div>
+                    <div class="kpi-value">${kpi.value}</div>
+                    <div class="kpi-trend trend-${kpi.trend}">
+                        ${kpi.trend === 'positive' ? '↑' : kpi.trend === 'negative' ? '↓' : '→'} 
+                        ${kpi.trend.charAt(0).toUpperCase() + kpi.trend.slice(1)}
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('kpiContainer').innerHTML = kpiHTML;
+        }
+
+        function renderCharts() {
+            const ctx1 = document.getElementById('profitChart').getContext('2d');
+            if (profitChart) profitChart.destroy();
+            profitChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: profitData.map(d => d.date),
+                    datasets: [{
+                        label: 'Cumulative P&L',
+                        data: profitData.map(d => d.cumulative),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        borderWidth: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: { callback: (v) => '$' + v.toLocaleString() }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            const metrics = calculateMetrics();
+            const ctx2 = document.getElementById('pieChart').getContext('2d');
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Wins', 'Losses', 'Pending'],
+                    datasets: [{
+                        data: [metrics.wins, metrics.losses, metrics.pending],
+                        backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true, position: 'bottom' } }
+                }
+            });
+
+            document.getElementById('statsContainer').innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #10b981;">${metrics.wins}</div>
+                    <div class="stat-label">WINS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #ef4444;">${metrics.losses}</div>
+                    <div class="stat-label">LOSSES</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #f59e0b;">${metrics.pending}</div>
+                    <div class="stat-label">PENDING</div>
+                </div>
+            `;
+        }
+
+        function renderTable() {
+            const rows = recommendations.map(rec => `
+                <tr onclick="toggleStatus(${rec.id})">
+                    <td>${rec.date}</td>
+                    <td><strong>${rec.whale.substring(0, 15)}</strong></td>
+                    <td>${rec.market}</td>
+                    <td>${rec.confidence}%</td>
+                    <td>
+                        <span class="badge badge-${rec.status}">
+                            ${rec.status.charAt(0).toUpperCase() + rec.status.slice(1)}
+                        </span>
+                    </td>
+                    <td style="text-align: right;">
+                        <span class="pl-${rec.profit > 0 ? 'positive' : rec.profit < 0 ? 'negative' : 'neutral'}">
+                            $${rec.profit.toLocaleString()}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.getElementById('tableBody').innerHTML = rows;
+        }
+
+        function toggleStatus(id) {
+            const rec = recommendations.find(r => r.id === id);
+            const statuses = ['pending', 'win', 'loss'];
+            const currentIndex = statuses.indexOf(rec.status);
+            rec.status = statuses[(currentIndex + 1) % statuses.length];
+            render();
+        }
+
+        function render() {
+            renderKPIs();
+            renderTable();
+            setTimeout(renderCharts, 0);
+        }
+
+        render();
+    </script>
+</body>
+</html>
