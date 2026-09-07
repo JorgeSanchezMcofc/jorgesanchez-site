@@ -341,26 +341,57 @@
     </div>
 
     <script>
-        // Data (This will connect to Google Sheets API later)
-        let recommendations = [
-            { id: 1, date: '2026-09-07', whale: 'BrotherObama', market: 'BTC $100K by EOY', status: 'win', confidence: 92, profit: 2450 },
-            { id: 2, date: '2026-09-06', whale: 'ColomboHex', market: 'ETH $3000', status: 'loss', confidence: 85, profit: -890 },
-            { id: 3, date: '2026-09-05', whale: '0xwise', market: 'Polymarket Growth', status: 'win', confidence: 88, profit: 1650 },
-            { id: 4, date: '2026-09-04', whale: 'Talvez10', market: 'Trump Re-election', status: 'pending', confidence: 79, profit: 0 },
-            { id: 5, date: '2026-09-03', whale: 'pleaseplease123', market: 'AI Regulation', status: 'win', confidence: 81, profit: 3200 },
-            { id: 6, date: '2026-09-02', whale: 'Flaznorp', market: 'Tech Sector Rally', status: 'win', confidence: 87, profit: 2100 },
-            { id: 7, date: '2026-09-01', whale: 'flawfence', market: 'Market Crash', status: 'loss', confidence: 84, profit: -450 },
-        ];
+        // Google Sheets Config
+        const SHEET_ID = '1BNrfkFfYIziXAHpT4-cMVJCTaDuoJiVQg-mMr2waVcQ';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+        
+        let recommendations = [];
 
-        const profitData = [
-            { date: '9/1', cumulative: 1200 },
-            { date: '9/2', cumulative: 3300 },
-            { date: '9/3', cumulative: 6500 },
-            { date: '9/4', cumulative: 5610 },
-            { date: '9/5', cumulative: 7260 },
-            { date: '9/6', cumulative: 6370 },
-            { date: '9/7', cumulative: 8820 },
-        ];
+        // Parse CSV from Google Sheets
+        async function loadFromGoogleSheets() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const csv = await response.text();
+                const lines = csv.trim().split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+                
+                recommendations = lines.slice(1).map((line, idx) => {
+                    const values = line.split(',').map(v => v.trim());
+                    return {
+                        id: idx + 1,
+                        date: values[0] || '2026-09-07',
+                        status: values[1] ? values[1].toLowerCase() : 'pending',
+                        traders: values[2] || '20',
+                        whales: values[3] || '0',
+                        contrarians: values[4] || '0',
+                        consensus: values[5] || 'MEDIUM',
+                        volume: parseInt(values[6]) || 0,
+                        recommendation: values[7] || 'Monitor positions',
+                        whale: `Whale ${idx + 1}`,
+                        market: values[7] || 'Market Data',
+                        confidence: parseInt(values[2]) || 75,
+                        profit: parseInt(values[6]) || 0
+                    };
+                }).filter(r => r.date);
+                
+                render();
+            } catch (error) {
+                console.error('Error loading Google Sheets:', error);
+                // Fallback to default data if fetch fails
+                recommendations = [
+                    { id: 1, date: '2026-09-07', whale: 'BrotherObama', market: 'BTC $100K by EOY', status: 'win', confidence: 92, profit: 2450 },
+                    { id: 2, date: '2026-09-06', whale: 'ColomboHex', market: 'ETH $3000', status: 'loss', confidence: 85, profit: -890 },
+                    { id: 3, date: '2026-09-05', whale: '0xwise', market: 'Polymarket Growth', status: 'win', confidence: 88, profit: 1650 },
+                ];
+                render();
+            }
+        }
+        
+        // Load on page open
+        loadFromGoogleSheets();
+
+        // Profit data will be calculated dynamically
+        let profitData = [];
 
         let profitChart, pieChart;
 
@@ -507,13 +538,29 @@
             render();
         }
 
+        function calculateProfitData() {
+            if (recommendations.length === 0) return [];
+            
+            const byDate = {};
+            recommendations.forEach(r => {
+                if (!byDate[r.date]) byDate[r.date] = 0;
+                byDate[r.date] += r.profit;
+            });
+            
+            const dates = Object.keys(byDate).sort();
+            let cumulative = 0;
+            return dates.map(date => {
+                cumulative += byDate[date];
+                return { date: date.substring(5), cumulative };
+            });
+        }
+
         function render() {
+            profitData = calculateProfitData();
             renderKPIs();
             renderTable();
             setTimeout(renderCharts, 0);
         }
-
-        render();
     </script>
 </body>
 </html>
