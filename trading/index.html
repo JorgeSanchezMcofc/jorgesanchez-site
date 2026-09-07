@@ -353,26 +353,41 @@
                 const response = await fetch(SHEET_URL);
                 const csv = await response.text();
                 const lines = csv.trim().split('\n');
-                const headers = lines[0].split(',').map(h => h.trim());
                 
                 recommendations = lines.slice(1).map((line, idx) => {
-                    const values = line.split(',').map(v => v.trim());
+                    const values = line.split('\t').map(v => v.trim());
+                    // Columns: Date | Phase1_Status | Phase1_Traders | Phase2_Whales | Phase2_Contrarians | Consensus_Strength | Whale_Volume | Recommendation
+                    const date = values[0] || '2026-09-07';
+                    const phase1Status = values[1] || 'completed';
+                    const phase1Traders = parseInt(values[2]) || 20;
+                    const phase2Whales = parseInt(values[3]) || 0;
+                    const phase2Contrarians = parseInt(values[4]) || 0;
+                    const consensusStrength = values[5] || 'MEDIUM';
+                    const whaleVolume = parseInt(values[6]) || 0;
+                    const recommendation = values[7] || 'Monitor whale activity';
+                    
+                    // Determine status based on volume (positive = win, negative = loss)
+                    const status = whaleVolume > 500 ? 'win' : whaleVolume < -500 ? 'loss' : 'pending';
+                    
                     return {
                         id: idx + 1,
-                        date: values[0] || '2026-09-07',
-                        status: values[1] ? values[1].toLowerCase() : 'pending',
-                        traders: values[2] || '20',
-                        whales: values[3] || '0',
-                        contrarians: values[4] || '0',
-                        consensus: values[5] || 'MEDIUM',
-                        volume: parseInt(values[6]) || 0,
-                        recommendation: values[7] || 'Monitor positions',
-                        whale: `Whale ${idx + 1}`,
-                        market: values[7] || 'Market Data',
-                        confidence: parseInt(values[2]) || 75,
-                        profit: parseInt(values[6]) || 0
+                        date: date,
+                        whale: `Whale #${phase2Whales}`,
+                        market: recommendation,
+                        status: status,
+                        confidence: phase1Traders,
+                        profit: whaleVolume,
+                        phase1Status: phase1Status,
+                        traders: phase1Traders,
+                        whales: phase2Whales,
+                        contrarians: phase2Contrarians,
+                        consensus: consensusStrength
                     };
-                }).filter(r => r.date);
+                }).filter(r => r.date && r.date !== 'Date');
+                
+                if (recommendations.length === 0) {
+                    throw new Error('No data in sheet');
+                }
                 
                 render();
             } catch (error) {
