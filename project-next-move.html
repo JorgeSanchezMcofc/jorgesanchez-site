@@ -501,8 +501,8 @@ footer p{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
       <p class="land-sub">Tell us about your business in about 5 minutes. We'll match you with the right programs and resources — right now.</p>
       <div class="land-stats">
         <div class="land-stat"><div class="ls-n">5</div><div class="ls-l">Minutes</div></div>
-        <div class="land-stat"><div class="ls-n">16</div><div class="ls-l">Questions</div></div>
-        <div class="land-stat"><div class="ls-n">52</div><div class="ls-l">Programs</div></div>
+        <div class="land-stat"><div class="ls-n" id="statQs">21</div><div class="ls-l">Questions</div></div>
+        <div class="land-stat"><div class="ls-n" id="statProgs">100+</div><div class="ls-l">Resources</div></div>
         <div class="land-stat"><div class="ls-n">Free</div><div class="ls-l">Always</div></div>
       </div>
       <div class="btn-go-wrap">
@@ -535,15 +535,68 @@ footer p{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
 </footer>
 
 <script>
+// ============================================================================
+// PROJECT NEXT MOVE: front-end logic (replaces the entire previous <script>)
+// Flow: questions -> scores -> bundle -> filter by sheet rules -> rank ->
+//       AI picks and orders 5 steps (rules fallback) -> results + intake
+// ============================================================================
 var INTAKE_URL = "https://script.google.com/macros/s/AKfycbzfduDDhlN_CwTbaHQe9BLXcLiXPjWM5obXmGFfAZo9zpRkiWomCn85VeKgp1bq6xtb/exec";
+var SHEET_ID = '1wDA_LHUnob8Z7VuBLDvVxIqTtKAciPzIw3cXO3EOKFk';
+var AI_TIMEOUT_MS = 15000;
 var ans = {}, curSec = 0;
 var sc = {vis:0,cap:0,inno:0,ops:0,work:0,intel:0};
+var norm = {};
+
+// ── STYLES FOR THE 5-STEP RESULTS ────────────────────────────────────────────
+(function(){
+  var css =
+  '.steps{margin:8px 0 24px}' +
+  '.step{display:flex;gap:16px;border:1px solid var(--bdr);border-left:4px solid var(--navy);padding:18px;margin-bottom:10px;background:#fff;break-inside:avoid}' +
+  '.step-n{font-family:"Barlow Condensed",sans-serif;font-size:34px;font-weight:800;color:var(--navy);line-height:1;min-width:28px}' +
+  '.step-body{flex:1;min-width:0}' +
+  '.step-prog{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}' +
+  '.step-act{font-size:16px;font-weight:600;color:var(--txt);margin-bottom:6px;line-height:1.45}' +
+  '.step-why{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px}' +
+  '.step-contact{font-size:13px;color:var(--navy);line-height:1.7;word-break:break-word}' +
+  '.step-contact a{color:var(--navy)}' +
+  '.more-btn{background:none;border:1.5px solid var(--bdr);color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;cursor:pointer;margin-top:4px}' +
+  '.more-btn:hover{border-color:var(--navy);color:var(--navy)}' +
+  '.more-list{display:none;margin-top:12px}' +
+  '.more-list.on{display:block}' +
+  '.more-list .step{border-left-color:var(--navy-md)}' +
+  '.plan-loading{padding:60px 0;text-align:center;color:var(--muted);font-size:16px}' +
+  '@media print{.more-list{display:block!important}.more-btn{display:none!important}}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+})();
+
+// ── LOCATIONS (area tokens must match the "Area" column in Ecosystem Partners)
+var LOCS = [
+  {l:'McAllen',                                   t:['mcallen','hidalgo','rgv','texas']},
+  {l:'Edinburg',                                  t:['edinburg','hidalgo','rgv','texas']},
+  {l:'Mission',                                   t:['mission','hidalgo','rgv','texas']},
+  {l:'Pharr',                                     t:['pharr','hidalgo','rgv','texas']},
+  {l:'San Juan',                                  t:['sanjuan','hidalgo','rgv','texas']},
+  {l:'Alamo',                                     t:['alamo','hidalgo','rgv','texas']},
+  {l:'Another Hidalgo County city (Weslaco, Donna, Mercedes, etc.)', t:['hidalgo','rgv','texas']},
+  {l:'Harlingen',                                 t:['harlingen','cameron','rgv','texas']},
+  {l:'Brownsville',                               t:['brownsville','cameron','rgv','texas']},
+  {l:'Another Cameron County city',               t:['cameron','rgv','texas']},
+  {l:'Rio Grande City',                           t:['rgc','starr','rgv','texas']},
+  {l:'Elsewhere in Starr County',                 t:['starr','rgv','texas']},
+  {l:'Willacy County',                            t:['willacy','rgv','texas']},
+  {l:'Laredo or Webb County',                     t:['webb','texas']},
+  {l:'Outside the Rio Grande Valley',             t:['texas']}
+];
+var IND = ['food','retail','services','creative','trade','health','tech','other'];
+var STG = ['idea','new','growing','established','established'];
 
 // ── SECTIONS ─────────────────────────────────────────────────────────────────
 var SECS = [
   { num:'Section 1 of 4', title:'Your Business Snapshot',
     desc:'A few quick facts to help us understand where you are.',
     qs:[
+      {id:'q0',type:'opts',lbl:'Where is your business located (or where will it be)?',
+       opts:LOCS.map(function(x){ return x.l; })},
       {id:'q1',type:'opts',lbl:'What best describes your business?',
        opts:['Food, beverage, or restaurant','Retail or boutique','Professional services (legal, accounting, consulting, etc.)','Creative, arts, or media','Manufacturing, logistics, or trade','Health, wellness, or fitness','Technology or innovation','Other']},
       {id:'q2',type:'opts',lbl:'How long have you been in business?',
@@ -553,7 +606,7 @@ var SECS = [
       {id:'q4',type:'opts',lbl:'Is your business woman-owned or woman-led?',
        opts:['Yes','No','Prefer not to say']},
       {id:'q17',type:'opts',lbl:'Does your business need access to financing or capital right now?',
-       opts:["Yes, it\'s one of my biggest challenges","Possibly, I\'m not sure what options exist","No, financing is not the issue right now"]},
+       opts:["Yes, it's one of my biggest challenges","Possibly, I'm not sure what options exist","No, financing is not the issue right now"]},
       {id:'q18',type:'opts',lbl:'Does your business sell to customers in Mexico or across the border?',
        opts:["Yes, cross-border trade is part of our business","Not yet but I would like to expand that way","No, we focus entirely on the local market"]},
       {id:'q19',type:'opts',lbl:'Are you a veteran, active military, or military spouse?',
@@ -566,21 +619,21 @@ var SECS = [
     desc:'No right or wrong answers. Pick the option that feels most true right now.',
     qs:[
       {id:'q5',type:'opts',lbl:'When you think about your business right now, which of these feels most true?',
-       opts:['We have a good product or service but not enough people know about us','We know what we need to do but don\'t have the money to do it','Our day-to-day operations feel chaotic or unsustainable','We\'re not sure our current business model will work long-term']},
+       opts:['We have a good product or service but not enough people know about us',"We know what we need to do but don't have the money to do it",'Our day-to-day operations feel chaotic or unsustainable',"We're not sure our current business model will work long-term"]},
       {id:'q6',type:'opts',lbl:'If you could fix one thing in your business tomorrow, what would it be?',
-       opts:['More customers walking through the door','Access to funding or capital','A better system for how we run things internally','A clearer strategy for where we\'re going']},
+       opts:['More customers walking through the door','Access to funding or capital','A better system for how we run things internally',"A clearer strategy for where we're going"]},
       {id:'q7',type:'opts',lbl:'Which of these situations sounds most like yours right now?',
-       opts:["We've been around a while but revenue has been declining","We're new and trying to get our first real traction","We were doing well but something changed — market, competition, economy","We have a new idea or product we want to launch"]},
+       opts:["We've been around a while but revenue has been declining","We're new and trying to get our first real traction",'We were doing well but something changed (market, competition, economy)','We have a new idea or product we want to launch']},
       {id:'q8',type:'opts',lbl:'When it comes to your team, which is closest to your reality?',
-       opts:["I'm doing everything myself and it's not sustainable","I have a team but we're not operating efficiently","I need to hire but can't find or afford the right people","My team is fine — the challenge is elsewhere"]},
+       opts:["I'm doing everything myself and it's not sustainable","I have a team but we're not operating efficiently","I need to hire but can't find or afford the right people",'My team is fine, the challenge is elsewhere']},
       {id:'q9',type:'opts',lbl:'How would you describe your relationship with your customers right now?',
-       opts:['I need to find completely new customers','I have customers but I\'m losing them and don\'t know why','I need to reach a bigger or different audience','My customer base is stable — the issue is something else']},
+       opts:['I need to find completely new customers',"I have customers but I'm losing them and don't know why",'I need to reach a bigger or different audience','My customer base is stable, the issue is something else']},
       {id:'q10',type:'opts',lbl:'When you think about the next 90 days, what feels most urgent?',
-       opts:['Generating revenue — we need cash now','Getting visible — people need to know we exist','Getting organized — we can\'t grow in this chaos','Getting smart — we need better information to make decisions']},
+       opts:['Generating revenue, we need cash now','Getting visible, people need to know we exist',"Getting organized, we can't grow in this chaos",'Getting smart, we need better information to make decisions']},
       {id:'q11',type:'opts',lbl:'Have you ever participated in a Chamber program, event, or resource?',
-       opts:['Yes, regularly','Once or twice','Never — I didn\'t know what was available','Never — I wasn\'t sure it was relevant for me']},
+       opts:['Yes, regularly','Once or twice',"Never, I didn't know what was available","Never, I wasn't sure it was relevant for me"]},
       {id:'q12',type:'opts',lbl:'Which of these best describes how you make business decisions today?',
-       opts:['Mostly gut instinct and experience','I look at some data but it\'s informal','I rely on advisors or mentors','I feel like I\'m guessing and it\'s not working']}
+       opts:['Mostly gut instinct and experience',"I look at some data but it's informal",'I rely on advisors or mentors',"I feel like I'm guessing and it's not working"]}
     ]
   },
   { num:'Section 3 of 4', title:'How Urgent Is It?',
@@ -588,17 +641,17 @@ var SECS = [
     qs:[
       {id:'q13',type:'slider',lbl:'Cash flow and financial pressure'},
       {id:'q14',type:'slider',lbl:'Attracting new customers or growing visibility'},
-      {id:'q15',type:'slider',lbl:'Internal challenges — staffing, operations, or systems'},
+      {id:'q15',type:'slider',lbl:'Internal challenges: staffing, operations, or systems'},
       {id:'q16',type:'slider',lbl:'Need for a new strategy, pivot, or innovation'}
     ]
   },
   { num:'Section 4 of 4', title:'One Last Step',
-    desc:'Enter your info below. Michelle Rodriguez will reach out to connect you with your matched programs.',
+    desc:'Enter your info below. Michelle Rodriguez will reach out to connect you with your next steps.',
     qs:[{id:'cform',type:'contact'}]
   }
 ];
 
-// ── SCORING ───────────────────────────────────────────────────────────────────
+// ── SCORING MAP ──────────────────────────────────────────────────────────────
 var SCORE_MAP = {
   q5: [{vis:3,intel:1},{cap:3,inno:1},{ops:3,work:1},{inno:3,intel:2}],
   q6: [{vis:3,cap:1},{cap:3,inno:1},{ops:3,work:1},{intel:3,inno:1}],
@@ -609,899 +662,684 @@ var SCORE_MAP = {
   q11:[{},{},{vis:1,intel:1},{intel:2}],
   q12:[{intel:2},{intel:1},{},{intel:3,ops:1}]
 };
+var DIM_LBL = {vis:'Visibility',cap:'Capital',inno:'Innovation',ops:'Operations',work:'Workforce',intel:'Intelligence'};
+var DIM_ORDER = ['cap','vis','ops','intel','inno','work']; // tie-breaker
 
-// ── SHEET DATA — loaded live from Google Sheets ────────────────────────────
-var SHEET_ID = '1wDA_LHUnob8Z7VuBLDvVxIqTtKAciPzIw3cXO3EOKFk';
-
-// Hardcoded defaults — always work even if Sheet fails
-var ALL_PROGRAMS = {
-  consulting:{name:"Business Consulting",org:"ch",cat:"Economic Dev",desc:"Personalized one-on-one consulting: business planning, market strategy, and roadmaps from concept to launch."},
-  itx:{name:"Innovation Texas (ITX)",org:"ch",cat:"Economic Dev",desc:"Three-phase accelerator — Discover, Incubation, Acceleration — providing education, mentorship, and access to capital."},
-  oneMC:{name:"1 Million Cups (1MC)",org:"ch",cat:"Economic Dev",desc:"Free monthly platform to present your business, get community feedback, and make connections. Every second Wednesday."},
-  latinaHope:{name:"Latina Hope",org:"ch",cat:"Economic Dev",desc:"Hands-on workshops and pitch funding for women entrepreneurs. Winners receive up to $956 in seed money."},
-  sizeup:{name:"SizeUp Business Intelligence",org:"ch",cat:"Economic Dev",desc:"Data platform with competitive analysis, market research, and 50+ guided industry topics."},
-  sizeupAdv:{name:"SizeUp Small Business Advisor",org:"ch",cat:"Economic Dev",desc:"Guided one-on-one market intelligence sessions to plan your next business move."},
-  satop:{name:"SATOP",org:"ch",cat:"Economic Dev",desc:"Up to 40 hours of free technical assistance from Texas A&M engineering students."},
-  epulse:{name:"Economic Pulse Monthly Report",org:"ch",cat:"Economic Dev",desc:"Monthly economic data and analysis on trends shaping the McAllen region."},
-  coli:{name:"Cost of Living Index (COLI)",org:"ch",cat:"Economic Dev",desc:"Tracks and compares cost of living among metro areas nationwide."},
-  certs:{name:"Certificates of Origin",org:"ch",cat:"Economic Dev",desc:"Chamber certificates verifying country of manufacture for exported goods."},
-  virtualOff:{name:"Virtual Offices",org:"ch",cat:"Economic Dev",desc:"Use the McAllen Creative Incubator as your registered business address."},
-  linkup:{name:"Link-Up Speed Networking",org:"ch",cat:"Membership",desc:"Monthly speed networking with 55-75 local business professionals."},
-  ribbons:{name:"Ribbon Cuttings & Grand Openings",org:"ch",cat:"Membership",desc:"Chamber Ambassadors celebrate your grand opening with the full membership."},
-  ambassador:{name:"Ambassador Program",org:"ch",cat:"Membership",desc:"Network of Chamber representatives who advocate for business interests."},
-  ofrenda:{name:"McAllen Remembers: Ofrenda Comunitaria",org:"ch",cat:"Membership",desc:"Dia de los Muertos community event honoring champions of McAllen business."},
-  holiday:{name:"Holiday Open House Fizz the Season",org:"ch",cat:"Membership",desc:"Annual festive celebration featuring local vendors and member networking."},
-  foodieTour:{name:"Foodie Tour",org:"ch",cat:"Member Marketing",desc:"Citywide campaign highlighting McAllen's diverse restaurant scene."},
-  shopHop:{name:"Shop Hop",org:"ch",cat:"Member Marketing",desc:"Interactive retail promotion driving foot traffic to local stores."},
-  fitFall:{name:"Fit for Fall Tour",org:"ch",cat:"Member Marketing",desc:"Seasonal wellness campaign spotlighting fitness and healthy dining businesses."},
-  holShopping:{name:"Holiday Shopping Tour",org:"ch",cat:"Member Marketing",desc:"Festive campaign driving local spending at Chamber-member retailers."},
-  jumpstart:{name:"Jumpstart Career Expo",org:"ch",cat:"Workforce",desc:"Annual event connecting employers with job seekers. 6,500+ jobs available."},
-  mxlan:{name:"MXLAN Economic Summit",org:"ch",cat:"Workforce",desc:"Annual gathering on cross-border trade and economic growth opportunities."},
-  epMag:{name:"Economic Pulse Magazine",org:"ch",cat:"Workforce",desc:"Bi-annual publication covering local economy and workforce development."},
-  siteSelect:{name:"Site Selector Event",org:"ch",cat:"Workforce",desc:"Positions McAllen as a premier business expansion destination."},
-  indPicnic:{name:"Industry Picnic",org:"ch",cat:"Workforce",desc:"Annual appreciation event celebrating McAllen's industrial employers."},
-  tradeTalks:{name:"Trade Talks",org:"ch",cat:"Workforce",desc:"Quarterly roundtable on trade, logistics, and binational collaboration."},
-  rgvLead:{name:"RGV Lead LMI Initiative",org:"ch",cat:"Workforce",desc:"Analyzing Labor Market Information to align educational programs with workforce demands."},
-  homeTexas:{name:"Home to Texas Internship Initiative",org:"ch",cat:"Workforce",desc:"Partnership bringing college students home for summer internships."},
-  r1pace:{name:"Region One PACE Program",org:"ch",cat:"Workforce",desc:"Career pathways and experiential learning for high school students."},
-  tamuNursing:{name:"Texas A&M Nursing Educator Initiative",org:"ch",cat:"Workforce",desc:"Supports nursing education pipelines to address healthcare workforce shortages."},
-  legendary:{name:"Legendary McAllen Women",org:"ch",cat:"Leadership",desc:"Annual gala recognizing trailblazing women who shaped McAllen. 400 attendees."},
-  adminPro:{name:"Administrative Professionals Day Luncheon",org:"ch",cat:"Leadership",desc:"Annual luncheon honoring administrative professionals. 328 attendees."},
-  womanMag:{name:"McAllen Woman Magazine",org:"ch",cat:"Leadership",desc:"Publication celebrating women-owned businesses and influential McAllen leaders."},
-  goodMorning:{name:"Good Morning McAllen Breakfast",org:"ch",cat:"Signature Events",desc:"Quarterly breakfast for networking and collaboration. 545 small business attendees."},
-  goodDay:{name:"Good Day McAllen Luncheon",org:"ch",cat:"Signature Events",desc:"Quarterly luncheon welcoming new members. 1,031 small business attendees."},
-  manWoman:{name:"Man and Woman of the Year Awards",org:"ch",cat:"Signature Events",desc:"Annual gala honoring exemplary service to McAllen. 400 attendees."},
-  mayorsCup:{name:"Mayor's Cup Golf Tournament",org:"ch",cat:"Signature Events",desc:"Annual 18-hole golf tournament. Great for B2B relationship building."},
-  xmas:{name:"McAllen Holiday Parade",org:"ch",cat:"Signature Events",desc:"Annual two-day family celebration with 50,000+ attendees."},
-  tasteMcAllen:{name:"Taste McAllen",org:"ch",cat:"Tourism",desc:"Signature food festival showcasing McAllen's diverse culinary scene."},
-  marketMain:{name:"Market on Main",org:"ch",cat:"Tourism",desc:"Monthly art and culture event at the McAllen Creative Incubator."},
-  travelTourism:{name:"National Travel & Tourism Week",org:"ch",cat:"Tourism",desc:"Annual celebration recognizing tourism's impact on McAllen's economy."},
-  whiskey:{name:"Whiskey Business",org:"ch",cat:"Tourism",desc:"Tasting event with premium whiskeys and culinary pairings from member restaurants."},
-  govAffairs:{name:"Government Affairs Series",org:"ch",cat:"Government",desc:"Speaker series connecting elected officials with the business community."},
-  dcDay:{name:"McAllen Day in Washington D.C.",org:"ch",cat:"Government",desc:"Annual trip giving Chamber members direct access to U.S. officials."},
-  hospTask:{name:"McAllen Hospitality Task Force",org:"ch",cat:"Visit McAllen",desc:"Forum for hospitality professionals to strengthen partnerships."},
-  meetings:{name:"Sales: Meetings & Conventions",org:"ch",cat:"Visit McAllen",desc:"Attracts conferences generating $5.6M+ in economic impact annually."},
-  sports:{name:"Sales: Sports Events",org:"ch",cat:"Visit McAllen",desc:"Promotes McAllen as a sports destination with $15.9M+ economic impact."},
-  scanSave:{name:"Scan & Save Visitor Discount Program",org:"ch",cat:"Visit McAllen",desc:"QR code initiative connecting local businesses with visitors."},
-  hospTrain:{name:"Hospitality Training Certification Program",org:"ch",cat:"Visit McAllen",desc:"Partnership with UTRGV equipping hospitality employees with customer service skills."},
-  foodTruck:{name:"Food Truck Park",org:"ch",cat:"Other",desc:"Incubation program for food entrepreneurs to test their concept."},
-  incubator:{name:"McAllen Creative Incubator",org:"ch",cat:"Other",desc:"Hub for creative businesses offering space and virtual offices."},
-  oldChurch:{name:"Old Church",org:"ch",cat:"Other",desc:"Unique Chamber-managed venue for events and community programming."},
-  sbdc:{name:"UTRGV SBDC",org:"ut",desc:"Free one-on-one business advising, financial analysis, and loan packaging support."},
-  apex:{name:"UTRGV APEX Accelerator",org:"ut",desc:"Procurement technical assistance for government contracting."},
-  ecc:{name:"UTRGV ECC",org:"ut",desc:"Entrepreneurship and Commercialization Center — incubation and workspace."},
-  vboc:{name:"UTRGV VBOC",org:"ut",desc:"Veterans Business Outreach Center — resources for veterans and military spouses."},
-  pewd:{name:"UTRGV PEWD",org:"ut",desc:"Professional Education and Workforce Development — industry certificates."},
-  disc:{name:"UTRGV DISC",org:"ut",desc:"Data and Information Systems Center — economic research and market maps."},
-  liftfund:{name:"LiftFund",org:"eco",cat:"Capital Access",desc:"CDFI offering small business loans from $500-$1M for businesses that don't qualify for traditional bank financing.",website:"liftfund.org",tier:"Referral",scope:"local"},
-  accion:{name:"Accion Opportunity Fund",org:"eco",cat:"Capital Access",desc:"National CDFI providing small business loans and coaching to underserved entrepreneurs.",website:"accionopportunityfund.org",tier:"Public Resource",scope:"local"},
-  sba7a:{name:"SBA 7(a) Loan Program",org:"eco",cat:"Capital Access",desc:"The SBA's primary loan program. Guarantees up to $5M for working capital and equipment.",website:"sba.gov",tier:"Public Resource",scope:"national"},
-  sbamicro:{name:"SBA Microloan Program",org:"eco",cat:"Capital Access",desc:"SBA loans up to $50,000 for startups and small businesses needing small amounts of capital.",website:"sba.gov",tier:"Public Resource",scope:"national"},
-  lsnb:{name:"Lone Star National Bank",org:"eco",cat:"Capital Access",desc:"Community bank with deep RGV roots offering SBA loans and commercial lending.",website:"lsnb.com",tier:"Referral",scope:"local"},
-  ibc:{name:"IBC Bank",org:"eco",cat:"Capital Access",desc:"Regional bank with strong McAllen presence offering small business loans.",website:"ibc.com",tier:"Referral",scope:"local"},
-  score:{name:"SCORE McAllen",org:"eco",cat:"Business Advising",desc:"Free mentorship from experienced executives. One-on-one and group sessions.",website:"score.org/chapter/score-mcallen",tier:"Public Resource",scope:"local"},
-  txwbc:{name:"Texas Women's Business Center",org:"eco",cat:"Business Advising",desc:"Business training and access to capital programs for women entrepreneurs.",website:"texaswbc.org",tier:"Public Resource",scope:"statewide"},
-  wfsrgv:{name:"Workforce Solutions RGV",org:"eco",cat:"Workforce & HR",desc:"State workforce agency providing recruitment and on-the-job training subsidies.",website:"workforcesolutions.net",tier:"Public Resource",scope:"local"},
-  region1:{name:"Region One ESC",org:"eco",cat:"Workforce & HR",desc:"Educational service center providing workforce training across the RGV.",website:"esc1.net",tier:"Referral",scope:"local"},
-  launchrgv:{name:"Launch RGV",org:"eco",cat:"Innovation & Tech",desc:"RGV-based startup accelerator supporting tech and innovation-focused founders.",website:"launchrgv.com",tier:"Referral",scope:"local"},
-  txip:{name:"Texas Emerging Technology Fund",org:"eco",cat:"Innovation & Tech",desc:"State funding for technology commercialization and innovation-focused businesses.",website:"gov.texas.gov/innovation",tier:"Public Resource",scope:"statewide"},
-  mcallenedc:{name:"McAllen Economic Development Corp",org:"eco",cat:"Real Estate & Space",desc:"City of McAllen's economic development arm supporting site selection and expansion.",website:"mcallenedc.com",tier:"Referral",scope:"local"},
-  vltp:{name:"Volunteer Lawyers & Professionals",org:"eco",cat:"Legal & Compliance",desc:"Free and low-cost legal services for small businesses.",website:"vltp.org",tier:"Public Resource",scope:"statewide"},
-  uspto:{name:"U.S. Patent & Trademark Office",org:"eco",cat:"Legal & Compliance",desc:"Federal agency for trademark and patent registration.",website:"uspto.gov",tier:"Public Resource",scope:"national"}
-};
-
+// ── BUNDLES (names and copy live here; program lists come from the sheet) ────
 var BUNDLES = {
-  pioneer:     {name:"The Pioneer Bundle",     dim1:"vis",dim2:"cap",   desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
-  catalyst:    {name:"The Catalyst Bundle",    dim1:"vis",dim2:"inno",  desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
-  connector:   {name:"The Connector Bundle",   dim1:"vis",dim2:"intel", desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
-  resilience:  {name:"The Resilience Bundle",  dim1:"cap",dim2:"ops",   desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
-  momentum:    {name:"The Momentum Bundle",    dim1:"cap",dim2:"inno",  desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
-  builder:     {name:"The Builder Bundle",     dim1:"ops",dim2:"work",  desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
-  intelligence:{name:"The Intelligence Bundle",dim1:"intel",dim2:"ops", desc:"Your next move starts with clarity. This bundle gives you market data, strategic advising, and research tools to make confident decisions."},
-  trailblazer: {name:"The Trailblazer Bundle", dim1:"vis",dim2:"cap",   desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
+  pioneer:     {name:'The Pioneer Bundle',     desc:"You have the vision and the drive. Now it's time to build the runway: validate your idea, reach your first audience, and line up the capital to make it real."},
+  catalyst:    {name:'The Catalyst Bundle',    desc:"You're sitting on something with real potential. These steps help you commercialize your idea, solve technical challenges, and bring it to market with expert support."},
+  connector:   {name:'The Connector Bundle',   desc:'Growth for your business runs through relationships and information. These steps put you in rooms with the right people and give you the data to make smarter moves.'},
+  resilience:  {name:'The Resilience Bundle',  desc:'Your business has what it takes. These steps give you direct access to advisors, tools, and programs to stabilize and rebuild momentum.'},
+  momentum:    {name:'The Momentum Bundle',    desc:'You are ready to accelerate. These steps connect you with capital, technical resources, and innovation support to reach the next level.'},
+  builder:     {name:'The Builder Bundle',     desc:'Strong businesses need strong teams and solid systems. These steps help you find the right people and build the operational foundation for growth.'},
+  intelligence:{name:'The Intelligence Bundle',desc:'Your next move starts with clarity. These steps give you market data, strategic advising, and research tools so you can decide with confidence.'},
+  trailblazer: {name:'The Trailblazer Bundle', desc:'You are building something meaningful, and the McAllen ecosystem has resources designed for women entrepreneurs to launch, grow, and lead.'}
 };
-
 var BUNDLE_PROGRAMS = {
-  pioneer:     ["oneMC","itx","consulting","sizeup","epulse","linkup","sbdc","liftfund","score","accion"],
-  catalyst:    ["itx","oneMC","satop","consulting","sizeup","epulse","ecc","sbdc","launchrgv","txip","uspto"],
-  connector:   ["linkup","ambassador","ribbons","sizeup","oneMC","epulse","mxlan","disc","sbdc","score"],
-  resilience:  ["consulting","itx","sizeup","virtualOff","epulse","tradeTalks","sbdc","liftfund","accion","sbamicro","score"],
-  momentum:    ["itx","satop","sizeupAdv","consulting","sizeup","ecc","sbdc","liftfund","txip","launchrgv"],
-  builder:     ["consulting","jumpstart","linkup","sizeup","tradeTalks","rgvLead","pewd","sbdc","wfsrgv","region1","score"],
-  intelligence:["consulting","sizeup","epulse","epMag","mxlan","coli","disc","sbdc","score"],
-  trailblazer: ["latinaHope","consulting","itx","oneMC","legendary","womanMag","sbdc","ecc","txwbc","accion","liftfund"]
+  pioneer:     ['oneMC','itx','consulting','sizeup','epulse','linkup','sbdc','liftfund','score','accion'],
+  catalyst:    ['itx','oneMC','satop','consulting','sizeup','epulse','ecc','sbdc','launchRGV','txip','uspto'],
+  connector:   ['linkup','ambassador','ribbons','sizeup','oneMC','epulse','mxlan','disc','sbdc','score','lsnbAdv'],
+  resilience:  ['consulting','itx','sizeup','virtualOff','epulse','sbdc','liftfund','accion','sbamicro','kiva','score','mcallenedc'],
+  momentum:    ['itx','satop','sizeupAdv','consulting','sizeup','ecc','sbdc','liftfund','txip','launchRGV','capitalFactory'],
+  builder:     ['consulting','jumpstart','linkup','sizeup','rgvLead','pewd','sbdc','wfsrgv','region1ESC','score','missionReady'],
+  intelligence:['consulting','sizeup','epulse','epMag','mxlan','coli','disc','sbdc','score','lsnbAdv','bidAcademy'],
+  trailblazer: ['latinaHope','consulting','itx','oneMC','legendary','womanMag','sbdc','ecc','txwbc','accion','liftfund','rgvan']
+};
+// Top dimension -> second dimension -> bundle. Every combination is covered.
+var BUNDLE_MATRIX = {
+  vis:  {cap:'pioneer',  inno:'catalyst', intel:'connector',   ops:'connector',   work:'connector'},
+  cap:  {vis:'pioneer',  inno:'momentum', ops:'resilience',    intel:'resilience',work:'resilience'},
+  inno: {vis:'catalyst', cap:'momentum',  intel:'catalyst',    ops:'momentum',    work:'momentum'},
+  ops:  {cap:'resilience',work:'builder', intel:'intelligence',vis:'resilience',  inno:'resilience'},
+  work: {ops:'builder',  intel:'builder', cap:'builder',       vis:'builder',     inno:'builder'},
+  intel:{ops:'intelligence',vis:'connector',inno:'catalyst',   cap:'intelligence',work:'builder'}
 };
 
-var dataLoaded = false;
+// ── PROGRAM DATA ─────────────────────────────────────────────────────────────
+// Filled from the sheet. FALLBACK is used only for a tab that fails to load.
+var PROGRAMS = {};
+var FALLBACK = {
+  ch: {
+    consulting:{name:'Business Consulting',cat:'Economic Dev / Small Business',desc:'Personalized one-on-one consulting: business planning, market strategy, and roadmaps from concept to launch.',dims:['cap','intel','ops'],stages:'all'},
+    itx:{name:'Innovation Texas (ITX)',cat:'Economic Dev / Small Business',desc:'Cohort-based entrepreneur program combining FastTrac curriculum, coaching, business validation, and pitch preparation.',dims:['inno','cap','vis'],stages:'idea,new,growing'},
+    oneMC:{name:'1 Million Cups (1MC)',cat:'Economic Dev / Small Business',desc:'Free monthly platform to present your business, get community feedback, and make connections.',dims:['vis','intel','cap'],stages:'all'},
+    latinaHope:{name:'Latina Hope',cat:'Economic Dev / Small Business',desc:'Workshops, product-skills training, and pitch funding for women entrepreneurs.',dims:['cap','vis','inno'],stages:'all',requires:'woman'},
+    sizeup:{name:'SizeUp Business Intelligence',cat:'Economic Dev / Small Business',desc:'Data platform with competitive analysis and market research.',dims:['intel','vis'],stages:'all'},
+    linkup:{name:'Link-Up: Speed Networking',cat:'Membership',desc:'Monthly speed networking with 55-75 local business professionals.',dims:['vis','intel'],stages:'new,growing,established'},
+    goodMorning:{name:'Good Morning McAllen Breakfast',cat:'Signature Events',desc:'Quarterly breakfast for networking, idea sharing, and collaboration.',dims:['vis'],stages:'all'}
+  },
+  ut: {
+    sbdc:{name:'UTRGV SBDC',cat:'UTRGV',desc:'Free one-on-one business advising, financial analysis, business plan development, and loan packaging support.',phone:'(956) 665-7535',dims:['cap','intel','ops'],stages:'all'},
+    ecc:{name:'UTRGV ECC',cat:'UTRGV',desc:'Entrepreneurship & Commercialization Center: incubation, workspace, and commercialization services.',phone:'(956) 665-2585',dims:['inno','cap','ops'],stages:'idea,new,growing',requires:'tech'},
+    vboc:{name:'UTRGV VBOC',cat:'UTRGV',desc:'Veterans Business Outreach Center: resources for veterans and military spouses.',phone:'(956) 665-8931',dims:['cap','intel','ops'],stages:'all',requires:'veteran'}
+  },
+  eco: {
+    liftfund:{name:'LiftFund',cat:'Capital Access',desc:"Small business loans from $500 to $1M for businesses that don't qualify for traditional bank financing.",website:'liftfund.com',email:'mrodriguez@liftfund.com',contact:'Marlene R. Rodriguez',phone:'(956) 299-2551',dims:['cap'],area:'rgv',stages:'new,growing,established',requires:'capital',tier:'Referral'},
+    kiva:{name:'Kiva U.S. Small Business Loan',cat:'Capital Access',desc:'0% interest, no-fee crowdfunded loans from $1,000 to $15,000. No minimum credit score.',website:'kiva.org/borrow',dims:['cap'],area:'national',stages:'idea,new,growing',requires:'capital'},
+    score:{name:'SCORE South Texas',cat:'Knowledge & Education',desc:'Free mentorship from experienced executives and business owners.',website:'score.org/riograndevalley',dims:['intel','ops'],area:'rgv',stages:'all'},
+    txwbc:{name:"Texas Women's Business Center",cat:'Knowledge & Education',desc:'Business training, advising, and access to capital for women entrepreneurs in Texas.',website:'texaswbc.org',dims:['intel','cap'],area:'texas',stages:'all',requires:'woman'}
+  }
+};
+
+function isActive(v){ return v === true || String(v).toUpperCase() === 'TRUE'; }
+function list(v){
+  return String(v || '').split(',').map(function(s){ return s.trim().toLowerCase(); }).filter(Boolean);
+}
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
 
 function fetchSheet(sheetName, callback) {
   var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
-            '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(sheetName);
-  var timer = setTimeout(function(){ callback(new Error('timeout'), null); }, 8000);
+            '/gviz/tq?tqx=out:json&headers=1&sheet=' + encodeURIComponent(sheetName);
+  var timer = setTimeout(function(){ callback(new Error('timeout'), null); callback = function(){}; }, 8000);
   fetch(url)
     .then(function(r){ return r.text(); })
     .then(function(text){
       clearTimeout(timer);
-      // gviz wraps: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
-      var start = text.indexOf('{');
-      var end = text.lastIndexOf('}');
+      var start = text.indexOf('{'), end = text.lastIndexOf('}');
       if (start === -1 || end === -1) { callback(new Error('bad response'), null); return; }
-      var json = JSON.parse(text.substring(start, end+1));
-      var cols = json.table.cols.map(function(c){ return c.label || ''; });
-      var result = (json.table.rows || []).map(function(row){
-        var obj = {};
+      var json = JSON.parse(text.substring(start, end + 1));
+      var cols = json.table.cols.map(function(c){ return (c.label || '').trim(); });
+      var rows = (json.table.rows || []).map(function(row){
+        var o = {};
         cols.forEach(function(col, i){
-          obj[col] = (row.c && row.c[i] && row.c[i].v !== null && row.c[i].v !== undefined) ? row.c[i].v : '';
+          var cell = row.c && row.c[i];
+          o[col] = (cell && cell.v !== null && cell.v !== undefined) ? cell.v : '';
         });
-        return obj;
+        return o;
       });
-      callback(null, result);
+      callback(null, rows);
     })
     .catch(function(err){ clearTimeout(timer); callback(err, null); });
 }
 
+function addFallback(org){
+  Object.keys(FALLBACK[org]).forEach(function(k){
+    var p = Object.assign({}, FALLBACK[org][k]); p.org = org; PROGRAMS[k] = p;
+  });
+}
+
 function loadSheetData(onComplete) {
   var pending = 4;
-  function done() { if (--pending === 0) { onComplete(); } }
+  function done(){ if (--pending === 0) onComplete(); }
 
-  // Chamber Programs
-  fetchSheet('Chamber Programs', function(err, rows) {
-    if (rows) rows.forEach(function(r) {
-      var active = r['Active'];
-      if (active === true || active === 'TRUE' || active === 'true') {
-        ALL_PROGRAMS[r['Key']] = { name: r['Name'], org: 'ch', cat: r['Category'], desc: r['Description'] };
-      }
+  fetchSheet('Chamber Programs', function(err, rows){
+    if (!rows) addFallback('ch');
+    else rows.forEach(function(r){
+      if (!r['Key'] || !isActive(r['Active'])) return;
+      PROGRAMS[r['Key']] = {org:'ch', name:r['Name'], cat:r['Category'], desc:r['Description'],
+        dims:list(r['Dimensions']), stages:r['Stages'], industries:r['Industries'], requires:r['Requires']};
     });
     done();
   });
 
-  // UTRGV Resources
-  fetchSheet('UTRGV Resources', function(err, rows) {
-    if (rows) rows.forEach(function(r) {
-      var active = r['Active'];
-      if (active === true || active === 'TRUE' || active === 'true') {
-        ALL_PROGRAMS[r['Key']] = { name: r['Name'], org: 'ut', desc: r['Description'], phone: r['Phone'] };
-      }
+  fetchSheet('UTRGV Resources', function(err, rows){
+    if (!rows) addFallback('ut');
+    else rows.forEach(function(r){
+      if (!r['Key'] || !isActive(r['Active'])) return;
+      PROGRAMS[r['Key']] = {org:'ut', name:r['Name'], cat:'UTRGV', desc:r['Description'],
+        phone:r['Phone'], contact:r['Contact Name'], email:r['Contact Email'],
+        dims:list(r['Dimensions']), stages:r['Stages'], industries:r['Industries'], requires:r['Requires']};
     });
     done();
   });
 
-  // Ecosystem Partners
-  fetchSheet('Ecosystem Partners', function(err, rows) {
-    if (rows) rows.forEach(function(r) {
-      var active = r['Active'];
-      if (active === true || active === 'TRUE' || active === 'true') {
-        ALL_PROGRAMS[r['Key']] = {
-          name: r['Name'], org: 'eco', cat: r['Category'],
-          desc: r['Description'], website: r['Website'], tier: r['Tier'],
-          scope: (r['Scope'] || 'local').trim().toLowerCase(),
-          dims: r['Dimensions'] ? r['Dimensions'].split(',').map(function(d){ return d.trim(); }) : []
-        };
-      }
+  fetchSheet('Ecosystem Partners', function(err, rows){
+    if (!rows) addFallback('eco');
+    else rows.forEach(function(r){
+      if (!r['Key'] || !isActive(r['Active'])) return;
+      PROGRAMS[r['Key']] = {org:'eco', name:r['Name'], cat:r['Category'], desc:r['Description'],
+        website:r['Website'], email:r['Contact Email'], contact:r['Contact Name'], phone:r['Phone'],
+        tier:r['Tier'], dims:list(r['Dimensions']), area:r['Area'], stages:r['Stages'],
+        industries:r['Industries'], requires:r['Requires']};
     });
     done();
   });
 
-  // Bundle Mapping
-  fetchSheet('Bundle Mapping', function(err, rows) {
-    if (rows) rows.forEach(function(r) {
+  fetchSheet('Bundle Mapping', function(err, rows){
+    if (rows) rows.forEach(function(r){
       var key = r['Bundle Key'];
       if (!key) return;
-      BUNDLE_PROGRAMS[key] = r['Program Keys (comma-separated)'] ?
-        r['Program Keys (comma-separated)'].split(',').map(function(k){ return k.trim(); }) : [];
-      BUNDLES[key] = {
-        name: r['Bundle Name'],
-        desc: getBundleDesc(key),
-        dim1: r['Primary Dimension'] || '',
-        dim2: r['Secondary Dimension'] || ''
-      };
+      BUNDLE_PROGRAMS[key] = String(r['Program Keys (comma-separated)'] || '')
+        .split(',').map(function(k){ return k.trim(); }).filter(Boolean);
+      if (BUNDLES[key] && r['Bundle Name']) BUNDLES[key].name = r['Bundle Name'];
     });
     done();
   });
 }
 
-function getBundleDesc(key) {
-  var d = {
-    pioneer:     "You have the vision and the drive — now it's time to build the runway. This bundle connects you with programs that help you validate your idea, reach your first audience, and access the capital to make it real.",
-    catalyst:    "You're sitting on something with real potential. This bundle helps you commercialize your idea, solve technical challenges, and bring your innovation to market with expert support.",
-    connector:   "Growth for your business runs through relationships and information. This bundle puts you in rooms with the right people and gives you the data to make smarter moves.",
-    resilience:  "Your business has what it takes — you just need the right structure and support to stabilize and rebuild momentum. This bundle gives you direct access to advisors, tools, and programs built for exactly this moment.",
-    momentum:    "You're ready to accelerate but you need the fuel. This bundle connects you with capital access, technical resources, and innovation support to take your business to the next level.",
-    builder:     "Strong businesses are built by strong teams and solid systems. This bundle helps you find the right people, train them well, and put the operational foundation in place for sustainable growth.",
-    intelligence:"The next right move for your business starts with clarity. This bundle gives you access to market data, strategic advising, and research tools so you can make confident decisions.",
-    trailblazer: "You're building something meaningful — and the McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."
-  };
-  return d[key] || "";
-}
-
-// Gate rules — appended based on q1/q4 answer
-var GATE_RULES = [
-  // Business type gates (q1)
-  { q:'q1', val:0, add:['tasteMcAllen','foodTruck','foodieTour'] },
-  { q:'q1', val:1, add:['shopHop','holShopping','marketMain'] },
-  { q:'q1', val:3, add:['marketMain','incubator'] },
-  { q:'q1', val:4, add:['tradeTalks','dcDay','mxlan','apex'] },
-  { q:'q1', val:5, add:['fitFall'] },
-  { q:'q1', val:6, add:['satop','itx','ecc'] },
-  // Woman-owned (q4)
-  { q:'q4', val:0, add:['latinaHope','legendary','womanMag','txwbc'] },
-  // Needs financing (q17 val:0=yes, val:1=maybe)
-  { q:'q17', val:0, add:['liftfund','accion','sba7a','sbamicro','sbdc','lsnb'] },
-  { q:'q17', val:1, add:['sbdc','score','liftfund'] },
-  // Cross-border trade (q18 val:0=yes, val:1=wants to)
-  { q:'q18', val:0, add:['tradeTalks','mxlan','uscommerce','nafta','dcDay','apex'] },
-  { q:'q18', val:1, add:['tradeTalks','mxlan','uscommerce'] },
-  // Veteran (q19 val:0=yes)
-  { q:'q19', val:0, add:['vboc','sbdc'] },
-  // Proprietary product/tech (q20 val:0=yes, val:1=developing)
-  { q:'q20', val:0, add:['uspto','txip','ecc','launchrgv'] },
-  { q:'q20', val:1, add:['ecc','launchrgv','satop'] }
-];
-
-// ── SCREEN HELPERS ────────────────────────────────────────────────────────────
+// ── SCREEN HELPERS ───────────────────────────────────────────────────────────
+var dataLoaded = false;
 function showScr(id) {
   ['s-land','s-asmt','s-res'].forEach(function(s){
-    document.getElementById(s).className = 'scr' + (s===id?' on':'');
+    document.getElementById(s).className = 'scr' + (s === id ? ' on' : '');
   });
   window.scrollTo(0,0);
 }
-function setP(pct){ document.getElementById('pf').style.width = pct+'%'; }
+function setP(pct){ document.getElementById('pf').style.width = pct + '%'; }
+
+// Loads the sheet once (starts when the page opens) and runs any waiting callbacks
+var loadState = 'idle', loadWaiters = [];
+function ensureData(cb){
+  if (loadState === 'done') { cb(); return; }
+  loadWaiters.push(cb);
+  if (loadState === 'loading') return;
+  loadState = 'loading';
+  var finished = false;
+  function finish(){
+    if (finished) return;
+    finished = true; loadState = 'done'; dataLoaded = true;
+    updateStats();
+    loadWaiters.splice(0).forEach(function(f){ f(); });
+  }
+  var safety = setTimeout(function(){
+    // Sheet is slow: use fallback data so nobody waits forever
+    if (!Object.keys(PROGRAMS).length) { addFallback('ch'); addFallback('ut'); addFallback('eco'); }
+    finish();
+  }, 6000);
+  loadSheetData(function(){ clearTimeout(safety); finish(); updateStats(); });
+}
+
+// Landing-page numbers: questions from SECS, resources from the sheet
+function updateStats(){
+  var qCount = 0;
+  SECS.forEach(function(s){
+    s.qs.forEach(function(q){ if (q.type === 'opts' || q.type === 'slider') qCount++; });
+  });
+  var elQ = document.getElementById('statQs');
+  var elP = document.getElementById('statProgs');
+  if (elQ) elQ.textContent = qCount;
+  var n = Object.keys(PROGRAMS).length;
+  if (elP && n) elP.textContent = n;
+}
 
 function goStart(){
-  if (dataLoaded) {
-    showScr('s-asmt'); renderSec(0); setP(0);
-    return;
-  }
   var btn = document.getElementById('startBtn');
   var span = btn ? btn.querySelector('span') : null;
+  if (btn && btn.disabled) return; // already waiting for the sheet
   var origText = span ? span.innerHTML : '';
-  if (btn) { btn.disabled = true; }
-  if (span) { span.textContent = 'Loading...'; }
-
-  var done = false;
-  function proceed() {
-    if (done) return;
-    done = true;
-    dataLoaded = true;
-    if (btn) { btn.disabled = false; }
-    if (span) { span.innerHTML = origText; }
-    showScr('s-asmt'); renderSec(0); setP(0);
+  var waiting = loadState !== 'done';
+  if (waiting) {
+    if (btn) btn.disabled = true;
+    if (span) span.textContent = 'Loading...';
   }
-
-  // Safety net: if loadSheetData takes more than 5s, start anyway with whatever loaded
-  var safetyTimer = setTimeout(function(){
-    console.warn('Sheet load timeout — starting with available data');
-    proceed();
-  }, 5000);
-
-  loadSheetData(function(){
-    clearTimeout(safetyTimer);
-    proceed();
+  ensureData(function(){
+    if (waiting) {
+      if (btn) btn.disabled = false;
+      if (span) span.innerHTML = origText;
+    }
+    showScr('s-asmt'); renderSec(0); setP(0);
   });
 }
 window.goStart = goStart;
-window.goNext = goNext;
-window.goResults = goResults;
-window.goRestart = goRestart;
 
-// ── RENDER SECTION ────────────────────────────────────────────────────────────
+// ── RENDER SECTION ───────────────────────────────────────────────────────────
 function renderSec(idx){
   curSec = idx;
   var sec = SECS[idx], h = '';
-  h += '<div class="sec-hd"><div class="sec-num">'+sec.num+'</div>';
-  h += '<div class="sec-ttl">'+sec.title+'</div>';
-  h += '<p class="sec-sub">'+sec.desc+'</p></div>';
+  h += '<div class="sec-hd"><div class="sec-num">' + sec.num + '</div>';
+  h += '<div class="sec-ttl">' + sec.title + '</div>';
+  h += '<p class="sec-sub">' + sec.desc + '</p></div>';
 
-  for(var qi=0; qi<sec.qs.length; qi++){
-    var q = sec.qs[qi];
-    if(q.type==='opts'){
-      h += '<div class="qblk"><div class="qlbl">'+q.lbl+'</div><div class="opts" data-group="'+q.id+'">';
-      for(var oi=0; oi<q.opts.length; oi++){
-        h += '<button class="opt'+(ans[q.id]===oi?' sel':'')+'" data-qid="'+q.id+'" data-val="'+oi+'">';
-        h += '<span class="odot"></span>'+q.opts[oi]+'</button>';
-      }
+  sec.qs.forEach(function(q){
+    if (q.type === 'opts') {
+      h += '<div class="qblk"><div class="qlbl">' + q.lbl + '</div><div class="opts">';
+      q.opts.forEach(function(o, oi){
+        h += '<button class="opt' + (ans[q.id] === oi ? ' sel' : '') + '" data-qid="' + q.id + '" data-val="' + oi + '">';
+        h += '<span class="odot"></span>' + esc(o) + '</button>';
+      });
       h += '</div></div>';
-    } else if(q.type==='slider'){
-      var v = ans[q.id]!==undefined ? ans[q.id] : 3;
-      if(ans[q.id]===undefined) ans[q.id]=3;
-      h += '<div class="slblk"><div class="slq">'+q.lbl+'</div>';
+    } else if (q.type === 'slider') {
+      if (ans[q.id] === undefined) ans[q.id] = 3;
+      var v = ans[q.id];
+      h += '<div class="slblk"><div class="slq">' + q.lbl + '</div>';
       h += '<div class="slrow"><span class="sllbl">Not urgent</span>';
-      h += '<input type="range" min="1" max="5" step="1" value="'+v+'" data-slid="'+q.id+'">';
+      h += '<input type="range" min="1" max="5" step="1" value="' + v + '" data-slid="' + q.id + '">';
       h += '<span class="sllbl">Critical</span>';
-      h += '<span class="slval" id="sv_'+q.id+'">'+v+'</span></div></div>';
-    } else if(q.type==='contact'){
-      var c = ans.contact||{};
+      h += '<span class="slval" id="sv_' + q.id + '">' + v + '</span></div></div>';
+    } else if (q.type === 'contact') {
+      var c = ans.contact || {};
       h += '<div class="qblk"><div class="igrid">';
-      h += '<div class="iblk"><label>First Name <span style="color:#dc2626">*</span></label><input id="c_first" type="text" value="'+(c.first||'')+'" placeholder="Maria"></div>';
-      h += '<div class="iblk"><label>Last Name</label><input id="c_last" type="text" value="'+(c.last||'')+'" placeholder="Garza"></div>';
-      h += '<div class="iblk full"><label>Business Name</label><input id="c_biz" type="text" value="'+(c.biz||'')+'" placeholder="Your business name"></div>';
-      h += '<div class="iblk full"><label>Email Address <span style="color:#dc2626">*</span></label><input id="c_email" type="email" value="'+(c.email||'')+'" placeholder="you@yourbusiness.com"></div>';
-      h += '<div class="iblk"><label>Phone (optional)</label><input id="c_phone" type="tel" value="'+(c.phone||'')+'" placeholder="(956) 000-0000"></div>';
-      h += '<div class="iblk"><label>How did you hear about us?</label><input id="c_ref" type="text" value="'+(c.ref||'')+'" placeholder="Chamber website, friend..."></div>';
+      h += '<div class="iblk"><label>First Name <span style="color:#dc2626">*</span></label><input id="c_first" type="text" value="' + esc(c.first) + '" placeholder="Maria"></div>';
+      h += '<div class="iblk"><label>Last Name</label><input id="c_last" type="text" value="' + esc(c.last) + '" placeholder="Garza"></div>';
+      h += '<div class="iblk full"><label>Business Name</label><input id="c_biz" type="text" value="' + esc(c.biz) + '" placeholder="Your business name"></div>';
+      h += '<div class="iblk full"><label>Email Address <span style="color:#dc2626">*</span></label><input id="c_email" type="email" value="' + esc(c.email) + '" placeholder="you@yourbusiness.com"></div>';
+      h += '<div class="iblk"><label>Phone (optional)</label><input id="c_phone" type="tel" value="' + esc(c.phone) + '" placeholder="(956) 000-0000"></div>';
+      h += '<div class="iblk"><label>How did you hear about us?</label><input id="c_ref" type="text" value="' + esc(c.ref) + '" placeholder="Chamber website, friend..."></div>';
       h += '</div></div>';
     }
-  }
+  });
 
-  var isFirst=idx===0, isLast=idx===SECS.length-1;
+  var isFirst = idx === 0, isLast = idx === SECS.length - 1;
   h += '<div class="navrow">';
   h += isFirst ? '<span></span>' : '<button class="btn-bk" id="btnBack">&#8592; Back</button>';
-  h += '<span class="stepind">'+(idx+1)+' of '+SECS.length+'</span>';
+  h += '<span class="stepind">' + (idx + 1) + ' of ' + SECS.length + '</span>';
   h += isLast
     ? '<button class="btn-nx" id="btnResults">See My Results &#8594;</button>'
     : '<button class="btn-nx" id="btnNext">Continue &#8594;</button>';
   h += '</div>';
 
-  document.getElementById('asmtWrap').innerHTML = h;
-  setP(Math.round((idx/SECS.length)*100));
+  // Replace the node so listeners from earlier sections don't stack up
+  var old = document.getElementById('asmtWrap');
+  var wrap = old.cloneNode(false);
+  old.parentNode.replaceChild(wrap, old);
+  wrap.innerHTML = h;
+  setP(Math.round((idx / SECS.length) * 100));
 
-  var wrap = document.getElementById('asmtWrap');
   wrap.addEventListener('click', function(e){
     var opt = e.target.closest('.opt');
-    if(opt && opt.dataset.qid){
-      var qid=opt.dataset.qid, val=parseInt(opt.dataset.val);
-      ans[qid]=val;
-      wrap.querySelectorAll('[data-qid="'+qid+'"]').forEach(function(b){ b.className='opt'; });
-      opt.className='opt sel';
+    if (opt && opt.dataset.qid) {
+      var qid = opt.dataset.qid;
+      ans[qid] = parseInt(opt.dataset.val, 10);
+      wrap.querySelectorAll('[data-qid="' + qid + '"]').forEach(function(b){ b.className = 'opt'; });
+      opt.className = 'opt sel';
       return;
     }
-    if(e.target.id==='btnBack'){ renderSec(curSec-1); return; }
-    if(e.target.id==='btnNext'){ goNext(); return; }
-    if(e.target.id==='btnResults'){ goResults(); return; }
+    if (e.target.id === 'btnBack') { saveContact(); renderSec(curSec - 1); return; }
+    if (e.target.id === 'btnNext') { goNext(); return; }
+    if (e.target.id === 'btnResults') { goResults(); return; }
   });
   wrap.addEventListener('input', function(e){
-    if(e.target.dataset.slid){
-      ans[e.target.dataset.slid]=parseInt(e.target.value);
-      var el=document.getElementById('sv_'+e.target.dataset.slid);
-      if(el) el.textContent=e.target.value;
+    if (e.target.dataset.slid) {
+      ans[e.target.dataset.slid] = parseInt(e.target.value, 10);
+      var el = document.getElementById('sv_' + e.target.dataset.slid);
+      if (el) el.textContent = e.target.value;
     }
   });
 }
 
 function goNext(){
-  var sec=SECS[curSec];
-  for(var i=0;i<sec.qs.length;i++){
-    if(sec.qs[i].type==='opts' && ans[sec.qs[i].id]===undefined){
+  var sec = SECS[curSec];
+  for (var i = 0; i < sec.qs.length; i++) {
+    if (sec.qs[i].type === 'opts' && ans[sec.qs[i].id] === undefined) {
       alert('Please answer all questions before continuing.');
       return;
     }
   }
-  renderSec(curSec+1);
+  renderSec(curSec + 1);
 }
 
 function saveContact(){
-  var g=function(id){ var el=document.getElementById(id); return el?el.value:''; };
-  ans.contact={first:g('c_first'),last:g('c_last'),biz:g('c_biz'),
-               email:g('c_email'),phone:g('c_phone'),ref:g('c_ref')};
+  var g = function(id){ var el = document.getElementById(id); return el ? el.value : undefined; };
+  if (g('c_email') === undefined) return;
+  ans.contact = {first:g('c_first'), last:g('c_last'), biz:g('c_biz'),
+                 email:g('c_email'), phone:g('c_phone'), ref:g('c_ref')};
 }
 
-// ── SCORING ───────────────────────────────────────────────────────────────────
+// ── SCORING AND BUNDLE ───────────────────────────────────────────────────────
 function calcScores(){
-  sc={vis:0,cap:0,inno:0,ops:0,work:0,intel:0};
+  sc = {vis:0,cap:0,inno:0,ops:0,work:0,intel:0};
   Object.keys(SCORE_MAP).forEach(function(qid){
-    var a=ans[qid];
-    if(a!==undefined && SCORE_MAP[qid][a]){
-      Object.keys(SCORE_MAP[qid][a]).forEach(function(d){ sc[d]=(sc[d]||0)+SCORE_MAP[qid][a][d]; });
+    var a = ans[qid];
+    if (a !== undefined && SCORE_MAP[qid][a]) {
+      Object.keys(SCORE_MAP[qid][a]).forEach(function(d){ sc[d] += SCORE_MAP[qid][a][d]; });
     }
   });
-  var slmap={q13:'cap',q14:'vis',q15:'ops',q16:'inno'};
+  var slmap = {q13:'cap', q14:'vis', q15:'ops', q16:'inno'};
   Object.keys(slmap).forEach(function(qid){
-    var d=slmap[qid], v=ans[qid]||3, m=v/3;
-    sc[d]=Math.round((sc[d]||0)*m);
-    if(qid==='q15') sc.work=Math.round((sc.work||0)*m);
-    if(qid==='q16') sc.intel=Math.round((sc.intel||0)*m);
+    var d = slmap[qid], m = (ans[qid] || 3) / 3;
+    sc[d] = Math.round(sc[d] * m);
+    if (qid === 'q15') sc.work = Math.round(sc.work * m);
+    if (qid === 'q16') sc.intel = Math.round(sc.intel * m);
+  });
+  var max = Math.max.apply(null, Object.values(sc).concat([1]));
+  norm = {};
+  Object.keys(sc).forEach(function(k){ norm[k] = Math.round((sc[k] / max) * 100); });
+}
+
+function sortedDims(){
+  return DIM_ORDER.slice().sort(function(a, b){
+    return (sc[b] - sc[a]) || (DIM_ORDER.indexOf(a) - DIM_ORDER.indexOf(b));
   });
 }
 
 function getBundleKey(){
-  if(ans.q4===0) return 'trailblazer';
-  var sorted=Object.keys(sc).sort(function(a,b){ return sc[b]-sc[a]; });
-  var top2=sorted[0]+'_'+sorted[1];
-  var M={vis_cap:'pioneer',cap_vis:'pioneer',vis_inno:'catalyst',inno_vis:'catalyst',
-         intel_inno:'catalyst',inno_intel:'catalyst',vis_intel:'connector',intel_vis:'connector',
-         cap_ops:'resilience',ops_cap:'resilience',intel_ops:'resilience',ops_intel:'resilience',
-         cap_inno:'momentum',inno_cap:'momentum',ops_work:'builder',work_ops:'builder',
-         work_intel:'builder',intel_work:'builder',cap_intel:'trailblazer',intel_cap:'trailblazer'};
-  return M[top2]||'resilience';
+  var d = sortedDims();
+  if (sc[d[0]] === 0) return 'resilience';
+  // Woman-owned gets Trailblazer only when her top need is visibility or capital.
+  // Otherwise she keeps her real bundle and women-focused programs are boosted.
+  if (ans.q4 === 0 && (d[0] === 'vis' || d[0] === 'cap')) return 'trailblazer';
+  return BUNDLE_MATRIX[d[0]][d[1]] || 'resilience';
 }
 
-function getPrograms(key){
-  // Step 1: Start with fixed Chamber + UTRGV programs from bundle mapping
-  var keys = (BUNDLE_PROGRAMS[key]||[]).slice();
-
-  // Step 2: Get this bundle's top 2 dimensions
-  var bundle = BUNDLES[key] || {};
-  var bundleDim1 = bundle.dim1 || '';
-  var bundleDim2 = bundle.dim2 || '';
-
-  // Step 3: Auto-add ALL active ecosystem partners that match bundle dimensions
-  // This means any eco partner added to the Sheet appears automatically
-  Object.keys(ALL_PROGRAMS).forEach(function(k){
-    var p = ALL_PROGRAMS[k];
-    if (p.org !== 'eco') return; // only ecosystem partners are dynamic
-    if (keys.indexOf(k) !== -1) return; // already in list
-    var dims = p.dims || [];
-    // Include if partner dimensions overlap with bundle top 2 dimensions
-    var matches = dims.some(function(d){
-      return d === bundleDim1 || d === bundleDim2;
-    });
-    if (matches) keys.push(k);
-  });
-
-  // Step 4: Apply gate rules (business type, cross-border, veteran, etc.)
-  GATE_RULES.forEach(function(rule){
-    if(ans[rule.q]===rule.val){
-      rule.add.forEach(function(k){ if(keys.indexOf(k)===-1) keys.push(k); });
+// ── FILTERING AND RANKING ────────────────────────────────────────────────────
+function getProfile(){
+  return {
+    stage: STG[ans.q2] || 'new',
+    industry: IND[ans.q1] || 'other',
+    area: (LOCS[ans.q0] || LOCS[0]).t,
+    flags: {
+      woman:   ans.q4 === 0,
+      veteran: ans.q19 === 0,
+      capital: ans.q17 === 0 || ans.q17 === 1,
+      trade:   ans.q18 === 0 || ans.q18 === 1 || ans.q1 === 4,
+      tech:    ans.q20 === 0 || ans.q20 === 1 || ans.q1 === 6
     }
-  });
-
-  // Step 5: Build result array, deduped
-  var seen={}, result=[];
-  keys.forEach(function(k){
-    if(ALL_PROGRAMS[k] && !seen[k]){ seen[k]=true; result.push(ALL_PROGRAMS[k]); }
-  });
-  return result;
+  };
 }
 
-// ── RESULTS RENDER HELPERS ───────────────────────────────────────────────────
-function renderSection(title, color, programs, cardFn, tabKey) {
-  if (!programs || programs.length === 0) return '';
-  var uid = 'sec_' + Math.random().toString(36).substr(2,6);
-  var h = '<div class="res-section" id="'+uid+'">';
-  h += '<div class="res-sec-hdr" style="border-left:4px solid '+color+'" onclick="toggleSection(\''+uid+'\')">';
-  h += '<span class="res-sec-title">'+title+'</span>';
-  h += '<span class="res-sec-count">'+programs.length+' resources</span>';
-  h += '<span class="res-sec-arrow" id="arr_'+uid+'">▾</span>';
-  h += '</div>';
-  h += '<div class="res-sec-body" id="body_'+uid+'">';
-  programs.forEach(function(p){ h += cardFn(p); });
-  h += '</div></div>';
-  return h;
+function isEligible(p, prof){
+  var st = list(p.stages);
+  if (st.indexOf('none') > -1) return false;
+  if (st.length && st.indexOf('all') === -1 && st.indexOf(prof.stage) === -1) return false;
+  var ind = list(p.industries);
+  if (ind.length && ind.indexOf(prof.industry) === -1) return false;
+  var req = list(p.requires);
+  for (var i = 0; i < req.length; i++) { if (!prof.flags[req[i]]) return false; }
+  var ar = list(p.area);
+  if (ar.length && !ar.some(function(a){ return a === 'national' || prof.area.indexOf(a) > -1; })) return false;
+  return true;
 }
 
-function renderSectionWithTabs(title, color, programs, prefix) {
-  if (!programs || programs.length === 0) return '';
-  var uid = prefix + '_' + Math.random().toString(36).substr(2,6);
-
-  // Build category tabs
-  var cats = {};
-  programs.forEach(function(p){
-    var cat = p.cat || 'Other';
-    if (!cats[cat]) cats[cat] = [];
-    cats[cat].push(p);
-  });
-  var catKeys = Object.keys(cats).sort();
-
-  var h = '<div class="res-section" id="'+uid+'">';
-  h += '<div class="res-sec-hdr" style="border-left:4px solid '+color+'" onclick="toggleSection(\''+uid+'\')">';
-  h += '<span class="res-sec-title">'+title+'</span>';
-  h += '<span class="res-sec-count">'+programs.length+' resources</span>';
-  h += '<span class="res-sec-arrow" id="arr_'+uid+'">▾</span>';
-  h += '</div>';
-  h += '<div class="res-sec-body" id="body_'+uid+'">';
-
-  // Tab bar
-  h += '<div class="res-tabs" id="tabs_'+uid+'">';
-  h += '<button class="res-tab active" onclick="switchTab(\''+uid+'\',\'all\')" data-tab="all">All</button>';
-  catKeys.forEach(function(cat){
-    var slug = cat.replace(/[^a-z0-9]/gi,'_').toLowerCase();
-    h += '<button class="res-tab" onclick="switchTab(\''+uid+'\',\''+slug+'\')" data-tab="'+slug+'">'+cat+' <span class="tab-count">('+cats[cat].length+')</span></button>';
-  });
-  h += '</div>';
-
-  // All programs (default view)
-  h += '<div class="res-tab-content" id="tab_'+uid+'_all">';
-  programs.forEach(function(p){ h += renderEcoCard(p, color); });
-  h += '</div>';
-
-  // Per-category views
-  catKeys.forEach(function(cat){
-    var slug = cat.replace(/[^a-z0-9]/gi,'_').toLowerCase();
-    h += '<div class="res-tab-content" id="tab_'+uid+'_'+slug+'" style="display:none">';
-    cats[cat].forEach(function(p){ h += renderEcoCard(p, color); });
-    h += '</div>';
-  });
-
-  h += '</div></div>';
-  return h;
+var BROAD_AREAS = ['rgv','texas','national','hidalgo','cameron'];
+function rankScore(key, p, prof, bundleList){
+  var fits = (p.dims || []).map(function(d){ return norm[d] || 0; }).sort(function(a, b){ return b - a; });
+  var s = (fits[0] || 0) + 0.25 * fits.slice(1).reduce(function(x, y){ return x + y; }, 0);
+  if (bundleList.indexOf(key) > -1) s += 25;
+  if (list(p.requires).length) s += 30;   // built for this exact situation
+  if (list(p.industries).length) s += 20; // built for this industry
+  var ar = list(p.area);
+  if (ar.some(function(a){ return BROAD_AREAS.indexOf(a) === -1 && prof.area.indexOf(a) > -1; })) s += 10;
+  if (ar.indexOf('national') > -1 && !list(p.requires).length) s -= 10;
+  if (p.org === 'ch') s += 8;
+  if (p.org === 'ut') s += 5;
+  if (String(p.tier).toLowerCase() === 'referral') s += 5;
+  return s;
 }
 
-function renderEcoCard(p, color) {
-  var scopeLabel = {local:'McAllen / RGV',regional:'South Texas RGV',statewide:'Texas',national:'National'}[p.scope] || 'RGV';
-  var scopeColor = {local:'#26429B',regional:'#1a6b3a',statewide:'#7c3aed',national:'#b45309'}[p.scope] || '#555';
-  var c = '<div class="pcard eco" style="border-left:4px solid '+(color||'#1a6b3a')+'">';
-  c += '<div class="pname">'+p.name+'</div>';
-  c += '<div class="pdesc">'+p.desc+'</div>';
-  if(p.website){
-    var url = p.website.indexOf('http')===0 ? p.website : 'https://'+p.website;
-    c += '<a href="'+url+'" target="_blank" class="eco-link">'+p.website+' ↗</a>';
+// Returns up to 15 ranked keys, at most 2 per category and 2 lenders/grants
+function buildPool(prof, bundleKey){
+  var bundleList = BUNDLE_PROGRAMS[bundleKey] || [];
+  var ranked = Object.keys(PROGRAMS)
+    .filter(function(k){ return isEligible(PROGRAMS[k], prof); })
+    .map(function(k){ return {key:k, s:rankScore(k, PROGRAMS[k], prof, bundleList)}; })
+    .sort(function(a, b){ return b.s - a.s; });
+
+  var pool = [], perCat = {}, money = 0;
+  ranked.forEach(function(r){
+    if (pool.length >= 15) return;
+    var p = PROGRAMS[r.key], cat = p.cat || p.org;
+    var isMoney = list(p.requires).indexOf('capital') > -1;
+    if ((perCat[cat] || 0) >= 2) return;
+    if (isMoney && money >= 2) return;
+    perCat[cat] = (perCat[cat] || 0) + 1;
+    if (isMoney) money++;
+    pool.push(r.key);
+  });
+  // Top up without the diversity limits if the pool is short
+  ranked.forEach(function(r){
+    if (pool.length < 15 && pool.indexOf(r.key) === -1) pool.push(r.key);
+  });
+  return pool;
+}
+
+// ── AI PLAN (via Apps Script; falls back to rules) ───────────────────────────
+function optText(qid){
+  for (var s = 0; s < SECS.length; s++) {
+    for (var i = 0; i < SECS[s].qs.length; i++) {
+      var q = SECS[s].qs[i];
+      if (q.id === qid && q.opts) return q.opts[ans[qid]] || '';
+    }
   }
-  c += '<div class="eco-meta">';
-  if(p.tier) c += '<span class="pbadge" style="background:#f0fdf4;color:#1a6b3a;">'+p.tier+'</span>';
-  c += '<span class="pbadge" style="background:#f5f3ff;color:'+scopeColor+';">'+scopeLabel+'</span>';
-  c += '</div></div>';
-  return c;
+  return '';
 }
 
-function toggleSection(uid) {
-  var body = document.getElementById('body_'+uid);
-  var arr = document.getElementById('arr_'+uid);
-  if (!body) return;
-  var isOpen = body.style.display !== 'none';
-  body.style.display = isOpen ? 'none' : 'block';
-  if (arr) arr.textContent = isOpen ? '▸' : '▾';
+function profileForAI(prof, bundle){
+  var d = sortedDims();
+  return {
+    business: (ans.contact && ans.contact.biz) || '',
+    type: optText('q1'), stage: optText('q2'), team: optText('q3'), location: optText('q0'),
+    womanOwned: prof.flags.woman, veteran: prof.flags.veteran,
+    capitalNeed: optText('q17'), crossBorder: optText('q18'), proprietary: optText('q20'),
+    feelsTrue: optText('q5'), fixTomorrow: optText('q6'), situation: optText('q7'),
+    team_reality: optText('q8'), customers: optText('q9'), urgent90: optText('q10'),
+    decisions: optText('q12'),
+    topNeeds: [DIM_LBL[d[0]], DIM_LBL[d[1]]], bundle: bundle.name
+  };
 }
 
-function switchTab(uid, tab) {
-  // Hide all tab contents for this section
-  var body = document.getElementById('body_'+uid);
-  if (!body) return;
-  body.querySelectorAll('.res-tab-content').forEach(function(el){ el.style.display='none'; });
-  body.querySelectorAll('.res-tab').forEach(function(el){ el.classList.remove('active'); });
-  // Show selected
-  var target = document.getElementById('tab_'+uid+'_'+tab);
-  if (target) target.style.display = 'block';
-  // Activate button
-  var tabs = document.getElementById('tabs_'+uid);
-  if (tabs) {
-    tabs.querySelectorAll('[data-tab="'+tab+'"]').forEach(function(b){ b.classList.add('active'); });
-  }
-}
-
-// ── GOOGLE SHEETS SUBMIT ─────────────────────────────────────────────────────
-// ── EMAIL REPORT BUILDER ─────────────────────────────────────────────────────
-function buildEmailReport(bundle, contact, dimSorted, norm, dimLbls, chP, utP, ecoP, biz) {
-  var first = contact.first || '';
-  var dimColors = {vis:'#26429B',cap:'#1a6b3a',inno:'#7c3aed',ops:'#b45309',work:'#0891b2',intel:'#dc2626'};
-  
-  var h = '';
-  h += '<!DOCTYPE html><html><head><meta charset="UTF-8">';
-  h += '<style>';
-  h += 'body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f3f4f6;color:#111827}';
-  h += '.wrap{max-width:640px;margin:0 auto;background:#fff}';
-  h += '.hero{background:#26429B;padding:32px;color:#fff}';
-  h += '.hero-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}';
-  h += '.hero-name{font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;margin-bottom:10px}';
-  h += '.hero-desc{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7}';
-  h += '.section{padding:24px 32px}';
-  h += '.section-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid #e5e7eb;padding-bottom:8px;margin-bottom:16px}';
-  h += '.dim-row{display:flex;align-items:center;margin-bottom:10px;gap:12px}';
-  h += '.dim-label{font-size:13px;font-weight:500;width:100px;flex-shrink:0}';
-  h += '.dim-bar-bg{flex:1;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden}';
-  h += '.dim-bar-fill{height:100%;border-radius:4px}';
-  h += '.dim-pct{font-size:13px;font-weight:600;color:#26429B;width:36px;text-align:right}';
-  h += '.pcard{border:1px solid #e5e7eb;border-left:4px solid #26429B;padding:14px 16px;margin-bottom:8px;border-radius:2px}';
-  h += '.pcard.ut{border-left-color:#E87722}';
-  h += '.pcard.eco{border-left-color:#1a6b3a}';
-  h += '.pname{font-size:15px;font-weight:700;margin-bottom:4px}';
-  h += '.pdesc{font-size:13px;color:#374151;line-height:1.6}';
-  h += '.pbadge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;margin-top:6px;border-radius:2px}';
-  h += '.pb-ch{background:#eef1f9;color:#26429B}';
-  h += '.pb-ut{background:#fdf3ec;color:#E87722}';
-  h += '.pb-eco{background:#e8f5e9;color:#1a6b3a}';
-  h += '.meta{background:#f9fafb;padding:24px 32px;border-top:1px solid #e5e7eb}';
-  h += '.meta-row{font-size:13px;color:#374151;margin-bottom:6px}';
-  h += '.meta-label{font-weight:700;color:#111}';
-  h += '.footer-bar{background:#1a2f6e;padding:20px 32px;text-align:center}';
-  h += '.footer-bar p{font-size:12px;color:rgba(255,255,255,.4);margin:0}';
-  h += '</style></head><body>';
-  
-  h += '<div class="wrap">';
-  
-  // Hero
-  h += '<div class="hero">';
-  h += '<div class="hero-label">Project Next Move &nbsp;·&nbsp; McAllen Chamber of Commerce</div>';
-  h += '<div class="hero-label" style="margin-top:12px">' + (first ? first + ', here is your path forward' : 'Here is your path forward') + '</div>';
-  h += '<div class="hero-name">' + bundle.name + '</div>';
-  h += '<div class="hero-desc">' + bundle.desc + '</div>';
-  h += '</div>';
-  
-  // Business info
-  h += '<div class="meta">';
-  h += '<div class="meta-row"><span class="meta-label">Business: </span>' + (contact.biz||'N/A') + '</div>';
-  h += '<div class="meta-row"><span class="meta-label">Contact: </span>' + (contact.first||'') + ' ' + (contact.last||'') + '</div>';
-  h += '<div class="meta-row"><span class="meta-label">Email: </span>' + (contact.email||'N/A') + '</div>';
-  h += '<div class="meta-row"><span class="meta-label">Phone: </span>' + (contact.phone||'N/A') + '</div>';
-  if(contact.ref) h += '<div class="meta-row"><span class="meta-label">Referred by: </span>' + contact.ref + '</div>';
-  h += '</div>';
-  
-  // Dimension profile
-  h += '<div class="section">';
-  h += '<div class="section-title">Business Profile</div>';
-  dimSorted.forEach(function(d) {
-    var pct = norm[d] || 0;
-    var color = dimColors[d] || '#26429B';
-    h += '<div class="dim-row">';
-    h += '<span class="dim-label">' + dimLbls[d] + '</span>';
-    h += '<div class="dim-bar-bg"><div class="dim-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>';
-    h += '<span class="dim-pct">' + pct + '%</span>';
-    h += '</div>';
+function requestAIPlan(prof, bundle, pool){
+  var cands = pool.slice(0, 12).map(function(k){
+    var p = PROGRAMS[k];
+    return {key:k, name:p.name, desc:p.desc, org:p.org};
   });
-  h += '</div>';
-  
-  // Chamber Programs
-  if(chP.length > 0) {
-    h += '<div class="section" style="padding-top:0">';
-    h += '<div class="section-title">McAllen Chamber Programs</div>';
-    chP.forEach(function(p) {
-      h += '<div class="pcard"><div class="pname">' + p.name + '</div>';
-      h += '<div class="pdesc">' + p.desc + '</div>';
-      h += '<span class="pbadge pb-ch">McAllen Chamber</span></div>';
-    });
-    h += '</div>';
-  }
-  
-  // UTRGV
-  if(utP.length > 0) {
-    h += '<div class="section" style="padding-top:0">';
-    h += '<div class="section-title">UTRGV Resources</div>';
-    utP.forEach(function(p) {
-      h += '<div class="pcard ut"><div class="pname">' + p.name + '</div>';
-      h += '<div class="pdesc">' + p.desc + '</div>';
-      if(p.phone) h += '<div style="font-size:12px;color:#E87722;margin-top:4px">' + p.phone + '</div>';
-      h += '<span class="pbadge pb-ut">UTRGV</span></div>';
-    });
-    h += '</div>';
-  }
-  
-  // Ecosystem Partners
-  if(ecoP.length > 0) {
-    h += '<div class="section" style="padding-top:0">';
-    h += '<div class="section-title">Ecosystem Resource Partners</div>';
-    ecoP.forEach(function(p) {
-      h += '<div class="pcard eco"><div class="pname">' + p.name + '</div>';
-      h += '<div class="pdesc">' + p.desc + '</div>';
-      if(p.website) {
-        var url = p.website.indexOf('http') === 0 ? p.website : 'https://' + p.website;
-        h += '<div style="margin-top:4px"><a href="' + url + '" style="font-size:12px;color:#1a6b3a">' + p.website + '</a>';
-        if(p.tier) h += ' &nbsp;<span style="font-size:10px;color:#6b7280">' + p.tier + '</span>';
-        h += '</div>';
+  var req = fetch(INTAKE_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({action:'plan', profile:profileForAI(prof, bundle), candidates:cands})
+  }).then(function(r){ return r.json(); });
+  var timeout = new Promise(function(resolve){ setTimeout(function(){ resolve(null); }, AI_TIMEOUT_MS); });
+  return Promise.race([req, timeout]).then(function(res){
+    if (!res || res.status !== 'ok' || !Array.isArray(res.steps)) return null;
+    var seen = {}, steps = [];
+    res.steps.forEach(function(s){
+      if (steps.length < 5 && s && pool.indexOf(s.key) > -1 && !seen[s.key]) {
+        seen[s.key] = true;
+        steps.push({key:s.key, action:String(s.action || ''), why:String(s.why || '')});
       }
-      h += '<span class="pbadge pb-eco">Ecosystem Partner</span></div>';
     });
+    return steps.length === 5 ? steps : null;
+  }).catch(function(){ return null; });
+}
+
+function ruleSteps(keys){
+  return keys.map(function(k){
+    var p = PROGRAMS[k];
+    var action = p.org === 'ch'
+      ? 'Ask Michelle to get you started with ' + p.name + '.'
+      : 'Reach out to ' + p.name + (p.contact ? ' (' + p.contact.split(/[—,]/)[0].trim() + ')' : '') + '.';
+    return {key:k, action:action, why:p.desc};
+  });
+}
+
+// ── RESULTS ──────────────────────────────────────────────────────────────────
+function contactLine(p){
+  var parts = [];
+  if (p.org === 'ch') {
+    parts.push('Michelle Rodriguez · <a href="mailto:mrodriguez@mcallenchamber.com">mrodriguez@mcallenchamber.com</a>');
+  } else {
+    if (p.contact) parts.push(esc(p.contact));
+    if (p.phone) parts.push(esc(p.phone));
+    if (p.email) parts.push('<a href="mailto:' + esc(p.email) + '">' + esc(p.email) + '</a>');
+    if (p.website) {
+      var url = String(p.website).indexOf('http') === 0 ? p.website : 'https://' + p.website;
+      parts.push('<a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(p.website) + '</a>');
+    }
+  }
+  return parts.join(' · ');
+}
+
+function stepCard(n, step){
+  var p = PROGRAMS[step.key];
+  var h = '<div class="step"><div class="step-n">' + n + '</div><div class="step-body">';
+  h += '<div class="step-prog">' + esc(p.name) + '</div>';
+  h += '<div class="step-act">' + esc(step.action) + '</div>';
+  if (step.why) h += '<div class="step-why">' + esc(step.why) + '</div>';
+  h += '<div class="step-contact">' + contactLine(p) + '</div>';
+  h += '</div></div>';
+  return h;
+}
+
+function goResults(){
+  saveContact();
+  var c = ans.contact || {};
+  if (!(c.first || '').trim()) {
+    var f = document.getElementById('c_first');
+    if (f) { f.style.borderColor = '#dc2626'; f.focus(); }
+    alert('Please enter your first name to continue.');
+    return;
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((c.email || '').trim())) {
+    var em = document.getElementById('c_email');
+    if (em) { em.style.borderColor = '#dc2626'; em.focus(); }
+    alert('Please enter a valid email address to continue.');
+    return;
+  }
+
+  calcScores();
+  var key = getBundleKey();
+  var bundle = BUNDLES[key] || BUNDLES.resilience;
+  var prof = getProfile();
+  var pool = buildPool(prof, key);
+
+  document.getElementById('resWrap').innerHTML =
+    '<div class="plan-loading">Building your 5-step plan...</div>';
+  showScr('s-res'); setP(100);
+
+  requestAIPlan(prof, bundle, pool).then(function(aiSteps){
+    var steps = aiSteps || ruleSteps(pool.slice(0, 5));
+    var used = steps.map(function(s){ return s.key; });
+    var more = ruleSteps(pool.filter(function(k){ return used.indexOf(k) === -1; }).slice(0, 5));
+    renderResults(bundle, steps, more, aiSteps ? 'AI' : 'Rules');
+  });
+}
+
+function renderResults(bundle, steps, more, source){
+  var c = ans.contact || {}, first = c.first || '', biz = c.biz || 'your business';
+  var dims = sortedDims();
+  var brImg = document.querySelector('.hdr-br').src;
+  var h = '';
+
+  h += '<div class="rhero"><img class="rhero-logo" src="' + brImg + '" alt="Project Next Move">';
+  h += '<div class="rhero-txt"><div class="rgreet">' + (first ? esc(first) + ", here's your path forward" : "Here's your path forward") + '</div>';
+  h += '<div class="rbundle">' + esc(bundle.name) + '</div><div class="rdesc">' + esc(bundle.desc) + '</div></div></div>';
+
+  h += '<div class="shdr">Your Business Profile</div>';
+  dims.forEach(function(d){
+    h += '<div class="dimrow"><span class="dimlbl">' + DIM_LBL[d] + '</span>';
+    h += '<div class="dimbar"><div class="dimfill" id="df_' + d + '" style="width:0%"></div></div>';
+    h += '<span class="dimpct">' + norm[d] + '%</span></div>';
+  });
+
+  h += '<div class="shdr">Your 5 Next Steps</div><div class="steps">';
+  steps.forEach(function(s, i){ h += stepCard(i + 1, s); });
+  h += '</div>';
+
+  if (more.length) {
+    h += '<button class="more-btn" id="btnMore">More options for you (' + more.length + ')</button>';
+    h += '<div class="more-list" id="moreList">';
+    more.forEach(function(s, i){ h += stepCard(i + 6, s); });
     h += '</div>';
   }
-  
-  // Footer
-  h += '<div class="footer-bar">';
-  h += '<p>McAllen Chamber of Commerce &nbsp;·&nbsp; 1200 Ash Avenue, McAllen TX 78501 &nbsp;·&nbsp; (956) 682-2871</p>';
-  h += '<p style="margin-top:6px">Project Next Move &nbsp;·&nbsp; projectnextmove.jorgesanchez.me</p>';
-  h += '</div>';
-  
-  h += '</div></body></html>';
+
+  h += '<div class="cta"><div class="cta-ttl">Ready to Take the Next Step?</div>';
+  h += '<div class="cta-sub">One person connects you to everything. Reach out to Michelle and she will help ' + esc(biz) + ' get started on these steps.</div>';
+  h += '<div class="cta-person"><div class="cta-av">MR</div><div class="cta-info">';
+  h += '<div class="cta-role">Economic Development Coordinator</div><div class="cta-name">Michelle Rodriguez</div>';
+  h += '<div class="cta-email">mrodriguez@mcallenchamber.com</div></div></div></div>';
+
+  h += '<div id="submitStatus" class="submit-status loading">Saving your results...</div>';
+  h += '<div class="actrow"><button class="btn-pr" id="btnPrint">Print / Save as PDF</button>';
+  h += '<button class="btn-rs" id="btnRestart">Start Over</button></div>';
+
+  document.getElementById('resWrap').innerHTML = h;
+  document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
+  document.getElementById('btnRestart').addEventListener('click', goRestart);
+  var mb = document.getElementById('btnMore');
+  if (mb) mb.addEventListener('click', function(){
+    var ml = document.getElementById('moreList');
+    ml.classList.toggle('on');
+    mb.style.display = 'none';
+  });
+  setTimeout(function(){
+    dims.forEach(function(d){
+      var el = document.getElementById('df_' + d);
+      if (el) el.style.width = norm[d] + '%';
+    });
+  }, 120);
+
+  submitToSheets(buildPayload(bundle, steps, more, source));
+}
+
+// ── INTAKE + EMAIL ───────────────────────────────────────────────────────────
+function buildPayload(bundle, steps, more, source){
+  var c = ans.contact || {}, d = sortedDims();
+  var names = function(arr){ return arr.map(function(s){ return PROGRAMS[s.key].name; }); };
+  return {
+    first:c.first || '', last:c.last || '', biz:c.biz || '', email:c.email || '',
+    phone:c.phone || '', ref:c.ref || '',
+    bundle:bundle.name, dim1:DIM_LBL[d[0]], dim2:DIM_LBL[d[1]],
+    scoreVis:sc.vis, scoreCap:sc.cap, scoreInno:sc.inno, scoreOps:sc.ops, scoreWork:sc.work, scoreIntel:sc.intel,
+    programs: names(steps).concat(names(more)).join(', '),
+    bizType:optText('q1'), bizAge:optText('q2'), teamSize:optText('q3'),
+    womanOwned: ans.q4 === 0 ? 'Yes' : ans.q4 === 1 ? 'No' : 'Not specified',
+    location: optText('q0'),
+    steps: steps.map(function(s, i){ return (i + 1) + '. ' + PROGRAMS[s.key].name + ': ' + s.action; }).join('\n'),
+    more: names(more).join(', '),
+    planSource: source,
+    emailHtml: buildEmailReport(bundle, steps, more)
+  };
+}
+
+function buildEmailReport(bundle, steps, more){
+  var c = ans.contact || {}, d = sortedDims();
+  var row = function(label, val){ return '<div style="font-size:13px;margin-bottom:6px"><b>' + label + ':</b> ' + esc(val || 'N/A') + '</div>'; };
+  var card = function(n, s){
+    var p = PROGRAMS[s.key];
+    return '<div style="border:1px solid #e5e7eb;border-left:4px solid #26429B;padding:14px 16px;margin-bottom:8px">' +
+      '<div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6b7280">' + n + '. ' + esc(p.name) + '</div>' +
+      '<div style="font-size:15px;font-weight:700;margin:4px 0">' + esc(s.action) + '</div>' +
+      '<div style="font-size:13px;color:#374151;line-height:1.6">' + esc(s.why) + '</div>' +
+      '<div style="font-size:12px;color:#26429B;margin-top:6px">' + contactLine(p) + '</div></div>';
+  };
+  var h = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:Arial,sans-serif;margin:0;background:#f3f4f6;color:#111827">';
+  h += '<div style="max-width:640px;margin:0 auto;background:#fff">';
+  h += '<div style="background:#26429B;padding:28px 32px;color:#fff">';
+  h += '<div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)">Project Next Move · McAllen Chamber of Commerce</div>';
+  h += '<div style="font-size:26px;font-weight:900;text-transform:uppercase;margin-top:10px">' + esc(bundle.name) + '</div></div>';
+  h += '<div style="padding:20px 32px;background:#f9fafb;border-bottom:1px solid #e5e7eb">';
+  h += row('Business', c.biz) + row('Contact', (c.first || '') + ' ' + (c.last || '')) + row('Email', c.email) + row('Phone', c.phone);
+  h += row('Location', optText('q0')) + row('Type', optText('q1')) + row('Stage', optText('q2')) + row('Team', optText('q3'));
+  h += row('Top needs', DIM_LBL[d[0]] + ' / ' + DIM_LBL[d[1]]);
+  if (c.ref) h += row('Referred by', c.ref);
+  h += '</div><div style="padding:24px 32px">';
+  h += '<div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:12px">5 Next Steps</div>';
+  steps.forEach(function(s, i){ h += card(i + 1, s); });
+  if (more.length) {
+    h += '<div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin:20px 0 12px">More Options</div>';
+    more.forEach(function(s, i){ h += card(i + 6, s); });
+  }
+  h += '</div><div style="background:#1a2f6e;padding:18px 32px;text-align:center;font-size:12px;color:rgba(255,255,255,.5)">';
+  h += 'McAllen Chamber of Commerce · 1200 Ash Avenue, McAllen TX 78501 · (956) 682-2871</div></div></body></html>';
   return h;
 }
 
 var _submitted = false;
 function submitToSheets(payload){
-  if (_submitted) return; // prevent double submit
+  if (_submitted) return;
   _submitted = true;
   var statusEl = document.getElementById('submitStatus');
-  if(statusEl){ statusEl.className='submit-status loading'; statusEl.textContent='Saving your results...'; }
-
   fetch(INTAKE_URL, {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify(payload)
   }).then(function(){
-    if(statusEl){ statusEl.className='submit-status ok'; statusEl.textContent='Your results have been saved. Michelle will be in touch soon!'; }
+    if (statusEl) { statusEl.className = 'submit-status ok'; statusEl.textContent = 'Your results have been saved. Michelle will be in touch soon!'; }
   }).catch(function(){
-    if(statusEl){ statusEl.className='submit-status err'; statusEl.textContent='Could not save automatically. Please email mrodriguez@mcallenchamber.com directly.'; }
+    if (statusEl) { statusEl.className = 'submit-status err'; statusEl.textContent = 'Could not save automatically. Please email mrodriguez@mcallenchamber.com directly.'; }
   });
-}
-
-// ── RESULTS ───────────────────────────────────────────────────────────────────
-function goResults(){
-  saveContact();
-  // Validate required fields
-  var c = ans.contact || {};
-  var firstName = (c.first || '').trim();
-  var email = (c.email || '').trim();
-  var emailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-
-  if (!firstName) {
-    var el = document.getElementById('c_first');
-    if (el) { el.style.borderColor = '#dc2626'; el.focus(); el.placeholder = 'Required'; }
-    var lbl = document.querySelector('label[for="c_first"]');
-    alert('Please enter your first name to continue.');
-    return;
-  }
-  if (!email || !emailValid) {
-    var el = document.getElementById('c_email');
-    if (el) { el.style.borderColor = '#dc2626'; el.focus(); el.placeholder = 'Required'; }
-    alert('Please enter a valid email address to continue.');
-    return;
-  }
-  calcScores();
-  var key=getBundleKey();
-
-  // Fallback bundle data if Sheet hasn't loaded
-  var BUNDLE_FALLBACK = {
-    pioneer:     {name:"The Pioneer Bundle",     desc:"You have the vision and the drive. This bundle connects you with programs to validate your idea, reach your first audience, and access capital."},
-    catalyst:    {name:"The Catalyst Bundle",    desc:"You are sitting on real potential. This bundle helps you commercialize your idea and bring your innovation to market with expert support."},
-    connector:   {name:"The Connector Bundle",   desc:"Growth runs through relationships and information. This bundle puts you in rooms with the right people and gives you data to make smarter moves."},
-    resilience:  {name:"The Resilience Bundle",  desc:"Your business has what it takes. This bundle gives you direct access to advisors, tools, and programs to stabilize and rebuild momentum."},
-    momentum:    {name:"The Momentum Bundle",    desc:"You are ready to accelerate. This bundle connects you with capital access, technical resources, and innovation support to reach the next level."},
-    builder:     {name:"The Builder Bundle",     desc:"Strong businesses need strong teams and solid systems. This bundle helps you find the right people and build the operational foundation for growth."},
-    intelligence:{name:"The Intelligence Bundle",desc:"Your next move starts with clarity. This bundle gives you access to market data, strategic advising, and research tools to make confident decisions."},
-    trailblazer: {name:"The Trailblazer Bundle", desc:"The McAllen ecosystem has resources specifically designed to help women and underrepresented entrepreneurs launch, grow, and lead."}
-  };
-
-  // Fallback programs if Sheet failed
-  var PROG_FALLBACK = {
-    pioneer:     ["oneMC","itx","consulting","sizeup","linkup","sbdc"],
-    catalyst:    ["itx","oneMC","satop","consulting","ecc","sbdc"],
-    connector:   ["linkup","ambassador","sizeup","oneMC","mxlan","disc","sbdc"],
-    resilience:  ["consulting","itx","sizeup","epulse","sbdc"],
-    momentum:    ["itx","satop","consulting","sizeup","ecc","sbdc"],
-    builder:     ["consulting","jumpstart","sizeup","pewd","sbdc"],
-    intelligence:["consulting","sizeup","epulse","mxlan","disc","sbdc"],
-    trailblazer: ["latinaHope","consulting","itx","oneMC","legendary","sbdc","ecc"]
-  };
-
-  // Fallback ALL_PROGRAMS if Sheet failed
-  var PROG_NAMES_FALLBACK = {
-    consulting:{name:"Business Consulting",org:"ch",desc:"Personalized one-on-one consulting for business planning and strategy."},
-    itx:{name:"Innovation Texas (ITX)",org:"ch",desc:"Three-phase accelerator providing education, mentorship, and access to capital."},
-    oneMC:{name:"1 Million Cups (1MC)",org:"ch",desc:"Free monthly platform to present your business and make connections."},
-    latinaHope:{name:"Latina Hope",org:"ch",desc:"Workshops and pitch funding for women entrepreneurs. Up to $956 in seed money."},
-    sizeup:{name:"SizeUp Business Intelligence",org:"ch",desc:"Data platform with competitive analysis and market research."},
-    satop:{name:"SATOP",org:"ch",desc:"Up to 40 hours of free technical assistance from Texas A&M students."},
-    epulse:{name:"Economic Pulse Monthly Report",org:"ch",desc:"Monthly economic data on trends shaping the McAllen region."},
-    linkup:{name:"Link-Up Speed Networking",org:"ch",desc:"Monthly speed networking with 55-75 local business professionals."},
-    ambassador:{name:"Ambassador Program",org:"ch",desc:"Chamber representatives who advocate for business interests."},
-    mxlan:{name:"MXLAN Economic Summit",org:"ch",desc:"Annual gathering on cross-border trade and economic growth."},
-    disc:{name:"UTRGV DISC",org:"ut",desc:"Economic research, market maps, analysis and impact reports."},
-    jumpstart:{name:"Jumpstart Career Expo",org:"ch",desc:"Annual event connecting employers with job seekers. 6,500+ jobs available."},
-    legendary:{name:"Legendary McAllen Women",org:"ch",desc:"Annual gala recognizing trailblazing women in McAllen."},
-    pewd:{name:"UTRGV PEWD",org:"ut",desc:"Professional Education and Workforce Development — industry certificates."},
-    sbdc:{name:"UTRGV SBDC",org:"ut",desc:"Free one-on-one business advising, financial analysis, and loan packaging."},
-    ecc:{name:"UTRGV ECC",org:"ut",desc:"Entrepreneurship and Commercialization Center — incubation programs."}
-  };
-
-  // Get bundle — always defined since hardcoded defaults are loaded at startup
-  var bundle = BUNDLES[key] || BUNDLES.resilience;
-  var progs=getPrograms(key);
-  var contact=ans.contact||{}, first=contact.first||'', biz=contact.biz||'your business';
-
-  var maxSc=Math.max.apply(null,Object.values(sc).concat([1]));
-  var norm={};
-  Object.keys(sc).forEach(function(k){ norm[k]=Math.round((sc[k]/maxSc)*100); });
-  var dimSorted=Object.keys(norm).sort(function(a,b){ return norm[b]-norm[a]; });
-  var dimLbls={vis:'Visibility',cap:'Capital',inno:'Innovation',ops:'Operations',work:'Workforce',intel:'Intelligence'};
-
-  var chP=progs.filter(function(p){ return p.org==='ch'; });
-  var utP=progs.filter(function(p){ return p.org==='ut'; });
-  var ecoP=progs.filter(function(p){ return p.org==='eco'; });
-  var progNames=progs.map(function(p){ return p.name; }).join(', ');
-
-  // Submit to Google Sheets
-  // Build HTML email report — same visual as what the client sees
-  var emailHtml = buildEmailReport(bundle, contact, dimSorted, norm, dimLbls, chP, utP, ecoP, biz);
-
-  var payload = {
-    first: contact.first||'', last: contact.last||'',
-    biz: contact.biz||'', email: contact.email||'',
-    phone: contact.phone||'', ref: contact.ref||'',
-    bundle: bundle.name,
-    dim1: dimLbls[dimSorted[0]]||'', dim2: dimLbls[dimSorted[1]]||'',
-    scoreVis: sc.vis||0, scoreCap: sc.cap||0, scoreInno: sc.inno||0,
-    scoreOps: sc.ops||0, scoreWork: sc.work||0, scoreIntel: sc.intel||0,
-    programs: progNames,
-    bizType: SECS[0].qs[0].opts[ans.q1]||'',
-    bizAge:  SECS[0].qs[1].opts[ans.q2]||'',
-    teamSize:SECS[0].qs[2].opts[ans.q3]||'',
-    womanOwned: ans.q4===0?'Yes':ans.q4===1?'No':'Not specified',
-    emailHtml: emailHtml
-  };
-  submitToSheets(payload);
-
-  var brImg = document.querySelector('.hdr-br').src;
-  var h = '';
-
-  // Hero
-  h += '<div class="rhero">';
-  h += '<img class="rhero-logo" src="'+brImg+'" alt="Project Next Move">';
-  h += '<div class="rhero-txt">';
-  h += '<div class="rgreet">'+(first?first+', here\'s your path forward':'Here\'s your path forward')+'</div>';
-  h += '<div class="rbundle">'+bundle.name+'</div>';
-  h += '<div class="rdesc">'+bundle.desc+'</div>';
-  h += '</div></div>';
-
-  // Dimension profile
-  h += '<div class="shdr">Your Business Profile</div>';
-  dimSorted.forEach(function(d){
-    h += '<div class="dimrow"><span class="dimlbl">'+dimLbls[d]+'</span>';
-    h += '<div class="dimbar"><div class="dimfill" id="df_'+d+'" style="width:0%"></div></div>';
-    h += '<span class="dimpct">'+norm[d]+'%</span></div>';
-  });
-
-  // ── SECTION 1: CHAMBER PROGRAMS ─────────────────────────────────────────────
-  h += renderSection('McAllen Chamber Programs', '#26429B', chP, function(p){
-    var c = '<div class="pcard ch"><div class="pname">'+p.name+'</div>';
-    c += '<div class="pdesc">'+p.desc+'</div>';
-    c += '<span class="pbadge pb-ch">McAllen Chamber</span></div>';
-    return c;
-  }, null);
-
-  // ── SECTION 2: UTRGV RESOURCES ───────────────────────────────────────────────
-  h += renderSection('UTRGV Resources', '#E87722', utP, function(p){
-    var c = '<div class="pcard ut"><div class="pname">'+p.name+'</div>';
-    c += '<div class="pdesc">'+p.desc+'</div>';
-    if(p.phone) c += '<div style="font-size:13px;color:#E87722;margin-top:4px;">'+p.phone+'</div>';
-    c += '<span class="pbadge pb-ut">UTRGV</span></div>';
-    return c;
-  }, null);
-
-  // ── SECTION 3: RGV ECOSYSTEM (local + regional) ───────────────────────────────
-  var rgvEco = ecoP.filter(function(p){ return p.scope==='local'||p.scope==='regional'||!p.scope; });
-  if(rgvEco.length > 0){
-    h += renderSectionWithTabs('RGV Ecosystem Partners', '#1a6b3a', rgvEco, 'rgv');
-  }
-
-  // ── SECTION 4: BEYOND MCALLEN (statewide + national) — only when relevant ────
-  var beyondEco = ecoP.filter(function(p){ return p.scope==='statewide'||p.scope==='national'; });
-  var showBeyond = beyondEco.length > 0 && (
-    bundle.dim1==='inno' || bundle.dim2==='inno' ||
-    bundle.dim1==='cap'  || bundle.dim2==='cap'  ||
-    ans.q20===0 || ans.q20===1
-  );
-  if(showBeyond){
-    h += renderSectionWithTabs('Beyond McAllen — Texas &amp; National Resources', '#7c3aed', beyondEco, 'beyond');
-  }
-
-  // CTA
-  h += '<div class="cta">';
-  h += '<div class="cta-ttl">Ready to Take the Next Step?</div>';
-  h += '<div class="cta-sub">One person connects you to everything. Reach out to Michelle and she\'ll get you enrolled in the right programs for '+biz+'.</div>';
-  h += '<div class="cta-person"><div class="cta-av">MR</div><div class="cta-info">';
-  h += '<div class="cta-role">Economic Development Coordinator</div>';
-  h += '<div class="cta-name">Michelle Rodriguez</div>';
-  h += '<div class="cta-email">mrodriguez@mcallenchamber.com</div>';
-  h += '</div></div></div>';
-
-  // Submit status + actions
-  h += '<div id="submitStatus" class="submit-status loading">Saving your results...</div>';
-  h += '<div class="actrow">';
-  h += '<button class="btn-pr" id="btnPrint">Print / Save as PDF</button>';
-  h += '<button class="btn-rs" id="btnRestart">Start Over</button>';
-  h += '</div>';
-
-  document.getElementById('resWrap').innerHTML = h;
-  showScr('s-res');
-  setP(100);
-
-  document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
-  document.getElementById('btnRestart').addEventListener('click', function(){ goRestart(); });
-
-  setTimeout(function(){
-    dimSorted.forEach(function(d){
-      var el=document.getElementById('df_'+d);
-      if(el) el.style.width=norm[d]+'%';
-    });
-  }, 120);
 }
 
 function goRestart(){
-  ans={}; sc={vis:0,cap:0,inno:0,ops:0,work:0,intel:0}; curSec=0; _submitted=false;
+  ans = {}; sc = {vis:0,cap:0,inno:0,ops:0,work:0,intel:0}; norm = {}; curSec = 0; _submitted = false;
   showScr('s-land'); setP(0);
 }
+window.goRestart = goRestart;
 
-// ── BOOT ──────────────────────────────────────────────────────────────────────
-// Boot — multiple fallbacks for maximum compatibility
-function bootApp() {
+// ── BOOT ─────────────────────────────────────────────────────────────────────
+function bootApp(){
   var btn = document.getElementById('startBtn');
-  if (btn) {
-    btn.onclick = function() { goStart(); return false; };
-  }
+  if (btn) btn.onclick = function(){ goStart(); return false; };
+  updateStats();          // question count right away
+  ensureData(function(){}); // preload the sheet so Start is instant
 }
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootApp);
-} else {
-  bootApp();
-}
-window.addEventListener('load', bootApp);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootApp);
+else bootApp();
 </script>
+
 </body>
 </html>
