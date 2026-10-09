@@ -618,22 +618,36 @@ function fixLogos(){
 
 // ── LOCATIONS (area tokens must match the "Area" column in Ecosystem Partners)
 var LOCS = [
-  {l:'McAllen',                                   t:['mcallen','hidalgo','rgv','texas']},
-  {l:'Edinburg',                                  t:['edinburg','hidalgo','rgv','texas']},
-  {l:'Mission',                                   t:['mission','hidalgo','rgv','texas']},
-  {l:'Pharr',                                     t:['pharr','hidalgo','rgv','texas']},
-  {l:'San Juan',                                  t:['sanjuan','hidalgo','rgv','texas']},
-  {l:'Alamo',                                     t:['alamo','hidalgo','rgv','texas']},
-  {l:'Another Hidalgo County city (Weslaco, Donna, Mercedes, etc.)', t:['hidalgo','rgv','texas']},
-  {l:'Harlingen',                                 t:['harlingen','cameron','rgv','texas']},
-  {l:'Brownsville',                               t:['brownsville','cameron','rgv','texas']},
-  {l:'Another Cameron County city',               t:['cameron','rgv','texas']},
-  {l:'Rio Grande City',                           t:['rgc','starr','rgv','texas']},
-  {l:'Elsewhere in Starr County',                 t:['starr','rgv','texas']},
-  {l:'Willacy County',                            t:['willacy','rgv','texas']},
-  {l:'Laredo or Webb County',                     t:['webb','texas']},
-  {l:'Outside the Rio Grande Valley',             t:['texas']}
+  {l:'McAllen',  t:['mcallen','hidalgo','rgv','texas']},
+  {l:'Edinburg', t:['edinburg','hidalgo','rgv','texas']},
+  {l:'Mission',  t:['mission','hidalgo','rgv','texas']},
+  {l:'Pharr',    t:['pharr','hidalgo','rgv','texas']},
+  {l:'Other',    t:null} // they type the city; area comes from otherArea()
 ];
+var LOC_OTHER = LOCS.length - 1;
+// Typed city -> area tokens, so partners still match by county/region
+var CITY_AREAS = [
+  [/san juan/, ['sanjuan','hidalgo','rgv','texas']],
+  [/alamo/, ['alamo','hidalgo','rgv','texas']],
+  [/weslaco|donna|mercedes|edcouch|elsa|hidalgo|la joya|palmview|penitas|pe\u00f1itas|alton|progreso|la villa/, ['hidalgo','rgv','texas']],
+  [/harlingen/, ['harlingen','cameron','rgv','texas']],
+  [/brownsville/, ['brownsville','cameron','rgv','texas']],
+  [/san benito|los fresnos|port isabel|la feria|rio hondo|south padre|cameron|santa rosa/, ['cameron','rgv','texas']],
+  [/rio grande city|rgc/, ['rgc','starr','rgv','texas']],
+  [/roma|starr|la grulla|escobares/, ['starr','rgv','texas']],
+  [/raymondville|lyford|willacy/, ['willacy','rgv','texas']],
+  [/laredo|webb/, ['webb','texas']],
+  [/valley|rgv/, ['rgv','texas']]
+];
+function otherArea(city){
+  var c = String(city || '').toLowerCase();
+  for (var i = 0; i < CITY_AREAS.length; i++) if (CITY_AREAS[i][0].test(c)) return CITY_AREAS[i][1];
+  return ['texas'];
+}
+function locArea(){
+  if (ans.q0 === LOC_OTHER) return otherArea(ans.q0city);
+  return (LOCS[ans.q0] || LOCS[0]).t;
+}
 var IND = ['food','retail','services','creative','trade','health','tech','other'];
 var STG = ['idea','new','growing','established','established'];
 
@@ -940,7 +954,12 @@ function renderSec(idx){
         h += '<button class="opt' + (ans[q.id] === oi ? ' sel' : '') + '" data-qid="' + q.id + '" data-val="' + oi + '">';
         h += '<span class="odot"></span>' + esc(o) + '</button>';
       });
-      h += '</div></div>';
+      h += '</div>';
+      if (q.id === 'q0') {
+        h += '<div class="iblk full" id="q0cityWrap" style="margin-top:10px;' + (ans.q0 === LOC_OTHER ? '' : 'display:none') + '">';
+        h += '<label>Which city?</label><input id="q0city" type="text" value="' + esc(ans.q0city) + '" placeholder="e.g. Weslaco, Brownsville, San Antonio"></div>';
+      }
+      h += '</div>';
     } else if (q.type === 'slider') {
       if (ans[q.id] === undefined) ans[q.id] = 3;
       var v = ans[q.id];
@@ -985,6 +1004,11 @@ function renderSec(idx){
       ans[qid] = parseInt(opt.dataset.val, 10);
       wrap.querySelectorAll('[data-qid="' + qid + '"]').forEach(function(b){ b.className = 'opt'; });
       opt.className = 'opt sel';
+      if (qid === 'q0') {
+        var cw = document.getElementById('q0cityWrap');
+        if (cw) cw.style.display = ans.q0 === LOC_OTHER ? '' : 'none';
+        if (ans.q0 === LOC_OTHER) { var ci = document.getElementById('q0city'); if (ci) ci.focus(); }
+      }
       return;
     }
     if (e.target.id === 'btnBack') { saveContact(); renderSec(curSec - 1); return; }
@@ -992,6 +1016,7 @@ function renderSec(idx){
     if (e.target.id === 'btnResults') { goResults(); return; }
   });
   wrap.addEventListener('input', function(e){
+    if (e.target.id === 'q0city') { ans.q0city = e.target.value.trim(); return; }
     if (e.target.dataset.slid) {
       ans[e.target.dataset.slid] = parseInt(e.target.value, 10);
       var el = document.getElementById('sv_' + e.target.dataset.slid);
@@ -1007,6 +1032,11 @@ function goNext(){
       alert('Please answer all questions before continuing.');
       return;
     }
+  }
+  if (sec.qs.some(function(q){ return q.id === 'q0'; }) && ans.q0 === LOC_OTHER && !ans.q0city) {
+    alert('Please tell us which city your business is in.');
+    var ci = document.getElementById('q0city'); if (ci) ci.focus();
+    return;
   }
   renderSec(curSec + 1);
 }
@@ -1059,7 +1089,7 @@ function getProfile(){
   return {
     stage: STG[ans.q2] || 'new',
     industry: IND[ans.q1] || 'other',
-    area: (LOCS[ans.q0] || LOCS[0]).t,
+    area: locArea(),
     flags: {
       woman:   ans.q4 === 0,
       veteran: ans.q19 === 0,
@@ -1077,7 +1107,10 @@ function isEligible(p, prof){
   var ind = list(p.industries);
   if (ind.length && ind.indexOf(prof.industry) === -1) return false;
   var req = list(p.requires);
-  for (var i = 0; i < req.length; i++) { if (!prof.flags[req[i]]) return false; }
+  for (var i = 0; i < req.length; i++) {
+    if (req[i] === 'directory-only') continue; // handled in buildPool
+    if (!prof.flags[req[i]]) return false;
+  }
   var ar = list(p.area);
   if (ar.length && !ar.some(function(a){ return a === 'national' || prof.area.indexOf(a) > -1; })) return false;
   return true;
@@ -1107,7 +1140,7 @@ function rankScore(key, p, prof, bundleList){
   var fits = (p.dims || []).map(function(d){ return norm[d] || 0; }).sort(function(a, b){ return b - a; });
   var s = (fits[0] || 0) + 0.25 * fits.slice(1).reduce(function(x, y){ return x + y; }, 0);
   if (bundleList.indexOf(key) > -1) s += 25;
-  if (list(p.requires).length) s += 30;   // built for this exact situation
+  if (list(p.requires).filter(function(r){ return r !== 'directory-only'; }).length) s += 30; // built for this exact situation
   if (list(p.industries).length) s += 20; // built for this industry
   var ar = list(p.area);
   if (ar.some(function(a){ return BROAD_AREAS.indexOf(a) === -1 && prof.area.indexOf(a) > -1; })) s += 10;
@@ -1120,7 +1153,10 @@ function rankScore(key, p, prof, bundleList){
 function buildPool(prof, bundleKey){
   var bundleList = BUNDLE_PROGRAMS[bundleKey] || [];
   var ranked = Object.keys(PROGRAMS)
-    .filter(function(k){ return isEligible(PROGRAMS[k], prof); })
+    .filter(function(k){
+      // "directory-only" in Requires: listed in the directory, never a recommended step
+      return list(PROGRAMS[k].requires).indexOf('directory-only') === -1 && isEligible(PROGRAMS[k], prof);
+    })
     .map(function(k){ return {key:k, s:rankScore(k, PROGRAMS[k], prof, bundleList)}; })
     .sort(function(a, b){ return b.s - a.s; });
 
@@ -1147,7 +1183,10 @@ function optText(qid){
   for (var s = 0; s < SECS.length; s++) {
     for (var i = 0; i < SECS[s].qs.length; i++) {
       var q = SECS[s].qs[i];
-      if (q.id === qid && q.opts) return q.opts[ans[qid]] || '';
+      if (q.id === qid && q.opts) {
+        if (qid === 'q0' && ans.q0 === LOC_OTHER && ans.q0city) return ans.q0city;
+        return q.opts[ans[qid]] || '';
+      }
     }
   }
   return '';
@@ -1456,7 +1495,13 @@ function dirTags(p){
 
 function renderDirList(){
   var prof = dirState.fit ? getProfile() : null;
-  var shown = chamberKeys().filter(function(k){
+  // Keep each category together even if rows were added at the bottom of the sheet
+  var all = chamberKeys(), catOrder = [];
+  all.forEach(function(k){
+    var c = PROGRAMS[k].cat || 'Other';
+    if (catOrder.indexOf(c) === -1) catOrder.push(c);
+  });
+  var shown = all.filter(function(k){
     var p = PROGRAMS[k];
     if (dirState.cat !== 'all' && (p.cat || 'Other') !== dirState.cat) return false;
     if (prof && !isEligible(p, prof)) return false;
@@ -1465,6 +1510,10 @@ function renderDirList(){
       if (hay.indexOf(dirState.q) === -1) return false;
     }
     return true;
+  });
+  shown.sort(function(a, b){
+    return (catOrder.indexOf(PROGRAMS[a].cat || 'Other') - catOrder.indexOf(PROGRAMS[b].cat || 'Other')) ||
+           (all.indexOf(a) - all.indexOf(b));
   });
 
   var el = document.getElementById('dirList');
