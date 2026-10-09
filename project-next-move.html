@@ -564,10 +564,35 @@ var norm = {};
   '.more-list{display:none;margin-top:12px}' +
   '.more-list.on{display:block}' +
   '.more-list .step{border-left-color:var(--navy-md)}' +
-  '.plan-loading{padding:60px 0;text-align:center;color:var(--muted);font-size:16px}' +
+  // Loading screen while the plan is built
+  '.plan-loading{padding:72px 24px;text-align:center}' +
+  '.pl-ring{width:56px;height:56px;margin:0 auto 24px;border-radius:50%;border:4px solid var(--navy-md);border-top-color:var(--navy);animation:plSpin 1s linear infinite}' +
+  '.pl-title{font-family:"Barlow Condensed",sans-serif;font-size:28px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px}' +
+  '.pl-msg{font-size:16px;color:var(--txt);min-height:24px;transition:opacity .3s}' +
+  '.pl-bar{max-width:360px;height:6px;background:var(--navy-md);margin:24px auto 14px;border-radius:3px;overflow:hidden}' +
+  '.pl-fill{height:100%;width:0;background:var(--navy);transition:width 14s cubic-bezier(.1,.6,.3,1)}' +
+  '.pl-sub{font-size:13px;color:var(--muted);max-width:420px;margin:0 auto;line-height:1.6}' +
+  '@keyframes plSpin{to{transform:rotate(360deg)}}' +
+  '@media (prefers-reduced-motion:reduce){.pl-ring{animation:none}.pl-fill,.pl-msg{transition:none}}' +
+  // Footer: Chamber logo was being turned into a white block by its filter
+  '.ft-ch{filter:none!important;opacity:1!important;background:#fff;padding:6px 10px;border-radius:4px;height:30px!important;box-sizing:content-box}' +
+  '.ft-br{height:38px}' +
+  '.rhero-logo{height:46px!important;width:auto}' +
   '@media print{.more-list{display:block!important}.more-btn{display:none!important}}';
   var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 })();
+
+// ── WHITE "PROJECT NEXT MOVE" LOGO (footer + results banner) ───────────────
+// textLength keeps "NEXT MOVE" inside the box whatever font the device has
+var WHITE_LOGO = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 68">' +
+  '<text x="3" y="14" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.6)" letter-spacing="2">PROJECT</text>' +
+  '<text x="0" y="62" font-family="Arial Black,Impact,sans-serif" font-size="50" font-weight="900" fill="#ffffff" textLength="316" lengthAdjust="spacingAndGlyphs">NEXT MOVE</text>' +
+  '</svg>');
+function fixLogos(){
+  var ft = document.querySelector('.ft-br');
+  if (ft) ft.src = WHITE_LOGO;
+}
 
 // ── LOCATIONS (area tokens must match the "Area" column in Ecosystem Partners)
 var LOCS = [
@@ -1204,25 +1229,63 @@ function goResults(){
   var prof = getProfile();
   var pool = buildPool(prof, key);
 
-  document.getElementById('resWrap').innerHTML =
-    '<div class="plan-loading">Building your 5-step plan...</div>';
+  var stopLoading = showPlanLoading();
   showScr('s-res'); setP(100);
 
   requestAIPlan(prof, bundle, pool).then(function(ai){
     var steps = sortByLevel(ai.steps || ruleSteps(pool.slice(0, 5)));
     var used = steps.map(function(s){ return s.key; });
     var more = sortByLevel(ruleSteps(pool.filter(function(k){ return used.indexOf(k) === -1; }).slice(0, 5)));
-    renderResults(bundle, steps, more, ai.steps ? 'AI' : 'Rules (' + ai.err + ')');
+    stopLoading(function(){
+      renderResults(bundle, steps, more, ai.steps ? 'AI' : 'Rules (' + ai.err + ')');
+    });
   });
+}
+
+// Animated "building your plan" screen. Returns a function that finishes the
+// bar, stops the messages, then runs the callback.
+function showPlanLoading(){
+  var n = Object.keys(PROGRAMS).length;
+  var total = n ? n : '100+';
+  var msgs = [
+    'Reviewing your answers...',
+    'Checking ' + total + ' resources against your stage and location...',
+    'Putting McAllen Chamber and local programs first...',
+    'Narrowing it down to your best matches...',
+    'Writing your 5 next steps...'
+  ];
+  document.getElementById('resWrap').innerHTML =
+    '<div class="plan-loading" role="status" aria-live="polite">' +
+    '<div class="pl-ring"></div>' +
+    '<div class="pl-title">Building your custom plan</div>' +
+    '<div class="pl-msg" id="plMsg">' + msgs[0] + '</div>' +
+    '<div class="pl-bar"><div class="pl-fill" id="plFill"></div></div>' +
+    '<div class="pl-sub">Searching ' + total + ' resources from the McAllen Chamber, UTRGV, and partners across the Rio Grande Valley</div>' +
+    '</div>';
+  var fill = document.getElementById('plFill');
+  // Start the bar on the next frame so the CSS transition runs
+  setTimeout(function(){ if (fill) fill.style.width = '90%'; }, 50);
+  var i = 0;
+  var timer = setInterval(function(){
+    if (i >= msgs.length - 1) { clearInterval(timer); return; } // last message stays
+    var el = document.getElementById('plMsg');
+    if (!el) { clearInterval(timer); return; }
+    el.style.opacity = 0;
+    setTimeout(function(){ i++; el.textContent = msgs[i]; el.style.opacity = 1; }, 300);
+  }, 2400);
+  return function(done){
+    clearInterval(timer);
+    if (fill) { fill.style.transition = 'width .3s ease'; fill.style.width = '100%'; }
+    setTimeout(done, 350);
+  };
 }
 
 function renderResults(bundle, steps, more, source){
   var c = ans.contact || {}, first = c.first || '', biz = c.biz || 'your business';
   var dims = sortedDims();
-  var brImg = document.querySelector('.hdr-br').src;
   var h = '';
 
-  h += '<div class="rhero"><img class="rhero-logo" src="' + brImg + '" alt="Project Next Move">';
+  h += '<div class="rhero"><img class="rhero-logo" src="' + WHITE_LOGO + '" alt="Project Next Move">';
   h += '<div class="rhero-txt"><div class="rgreet">' + (first ? esc(first) + ", here's your path forward" : "Here's your path forward") + '</div>';
   h += '<div class="rbundle">' + esc(bundle.name) + '</div><div class="rdesc">' + esc(bundle.desc) + '</div></div></div>';
 
@@ -1352,12 +1415,14 @@ window.goRestart = goRestart;
 function bootApp(){
   var btn = document.getElementById('startBtn');
   if (btn) btn.onclick = function(){ goStart(); return false; };
+  fixLogos();
   updateStats();          // question count right away
   ensureData(function(){}); // preload the sheet so Start is instant
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootApp);
 else bootApp();
 </script>
+
   
 </body>
 </html>
