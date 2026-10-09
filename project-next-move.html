@@ -996,6 +996,8 @@ function renderSec(idx){
   old.parentNode.replaceChild(wrap, old);
   wrap.innerHTML = h;
   setP(Math.round((idx / SECS.length) * 100));
+  // Start each section at the top so they don't land at the bottom after "Continue"
+  try { window.scrollTo({top: 0, behavior: 'smooth'}); } catch (err) { window.scrollTo(0, 0); }
 
   wrap.addEventListener('click', function(e){
     var opt = e.target.closest('.opt');
