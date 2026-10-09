@@ -559,6 +559,12 @@ var norm = {};
   '.step-why{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:8px}' +
   '.step-contact{font-size:13px;color:var(--navy);line-height:1.7;word-break:break-word}' +
   '.step-contact a{color:var(--navy)}' +
+  '.step-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:6px;background:#eef1f9;color:#26429B}' +
+  '.step.src-ut{border-left-color:#F05023}.step.src-ut .step-n,.step.src-ut .step-prog{color:#F05023}.step.src-ut .step-tag{background:#fdeee8;color:#c2410c}' +
+  '.step.src-eco{border-left-color:#2E7D32}.step.src-eco .step-n,.step.src-eco .step-prog{color:#2E7D32}.step.src-eco .step-tag{background:#e8f5e9;color:#2E7D32}' +
+  '.step.src-ut .step-contact,.step.src-ut .step-contact a{color:#c2410c}.step.src-eco .step-contact,.step.src-eco .step-contact a{color:#2E7D32}' +
+  '.src-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin:-2px 0 10px}' +
+  '.src-legend span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}' +
   '.more-btn{background:none;border:1.5px solid var(--bdr);color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;cursor:pointer;margin-top:4px}' +
   '.more-btn:hover{border-color:var(--navy);color:var(--navy)}' +
   '.more-list{display:none;margin-top:12px}' +
@@ -1138,6 +1144,9 @@ function sortByLevel(steps){
 }
 
 var BROAD_AREAS = ['rgv','texas','national','hidalgo','cameron'];
+// Chamber flagship programs: extra ranking points, always kept in the AI's candidate list
+// when eligible, and labeled as flagship so the AI favors them.
+var FLAGSHIP = {itx: 40};
 function rankScore(key, p, prof, bundleList){
   var fits = (p.dims || []).map(function(d){ return norm[d] || 0; }).sort(function(a, b){ return b - a; });
   var s = (fits[0] || 0) + 0.25 * fits.slice(1).reduce(function(x, y){ return x + y; }, 0);
@@ -1148,7 +1157,42 @@ function rankScore(key, p, prof, bundleList){
   if (ar.some(function(a){ return BROAD_AREAS.indexOf(a) === -1 && prof.area.indexOf(a) > -1; })) s += 10;
   s += LEVEL_BONUS[levelOf(p)];
   if (String(p.tier).toLowerCase() === 'referral') s += 5;
+  s += FLAGSHIP[key] || 0;
   return s;
+}
+
+// Only programs the Chamber can stand behind get recommended:
+// Chamber programs, UTRGV, and partners marked Tier = "Referral" in the sheet.
+// Everything else stays in the sheet but is never a step.
+function isRecommendable(p){
+  if (list(p.requires).indexOf('directory-only') > -1) return false;
+  if (p.org === 'ch' || p.org === 'ut') return true;
+  return String(p.tier || '').trim().toLowerCase() === 'referral';
+}
+
+// Make sure at least `min` of the 5 steps are Chamber programs when we have them
+var MIN_CHAMBER = 3;
+function ensureChamber(steps, pool){
+  // A flagship that ranks in the top 5 always makes the plan
+  Object.keys(FLAGSHIP).forEach(function(f){
+    var have = steps.some(function(s){ return s.key === f; });
+    if (have || pool.slice(0, 5).indexOf(f) === -1) return;
+    var idx = -1;
+    for (var j = steps.length - 1; j >= 0; j--) if (PROGRAMS[steps[j].key].org !== 'ch') { idx = j; break; }
+    if (idx === -1) idx = steps.length - 1;
+    steps[idx] = {key:f, action:PROGRAMS[f].desc, why:''};
+  });
+  var used = steps.map(function(s){ return s.key; });
+  var spare = pool.filter(function(k){ return PROGRAMS[k].org === 'ch' && used.indexOf(k) === -1; });
+  var count = steps.filter(function(s){ return PROGRAMS[s.key].org === 'ch'; }).length;
+  for (var i = steps.length - 1; i >= 0 && count < MIN_CHAMBER && spare.length; i--) {
+    if (PROGRAMS[steps[i].key].org !== 'ch') {
+      var k = spare.shift();
+      steps[i] = {key:k, action:PROGRAMS[k].desc, why:''};
+      count++;
+    }
+  }
+  return steps;
 }
 
 // Returns up to 15 ranked keys, at most 2 per category and 2 lenders/grants
@@ -1157,7 +1201,7 @@ function buildPool(prof, bundleKey){
   var ranked = Object.keys(PROGRAMS)
     .filter(function(k){
       // "directory-only" in Requires: listed in the directory, never a recommended step
-      return list(PROGRAMS[k].requires).indexOf('directory-only') === -1 && isEligible(PROGRAMS[k], prof);
+      return isRecommendable(PROGRAMS[k]) && isEligible(PROGRAMS[k], prof);
     })
     .map(function(k){ return {key:k, s:rankScore(k, PROGRAMS[k], prof, bundleList)}; })
     .sort(function(a, b){ return b.s - a.s; });
@@ -1167,7 +1211,7 @@ function buildPool(prof, bundleKey){
     if (pool.length >= 15) return;
     var p = PROGRAMS[r.key], cat = p.cat || p.org;
     var isMoney = list(p.requires).indexOf('capital') > -1;
-    if ((perCat[cat] || 0) >= 2) return;
+    if ((perCat[cat] || 0) >= (FLAGSHIP[r.key] ? 99 : p.org === 'ch' ? 4 : 2)) return;
     if (isMoney && money >= 2) return;
     perCat[cat] = (perCat[cat] || 0) + 1;
     if (isMoney) money++;
@@ -1211,7 +1255,9 @@ function profileForAI(prof, bundle){
 function requestAIPlan(prof, bundle, pool){
   var cands = pool.slice(0, 12).map(function(k){
     var p = PROGRAMS[k];
-    return {key:k, name:p.name, desc:p.desc, org:p.org, level:LEVEL_LBL[levelOf(p)]};
+    var lvl = LEVEL_LBL[levelOf(p)];
+    if (FLAGSHIP[k]) lvl += ' FLAGSHIP PROGRAM (include it whenever it fits)';
+    return {key:k, name:p.name, desc:p.desc, org:p.org, level:lvl};
   });
   var req = fetch(INTAKE_URL, {
     method:'POST',
@@ -1247,7 +1293,7 @@ function ruleSteps(keys){
 function contactLine(p){
   var parts = [];
   if (p.org === 'ch') {
-    parts.push('McAllen Chamber program'); // Michelle's info shows once, at the bottom
+    // nothing here: the tag already says McAllen Chamber, and Michelle's info shows once at the bottom
   } else {
     if (p.contact) parts.push(esc(p.contact));
     if (p.phone) parts.push(esc(p.phone));
@@ -1274,7 +1320,10 @@ function referralText(p){
 
 function stepCard(n, step){
   var p = PROGRAMS[step.key];
-  var h = '<div class="step"><div class="step-n">' + n + '</div><div class="step-body">';
+  var src = p.org === 'ch' ? 'ch' : p.org === 'ut' ? 'ut' : 'eco';
+  var tag = {ch:'McAllen Chamber', ut:'UTRGV', eco:'Community partner'}[src];
+  var h = '<div class="step src-' + src + '"><div class="step-n">' + n + '</div><div class="step-body">';
+  h += '<div class="step-tag">' + tag + '</div>';
   h += '<div class="step-prog">' + esc(p.name) + '</div>';
   h += '<div class="step-act">' + esc(step.action) + '</div>';
   if (step.why) h += '<div class="step-why">' + esc(step.why) + '</div>';
@@ -1309,7 +1358,7 @@ function goResults(){
   showScr('s-res'); setP(100);
 
   requestAIPlan(prof, bundle, pool).then(function(ai){
-    var steps = sortByLevel(ai.steps || ruleSteps(pool.slice(0, 5)));
+    var steps = sortByLevel(ensureChamber(ai.steps || ruleSteps(pool.slice(0, 5)), pool));
     var used = steps.map(function(s){ return s.key; });
     var more = sortByLevel(ruleSteps(pool.filter(function(k){ return used.indexOf(k) === -1; }).slice(0, 5)));
     stopLoading(function(){
@@ -1372,7 +1421,9 @@ function renderResults(bundle, steps, more, source){
     h += '<span class="dimpct">' + norm[d] + '%</span></div>';
   });
 
-  h += '<div class="shdr">Your 5 Next Steps</div><div class="steps">';
+  h += '<div class="shdr">Your 5 Next Steps</div>';
+  h += '<div class="src-legend"><span style="--c:#26429B">McAllen Chamber</span><span style="--c:#F05023">UTRGV</span><span style="--c:#2E7D32">Community partner</span></div>';
+  h += '<div class="steps">';
   steps.forEach(function(s, i){ h += stepCard(i + 1, s); });
   h += '</div>';
 
@@ -1653,6 +1704,7 @@ function bootApp(){
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootApp);
 else bootApp();
-</script>  
+</script>
+
 </body>
 </html>
