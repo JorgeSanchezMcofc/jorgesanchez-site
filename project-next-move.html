@@ -554,9 +554,9 @@ var norm = {};
   '.step{display:flex;gap:16px;border:1px solid var(--bdr);border-left:4px solid var(--navy);padding:18px;margin-bottom:10px;background:#fff;break-inside:avoid}' +
   '.step-n{font-family:"Barlow Condensed",sans-serif;font-size:34px;font-weight:800;color:var(--navy);line-height:1;min-width:28px}' +
   '.step-body{flex:1;min-width:0}' +
-  '.step-prog{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}' +
-  '.step-act{font-size:16px;font-weight:600;color:var(--txt);margin-bottom:6px;line-height:1.45}' +
-  '.step-why{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px}' +
+  '.step-prog{font-size:19px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:6px}' +
+  '.step-act{font-size:15px;font-weight:400;color:var(--txt);margin-bottom:4px;line-height:1.55}' +
+  '.step-why{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:8px}' +
   '.step-contact{font-size:13px;color:var(--navy);line-height:1.7;word-break:break-word}' +
   '.step-contact a{color:var(--navy)}' +
   '.more-btn{background:none;border:1.5px solid var(--bdr);color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;cursor:pointer;margin-top:4px}' +
@@ -1247,7 +1247,7 @@ function ruleSteps(keys){
 function contactLine(p){
   var parts = [];
   if (p.org === 'ch') {
-    parts.push('Michelle Rodriguez · <a href="mailto:mrodriguez@mcallenchamber.com">mrodriguez@mcallenchamber.com</a>');
+    parts.push('McAllen Chamber program'); // Michelle's info shows once, at the bottom
   } else {
     if (p.contact) parts.push(esc(p.contact));
     if (p.phone) parts.push(esc(p.phone));
@@ -1258,6 +1258,18 @@ function contactLine(p){
     }
   }
   return parts.join(' · ');
+}
+
+// Who the Chamber should connect them with (internal: email + Intake sheet)
+function referralText(p){
+  if (p.org === 'ch') return 'McAllen Chamber (Michelle Rodriguez, mrodriguez@mcallenchamber.com)';
+  var parts = [];
+  if (p.contact) parts.push(p.contact);
+  if (p.phone) parts.push(p.phone);
+  if (p.email) parts.push(p.email);
+  if (p.website) parts.push(p.website);
+  if (!parts.length) parts.push(p.cat === 'UTRGV' ? 'UTRGV' : 'See partner website');
+  return parts.join(' | ');
 }
 
 function stepCard(n, step){
@@ -1564,7 +1576,11 @@ function buildPayload(bundle, steps, more, source){
     bizType:optText('q1'), bizAge:optText('q2'), teamSize:optText('q3'),
     womanOwned: ans.q4 === 0 ? 'Yes' : ans.q4 === 1 ? 'No' : 'Not specified',
     location: optText('q0'),
-    steps: steps.map(function(s, i){ return (i + 1) + '. ' + PROGRAMS[s.key].name + ': ' + s.action; }).join('\n'),
+    steps: steps.map(function(s, i){
+      var p = PROGRAMS[s.key];
+      return (i + 1) + '. ' + p.name + '\n   What to do: ' + s.action +
+        (s.why ? '\n   Why: ' + s.why : '') + '\n   Connect with: ' + referralText(p);
+    }).join('\n\n'),
     more: names(more).join(', '),
     planSource: source,
     emailHtml: buildEmailReport(bundle, steps, more)
@@ -1577,10 +1593,10 @@ function buildEmailReport(bundle, steps, more){
   var card = function(n, s){
     var p = PROGRAMS[s.key];
     return '<div style="border:1px solid #e5e7eb;border-left:4px solid #26429B;padding:14px 16px;margin-bottom:8px">' +
-      '<div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6b7280">' + n + '. ' + esc(p.name) + '</div>' +
-      '<div style="font-size:15px;font-weight:700;margin:4px 0">' + esc(s.action) + '</div>' +
-      '<div style="font-size:13px;color:#374151;line-height:1.6">' + esc(s.why) + '</div>' +
-      '<div style="font-size:12px;color:#26429B;margin-top:6px">' + contactLine(p) + '</div></div>';
+      '<div style="font-size:17px;font-weight:800;color:#26429B">' + n + '. ' + esc(p.name) + '</div>' +
+      '<div style="font-size:14px;margin:6px 0 2px"><b>What to recommend:</b> ' + esc(s.action) + '</div>' +
+      (s.why ? '<div style="font-size:13px;color:#4b5563;line-height:1.6"><b>Why:</b> ' + esc(s.why) + '</div>' : '') +
+      '<div style="font-size:13px;margin-top:8px;padding:8px 10px;background:#eef1f9"><b>Connect them with:</b> ' + esc(referralText(p)) + '</div></div>';
   };
   var h = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:Arial,sans-serif;margin:0;background:#f3f4f6;color:#111827">';
   h += '<div style="max-width:640px;margin:0 auto;background:#fff">';
@@ -1593,7 +1609,7 @@ function buildEmailReport(bundle, steps, more){
   h += row('Top needs', DIM_LBL[d[0]] + ' / ' + DIM_LBL[d[1]]);
   if (c.ref) h += row('Referred by', c.ref);
   h += '</div><div style="padding:24px 32px">';
-  h += '<div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:12px">5 Next Steps</div>';
+  h += '<div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:12px">Step-by-step plan: what to recommend and who to connect them with</div>';
   steps.forEach(function(s, i){ h += card(i + 1, s); });
   if (more.length) {
     h += '<div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin:20px 0 12px">More Options</div>';
@@ -1637,7 +1653,6 @@ function bootApp(){
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootApp);
 else bootApp();
-</script>
-  
+</script>  
 </body>
 </html>
