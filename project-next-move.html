@@ -578,7 +578,29 @@ var norm = {};
   '.ft-ch{filter:none!important;opacity:1!important;background:#fff;padding:6px 10px;border-radius:4px;height:30px!important;box-sizing:content-box}' +
   '.ft-br{height:38px}' +
   '.rhero-logo{height:46px!important;width:auto}' +
-  '@media print{.more-list{display:block!important}.more-btn{display:none!important}}';
+  // Chamber programs directory
+  '.dir{max-width:760px;margin:0 auto;padding:32px 24px 48px}' +
+  '.dir-top{margin-bottom:20px}' +
+  '.dir-search{width:100%;border:1.5px solid var(--bdr);padding:12px 14px;font-family:Barlow,sans-serif;font-size:15px;color:var(--txt);margin-bottom:14px;outline:none;background:#fff}' +
+  '.dir-search:focus{border-color:var(--navy)}' +
+  '.dir-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}' +
+  '.dir-chip{font-family:Barlow,sans-serif;font-size:12px;font-weight:600;padding:6px 12px;border:1px solid var(--bdr);border-radius:20px;background:#fff;color:var(--muted);cursor:pointer}' +
+  '.dir-chip:hover{border-color:var(--navy);color:var(--navy)}' +
+  '.dir-chip.on{background:var(--navy);border-color:var(--navy);color:#fff}' +
+  '.dir-fit{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--txt);margin-bottom:6px;cursor:pointer}' +
+  '.dir-fit input{width:16px;height:16px;accent-color:var(--navy)}' +
+  '.dir-grp{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bdr)}' +
+  '.dcard{border:1px solid var(--bdr);border-left:4px solid var(--navy);padding:14px 16px;margin-bottom:8px;background:#fff;break-inside:avoid}' +
+  '.dname{font-size:15px;font-weight:600;color:var(--txt)}' +
+  '.ddesc{font-size:14px;color:var(--muted);line-height:1.6;margin-top:4px}' +
+  '.dtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}' +
+  '.dtag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;background:var(--navy-lt);color:var(--navy)}' +
+  '.dir-empty{padding:32px 0;text-align:center;color:var(--muted);font-size:15px}' +
+  '.dir-link{display:inline-block;margin-top:18px;font-size:15px;font-weight:600;color:var(--navy);cursor:pointer;background:none;border:none;padding:0;font-family:Barlow,sans-serif;text-decoration:underline;text-underline-offset:3px}' +
+  '.land-browse{margin-top:18px;font-size:14px;opacity:0;animation:fadeIn 1s ease 1.3s forwards}' +
+  '.land-browse a{color:rgba(255,255,255,.75);text-underline-offset:3px}' +
+  '.land-browse a:hover{color:#fff}' +
+  '@media print{.more-list{display:block!important}.more-btn,.dir-top,.dir-search,.dir-chips,.dir-fit{display:none!important}}';
   var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 })();
 
@@ -840,8 +862,9 @@ function loadSheetData(onComplete) {
 // ── SCREEN HELPERS ───────────────────────────────────────────────────────────
 var dataLoaded = false;
 function showScr(id) {
-  ['s-land','s-asmt','s-res'].forEach(function(s){
-    document.getElementById(s).className = 'scr' + (s === id ? ' on' : '');
+  ['s-land','s-asmt','s-res','s-dir'].forEach(function(s){
+    var el = document.getElementById(s);
+    if (el) el.className = 'scr' + (s === id ? ' on' : '');
   });
   window.scrollTo(0,0);
 }
@@ -1306,6 +1329,7 @@ function renderResults(bundle, steps, more, source){
     more.forEach(function(s, i){ h += stepCard(i + 6, s); });
     h += '</div>';
   }
+  h += '<div><button class="dir-link" id="btnDir">See all McAllen Chamber programs &#8594;</button></div>';
 
   h += '<div class="cta"><div class="cta-ttl">Ready to Take the Next Step?</div>';
   h += '<div class="cta-sub">One person connects you to everything. Reach out to Michelle and she will help ' + esc(biz) + ' get started on these steps.</div>';
@@ -1320,6 +1344,7 @@ function renderResults(bundle, steps, more, source){
   document.getElementById('resWrap').innerHTML = h;
   document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
   document.getElementById('btnRestart').addEventListener('click', goRestart);
+  document.getElementById('btnDir').addEventListener('click', function(){ openDirectory('s-res'); });
   var mb = document.getElementById('btnMore');
   if (mb) mb.addEventListener('click', function(){
     var ml = document.getElementById('moreList');
@@ -1334,6 +1359,145 @@ function renderResults(bundle, steps, more, source){
   }, 120);
 
   submitToSheets(buildPayload(bundle, steps, more, source));
+}
+
+// ── CHAMBER PROGRAMS DIRECTORY ───────────────────────────────────────────────
+var STAGE_LBL = {idea:'Idea stage', 'new':'New businesses', growing:'Growing', established:'Established'};
+var IND_LBL = {food:'Food & restaurants', retail:'Retail', services:'Professional services', creative:'Creative & arts',
+               trade:'Manufacturing & trade', health:'Health & wellness', tech:'Technology', other:'Other'};
+var REQ_LBL = {woman:'Women entrepreneurs', trade:'Cross-border & exporters', tech:'Tech & product',
+               veteran:'Veterans', capital:'Funding'};
+var dirState = {q:'', cat:'all', fit:false, from:'s-land'};
+
+function ensureDirScreen(){
+  if (document.getElementById('s-dir')) return;
+  var res = document.getElementById('s-res');
+  var d = document.createElement('div');
+  d.className = 'scr'; d.id = 's-dir';
+  d.innerHTML = '<div class="dir" id="dirWrap"></div>';
+  res.parentNode.insertBefore(d, res.nextSibling);
+}
+
+function openDirectory(from){
+  ensureDirScreen();
+  var hasProfile = ans.q2 !== undefined && ans.q0 !== undefined;
+  dirState = {q:'', cat:'all', fit:(from === 's-res' && hasProfile), from:from};
+  ensureData(function(){ renderDirectory(hasProfile); showScr('s-dir'); });
+}
+
+function chamberKeys(){
+  return Object.keys(PROGRAMS).filter(function(k){ return PROGRAMS[k].org === 'ch'; });
+}
+
+function renderDirectory(hasProfile){
+  var keys = chamberKeys();
+  var cats = [], count = {};
+  keys.forEach(function(k){
+    var c = PROGRAMS[k].cat || 'Other';
+    if (!count[c]) { count[c] = 0; cats.push(c); }
+    count[c]++;
+  });
+
+  var h = '<div class="dir-top"><button class="btn-bk" id="dirBack">&#8592; Back</button></div>';
+  h += '<div class="sec-hd"><div class="sec-num">McAllen Chamber of Commerce</div>';
+  h += '<div class="sec-ttl">Chamber Programs</div>';
+  h += '<p class="sec-sub">' + keys.length + ' programs to help you start, grow, and connect. ';
+  h += 'Michelle Rodriguez can help you get started with any of them.</p></div>';
+  h += '<input class="dir-search" id="dirSearch" type="search" placeholder="Search programs" aria-label="Search programs">';
+  h += '<div class="dir-chips" id="dirChips"><button class="dir-chip on" data-cat="all">All (' + keys.length + ')</button>';
+  cats.forEach(function(c){
+    h += '<button class="dir-chip" data-cat="' + esc(c) + '">' + esc(c) + ' (' + count[c] + ')</button>';
+  });
+  h += '</div>';
+  if (hasProfile) {
+    h += '<label class="dir-fit"><input type="checkbox" id="dirFit"' + (dirState.fit ? ' checked' : '') + '> Only show programs that fit my business</label>';
+  }
+  h += '<div id="dirList"></div>';
+  h += '<div class="cta"><div class="cta-ttl">Want help choosing?</div>';
+  h += '<div class="cta-sub">Michelle can walk you through any of these programs and get you started.</div>';
+  h += '<div class="cta-person"><div class="cta-av">MR</div><div class="cta-info">';
+  h += '<div class="cta-role">Economic Development Coordinator</div><div class="cta-name">Michelle Rodriguez</div>';
+  h += '<div class="cta-email">mrodriguez@mcallenchamber.com</div></div></div></div>';
+
+  var wrap = document.getElementById('dirWrap');
+  var fresh = wrap.cloneNode(false);           // drop old listeners
+  wrap.parentNode.replaceChild(fresh, wrap);
+  fresh.innerHTML = h;
+  renderDirList();
+
+  fresh.addEventListener('click', function(e){
+    if (e.target.id === 'dirBack') { showScr(dirState.from); return; }
+    var chip = e.target.closest('.dir-chip');
+    if (chip) {
+      dirState.cat = chip.dataset.cat;
+      fresh.querySelectorAll('.dir-chip').forEach(function(b){ b.classList.toggle('on', b === chip); });
+      renderDirList();
+    }
+  });
+  fresh.addEventListener('input', function(e){
+    if (e.target.id === 'dirSearch') { dirState.q = e.target.value.trim().toLowerCase(); renderDirList(); }
+  });
+  fresh.addEventListener('change', function(e){
+    if (e.target.id === 'dirFit') { dirState.fit = e.target.checked; renderDirList(); }
+  });
+}
+
+function dirTags(p){
+  var tags = [];
+  var st = list(p.stages);
+  if (st.indexOf('none') === -1) {
+    if (!st.length || st.indexOf('all') > -1) tags.push('All stages');
+    else st.forEach(function(s){ if (STAGE_LBL[s]) tags.push(STAGE_LBL[s]); });
+  }
+  list(p.industries).forEach(function(i){ if (IND_LBL[i]) tags.push(IND_LBL[i]); });
+  list(p.requires).forEach(function(r){ if (REQ_LBL[r]) tags.push(REQ_LBL[r]); });
+  return tags;
+}
+
+function renderDirList(){
+  var prof = dirState.fit ? getProfile() : null;
+  var shown = chamberKeys().filter(function(k){
+    var p = PROGRAMS[k];
+    if (dirState.cat !== 'all' && (p.cat || 'Other') !== dirState.cat) return false;
+    if (prof && !isEligible(p, prof)) return false;
+    if (dirState.q) {
+      var hay = (p.name + ' ' + p.desc + ' ' + (p.cat || '')).toLowerCase();
+      if (hay.indexOf(dirState.q) === -1) return false;
+    }
+    return true;
+  });
+
+  var el = document.getElementById('dirList');
+  if (!shown.length) {
+    el.innerHTML = '<div class="dir-empty">No programs match. Try a different search or category.</div>';
+    return;
+  }
+  var h = '', lastCat = null;
+  shown.forEach(function(k){
+    var p = PROGRAMS[k], c = p.cat || 'Other';
+    if (c !== lastCat) { h += '<div class="dir-grp">' + esc(c) + '</div>'; lastCat = c; }
+    h += '<div class="dcard"><div class="dname">' + esc(p.name) + '</div>';
+    h += '<div class="ddesc">' + esc(p.desc) + '</div>';
+    var tags = dirTags(p);
+    if (tags.length) {
+      h += '<div class="dtags">' + tags.map(function(t){ return '<span class="dtag">' + esc(t) + '</span>'; }).join('') + '</div>';
+    }
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+
+// Landing-page link for people who just want to browse
+function addBrowseLink(){
+  var go = document.querySelector('.btn-go-wrap');
+  if (!go || document.getElementById('browseLink')) return;
+  var p = document.createElement('p');
+  p.className = 'land-browse';
+  p.innerHTML = '<a href="#" id="browseLink">Just browsing? See all McAllen Chamber programs &#8594;</a>';
+  go.parentNode.insertBefore(p, go.nextSibling);
+  document.getElementById('browseLink').addEventListener('click', function(e){
+    e.preventDefault(); openDirectory('s-land');
+  });
 }
 
 // ── INTAKE + EMAIL ───────────────────────────────────────────────────────────
@@ -1416,6 +1580,7 @@ function bootApp(){
   var btn = document.getElementById('startBtn');
   if (btn) btn.onclick = function(){ goStart(); return false; };
   fixLogos();
+  addBrowseLink();
   updateStats();          // question count right away
   ensureData(function(){}); // preload the sheet so Start is instant
 }
