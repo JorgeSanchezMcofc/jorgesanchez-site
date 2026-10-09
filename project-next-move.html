@@ -542,7 +542,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.04em}
 // ============================================================================
 var INTAKE_URL = "https://script.google.com/macros/s/AKfycbzfduDDhlN_CwTbaHQe9BLXcLiXPjWM5obXmGFfAZo9zpRkiWomCn85VeKgp1bq6xtb/exec";
 var SHEET_ID = '1wDA_LHUnob8Z7VuBLDvVxIqTtKAciPzIw3cXO3EOKFk';
-var AI_TIMEOUT_MS = 15000;
+var AI_TIMEOUT_MS = 20000;
 var ans = {}, curSec = 0;
 var sc = {vis:0,cap:0,inno:0,ops:0,work:0,intel:0};
 var norm = {};
@@ -1035,6 +1035,25 @@ function isEligible(p, prof){
   return true;
 }
 
+// Level: 0 Chamber, 1 local/RGV (UTRGV + local partners), 2 state, 3 national/federal
+var LEVEL_LBL = ['McAllen Chamber', 'Local / RGV', 'State of Texas', 'National / Federal'];
+function levelOf(p){
+  if (p.org === 'ch') return 0;
+  if (p.org === 'ut') return 1;
+  var ar = list(p.area);
+  if (ar.indexOf('national') > -1) return 3;
+  if (ar.length && ar.every(function(a){ return a === 'texas'; })) return 2;
+  return 1;
+}
+// Ranking nudge so local options win close calls
+var LEVEL_BONUS = [15, 8, -5, -15];
+// Steps always display local first, then state, then national
+function sortByLevel(steps){
+  return steps.map(function(s, i){ return {s:s, i:i, l:levelOf(PROGRAMS[s.key])}; })
+    .sort(function(a, b){ return (a.l - b.l) || (a.i - b.i); })
+    .map(function(x){ return x.s; });
+}
+
 var BROAD_AREAS = ['rgv','texas','national','hidalgo','cameron'];
 function rankScore(key, p, prof, bundleList){
   var fits = (p.dims || []).map(function(d){ return norm[d] || 0; }).sort(function(a, b){ return b - a; });
@@ -1044,9 +1063,7 @@ function rankScore(key, p, prof, bundleList){
   if (list(p.industries).length) s += 20; // built for this industry
   var ar = list(p.area);
   if (ar.some(function(a){ return BROAD_AREAS.indexOf(a) === -1 && prof.area.indexOf(a) > -1; })) s += 10;
-  if (ar.indexOf('national') > -1 && !list(p.requires).length) s -= 10;
-  if (p.org === 'ch') s += 8;
-  if (p.org === 'ut') s += 5;
+  s += LEVEL_BONUS[levelOf(p)];
   if (String(p.tier).toLowerCase() === 'referral') s += 5;
   return s;
 }
@@ -1105,16 +1122,20 @@ function profileForAI(prof, bundle){
 function requestAIPlan(prof, bundle, pool){
   var cands = pool.slice(0, 12).map(function(k){
     var p = PROGRAMS[k];
-    return {key:k, name:p.name, desc:p.desc, org:p.org};
+    return {key:k, name:p.name, desc:p.desc, org:p.org, level:LEVEL_LBL[levelOf(p)]};
   });
   var req = fetch(INTAKE_URL, {
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify({action:'plan', profile:profileForAI(prof, bundle), candidates:cands})
   }).then(function(r){ return r.json(); });
-  var timeout = new Promise(function(resolve){ setTimeout(function(){ resolve(null); }, AI_TIMEOUT_MS); });
+  var timeout = new Promise(function(resolve){
+    setTimeout(function(){ resolve({status:'error', msg:'timeout'}); }, AI_TIMEOUT_MS);
+  });
   return Promise.race([req, timeout]).then(function(res){
-    if (!res || res.status !== 'ok' || !Array.isArray(res.steps)) return null;
+    if (!res || res.status !== 'ok' || !Array.isArray(res.steps)) {
+      return {steps:null, err:(res && res.msg) || 'no response'};
+    }
     var seen = {}, steps = [];
     res.steps.forEach(function(s){
       if (steps.length < 5 && s && pool.indexOf(s.key) > -1 && !seen[s.key]) {
@@ -1122,17 +1143,14 @@ function requestAIPlan(prof, bundle, pool){
         steps.push({key:s.key, action:String(s.action || ''), why:String(s.why || '')});
       }
     });
-    return steps.length === 5 ? steps : null;
-  }).catch(function(){ return null; });
+    return steps.length === 5 ? {steps:steps} : {steps:null, err:'invalid plan'};
+  }).catch(function(e){ return {steps:null, err:'fetch failed: ' + (e && e.message)}; });
 }
 
+// Backup text when the AI is unavailable: the program's own description
 function ruleSteps(keys){
   return keys.map(function(k){
-    var p = PROGRAMS[k];
-    var action = p.org === 'ch'
-      ? 'Ask Michelle to get you started with ' + p.name + '.'
-      : 'Reach out to ' + p.name + (p.contact ? ' (' + p.contact.split(/[—,]/)[0].trim() + ')' : '') + '.';
-    return {key:k, action:action, why:p.desc};
+    return {key:k, action:PROGRAMS[k].desc, why:''};
   });
 }
 
@@ -1190,11 +1208,11 @@ function goResults(){
     '<div class="plan-loading">Building your 5-step plan...</div>';
   showScr('s-res'); setP(100);
 
-  requestAIPlan(prof, bundle, pool).then(function(aiSteps){
-    var steps = aiSteps || ruleSteps(pool.slice(0, 5));
+  requestAIPlan(prof, bundle, pool).then(function(ai){
+    var steps = sortByLevel(ai.steps || ruleSteps(pool.slice(0, 5)));
     var used = steps.map(function(s){ return s.key; });
-    var more = ruleSteps(pool.filter(function(k){ return used.indexOf(k) === -1; }).slice(0, 5));
-    renderResults(bundle, steps, more, aiSteps ? 'AI' : 'Rules');
+    var more = sortByLevel(ruleSteps(pool.filter(function(k){ return used.indexOf(k) === -1; }).slice(0, 5)));
+    renderResults(bundle, steps, more, ai.steps ? 'AI' : 'Rules (' + ai.err + ')');
   });
 }
 
@@ -1340,6 +1358,6 @@ function bootApp(){
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootApp);
 else bootApp();
 </script>
-
+  
 </body>
 </html>
