@@ -5,7 +5,7 @@ import pathlib
 
 import yaml
 
-from bot import analisis, dashboard, fuentes, geo, parsers, salidas
+from bot import analisis, cad, dashboard, fuentes, geo, parsers, salidas
 
 geo.ACTIVO = False  # sin internet en los tests
 
@@ -83,3 +83,24 @@ def test_geo_limpia_y_reutiliza():
     prev = {"lat": 26.1, "lng": -98.2, "flood_zona": "AE", "flood_riesgo": True, "geo_v": geo.VERSION}
     p = geo.enriquecer({"direccion": "x"}, prev)
     assert p["flood_zona"] == "AE" and p["lat"] == 26.1
+
+
+def test_cad_enriquecer(tmp_path):
+    cfg = yaml.safe_load((pathlib.Path(__file__).parent.parent / "config.yaml").read_text())
+    url = cad.EXPORTS["Cameron"]["url"]
+    fila = {"pID": "181809", "pYear": "2026", "geoID": "85-7140-0200-0100-10", "name": "CAVAZOS MODESTO EST OF",
+            "exemptions": "", "stateCd": "E", "agUse": "0", "improvementValue": "0", "situsStreet": "PARKER",
+            "situsSuffix": "RD", "situsCity": "SANTA ROSA", "situsZip": "78593"}
+    casa = dict(fila, pID="181808", geoID="85-7140-0200-0100-00", exemptions="HS,OV65", improvementValue="45000",
+                situsNum="23211")
+    cache = {"Cameron": {"url": url, "cuentas": {"8571400200010010": fila,
+                                                  "8571400200010000": casa}, "no_encontradas": []}}
+    path = tmp_path / "cad_cache.json"
+    path.write_text(json.dumps(cache))
+    p = {"condado": "Cameron", "cuenta": "8571400200010010 & 8571400200010000", "direccion": "", "ciudad": "",
+         "riesgos": "", "acres": 10.0, "baldio": None, "valor": 144000, "minimo": 28710, "tipo": "Venta",
+         "conviene": True, "estatus": "", "notas": ""}
+    assert cad.enriquecer([p], path, cfg) == []
+    assert p["homestead"] and p["construccion"] == 45000 and p["baldio"] is False
+    assert p["riesgos"].startswith("Herencia") and "Homestead" in p["riesgos"]
+    assert p["cad"].endswith("/181809/2026") and p["ciudad"] == "Santa Rosa"

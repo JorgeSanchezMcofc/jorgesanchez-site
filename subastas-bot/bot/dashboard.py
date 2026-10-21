@@ -5,11 +5,11 @@ import pathlib
 
 import yaml
 
-from . import geo
+from . import cad, geo
 
 CAMPOS = ["condado", "fecha_subasta", "tipo", "cause", "cuenta", "direccion", "ciudad", "zona", "titulo", "legal",
           "acres", "baldio", "minimo", "valor", "puja_max", "conviene", "impuestos_est", "score",
-          "riesgos", "estatus", "mapa", "cad", "pdf", "visto", *geo.CAMPOS]
+          "riesgos", "estatus", "mapa", "cad", "pdf", "visto", *geo.CAMPOS, *cad.CAMPOS]
 
 
 def _key(p):

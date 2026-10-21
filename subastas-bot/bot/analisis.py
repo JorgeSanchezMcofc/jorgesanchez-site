@@ -78,7 +78,7 @@ def ciudad(direccion):
 
 
 def analizar(p, condado, cfg):
-    crit, puja = cfg["criterios"], cfg["puja"]
+    puja = cfg["puja"]
     p["condado"] = condado["nombre"]
     p["acres"] = acres(p["legal"])
     aprox = re.search(r"approximately ([\d.]+) acres", p.get("notas") or "", re.I)
@@ -115,7 +115,19 @@ def analizar(p, condado, cfg):
     p["puja_max"] = round(max(tope, 0), -2)
     p["conviene"] = bool(valor) and p["puja_max"] >= minimo
 
-    # Score 0-100
+    puntuar(p, cfg)
+
+    q = p["direccion"] or f'{p["zona"]} {p["ciudad"] or condado["nombre"] + " County"} TX'
+    p["mapa"] = "https://www.google.com/maps/search/?api=1&query=" + quote_plus(q)
+    p["cad"] = condado["cad"]
+    return p
+
+
+def puntuar(p, cfg):
+    """Score 0-100. Se vuelve a llamar cuando llegan los datos del CAD."""
+    crit = cfg["criterios"]
+    years = anios_atrasados(p.get("notas"))
+    valor, minimo = p.get("valor") or 0, p.get("minimo") or 0
     s = 0.0
     if p["acres"]:
         s += 35 * min(p["acres"] / crit["acres_objetivo"], 1)
@@ -130,13 +142,10 @@ def analizar(p, condado, cfg):
     s -= 3 * max(0, years - 1)
     if "Herencia" in p["riesgos"]:
         s -= 5
+    if "Homestead" in p["riesgos"] or "agrícola" in p["riesgos"]:
+        s -= 5  # 2 años de redención
     if not p["conviene"]:
         s -= 15
     if "cancel" in (p.get("estatus") or "").lower():
         s = 0
     p["score"] = int(max(0, min(100, round(s))))
-
-    q = p["direccion"] or f'{p["zona"]} {p["ciudad"] or condado["nombre"] + " County"} TX'
-    p["mapa"] = "https://www.google.com/maps/search/?api=1&query=" + quote_plus(q)
-    p["cad"] = condado["cad"]
-    return p

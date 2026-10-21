@@ -123,6 +123,8 @@ def inundacion(lat, lng):
 def enriquecer(p, prev=None):
     """Agrega lat/lng y zona de inundación, reutilizando lo de la corrida anterior."""
     prev = prev or {}
+    if prev.get("geo_aprox") and p.get("direccion") and p.get("direccion") != prev.get("direccion"):
+        prev = {}  # ahora hay dirección exacta (p. ej. del CAD): ubicar de nuevo
     if prev.get("geo_v") == VERSION and prev.get("lat") is not None and prev.get("flood_zona") is not None:
         for k in CAMPOS:
             p[k] = prev.get(k)

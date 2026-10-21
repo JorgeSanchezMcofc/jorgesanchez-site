@@ -190,7 +190,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
       <div class="paso"><div class="num">2</div><b>Revisa</b><p>Ve el terreno (foto y mapa), el CAD, si hay herencia, impuestos pendientes e inundación. El veredicto te dice por dónde empezar.</p></div>
       <div class="paso"><div class="num">3</div><b>Prepárate</b><p>Para pujar ocupas una constancia de la oficina de impuestos de que no debes impuestos en el condado, y registrarte en la subasta. Confirma requisitos y forma de pago con el despacho de la lista.</p></div>
       <div class="paso"><div class="num">4</div><b>Puja</b><p>Se empieza en el mínimo. Pon tu tope antes ("Pagar hasta") y no te pases en el momento.</p></div>
-      <div class="paso"><div class="num">5</div><b>Espera la redención</b><p>El dueño puede recuperarla en 180 días (2 años si era su casa o terreno agrícola). Si lo hace, te paga lo que pujaste +25% el primer año o +50% el segundo.</p></div>
+      <div class="paso"><div class="num">5</div><b>Espera la redención</b><p>El dueño puede recuperarla en 180 días (2 años si era su casa o terreno agrícola: el panel te lo marca). Si lo hace, te paga lo que pujaste +25% el primer año o +50% el segundo.</p></div>
       <div class="paso"><div class="num">6</div><b>Hazla tuya</b><p>Pasada la redención, un quiet title y un survey te dejan el título limpio para usarla, construir o vender.</p></div>
     </div>
     <div class="nota">Guía general, no es asesoría legal. Los montos del panel son estimados: confírmalos antes de pujar.</div>
@@ -274,7 +274,7 @@ function geoId(p){
     return `${c.slice(0,2)}-${c.slice(2,6)}-${c.slice(6,10)}-${c.slice(10,14)}-${c.slice(14)}`;
   return c;
 }
-const cadUrl = p => p.condado === 'Cameron' ? 'https://cameron.prodigycad.com/property-search' : (p.cad || 'https://www.hidalgoad.org');
+const cadUrl = p => p.cad_detalle || (p.condado === 'Cameron' ? 'https://cameron.prodigycad.com/property-search' : (p.cad || 'https://www.hidalgoad.org'));
 
 // Veredicto en palabras: lo primero que hay que leer.
 function veredicto(p){
@@ -285,6 +285,8 @@ function veredicto(p){
   if (p.flood_riesgo) r.push('zona de inundación');
   if (herencia(p)) r.push('herencia');
   if (anios(p) >= 3) r.push(`${anios(p)} años de impuestos`);
+  if (p.homestead) r.push('homestead: 2 años de redención');
+  else if (p.agricola) r.push('uso agrícola: 2 años de redención');
   if (!r.length && (p.score || 0) >= 30) return {k:'vale', t:'Vale la pena', r:'buen precio y sin focos rojos'};
   if (!r.length) r.push('buen precio pero poco terreno');
   return {k:'revisar', t:'Revisar con calma', r:r.join(', ')};
@@ -375,6 +377,27 @@ function expFlood(p){
   return `<h4>Fuera de zona de alto riesgo (${esc(p.flood_zona)})</h4>
     <p>Según el mapa de FEMA, este punto no está en la zona de inundación de alto riesgo. Ojo: el punto es la dirección; en terrenos grandes una parte sí podría estarlo. Revísalo en <a href="https://msc.fema.gov/portal/search" target="_blank" rel="noopener">FEMA Flood Map</a>.</p>`;
 }
+function expExenciones(p){
+  if (!p.cad_ok) return `<h4>Exenciones sin revisar</h4>
+    <p>Todavía no tengo los datos del CAD de esta cuenta${p.condado==='Hidalgo'?' (el robot aún no lee la base de Hidalgo)':''}. Revísalo a mano en "Ver en el CAD":</p>
+    <ol><li><b>Exemptions</b>: si dice HS, era su casa (homestead).</li>
+    <li><b>Special Use / Ag</b> mayor a $0, o State Code D1: tiene valuación agrícola.</li></ol>
+    <p>Cualquiera de las dos le da al dueño <b>2 años</b> para recuperarla en vez de 180 días.</p>`;
+  const base = `<table>
+      <tr><td>Dueño en el CAD</td><td>${esc(p.dueno || '—')}</td></tr>
+      <tr><td>Exenciones</td><td>${esc(p.exenciones || 'ninguna')}</td></tr>
+      <tr><td>Uso agrícola</td><td>${p.agricola ? 'sí' : 'no'}</td></tr>
+      <tr><td>Construcción</td><td>${p.construccion ? money(p.construccion) + (p.anio_construccion ? ` (${esc(p.anio_construccion)})` : '') : '$0 (terreno solo)'}</td></tr>
+      ${p.zonificacion ? `<tr><td>Zonificación</td><td>${esc(p.zonificacion)}</td></tr>` : ''}
+    </table>`;
+  if (p.homestead) return `<h4>Homestead: 2 años de redención</h4>
+    <p>El dueño tiene exención de homestead (era su casa), así que tiene <b>2 años</b> para recuperarla en vez de 180 días. Tu dinero queda detenido más tiempo, pero si la recupera en el segundo año te paga +50%.</p>
+    <p>Además, es más común que la gente sí pague para no perder su casa: tómalo más como inversión con rendimiento que como terreno seguro.</p>${base}`;
+  if (p.agricola) return `<h4>Uso agrícola: 2 años de redención</h4>
+    <p>El terreno tiene valuación agrícola, así que el dueño tiene <b>2 años</b> para recuperarlo. Si después se deja de usar para agricultura, pueden cobrar "rollback taxes" (la diferencia de impuestos de años anteriores).</p>${base}`;
+  return `<h4>Sin homestead ni uso agrícola</h4>
+    <p>Según el CAD no tiene ninguna de las dos, así que la redención es de <b>180 días</b> (lo más corto).</p>${base}`;
+}
 function expBaldio(){
   return `<h4>Baldío (estimado)</h4><p>La dirección no trae número de casa, así que probablemente no tiene construcción. Confírmalo en el CAD: si "Improvement" sale en $0, es terreno solo. La foto satelital también ayuda.</p>`;
 }
@@ -388,7 +411,7 @@ function expVer(p){
     </ol>
     <p>Score ${p.score} de 100: hasta 35 puntos por tamaño (máximo con 10 acres), 20 si parece baldío, hasta 25 según qué tan abajo del valor está el mínimo, y resta por herencia, impuestos o precio alto.</p>`;
 }
-const EXP = {precio: expPrecio, costo: expCosto, herencia: expHerencia, impuestos: expImpuestos, flood: expFlood, baldio: expBaldio, ver: expVer};
+const EXP = {exen: expExenciones, precio: expPrecio, costo: expCosto, herencia: expHerencia, impuestos: expImpuestos, flood: expFlood, baldio: expBaldio, ver: expVer};
 const tagBtn = (cls, label, kind) => `<button type="button" class="tag ${cls}" data-exp="${kind}">${esc(label)}</button>`;
 
 /* ---------- Secciones ---------- */
@@ -512,7 +535,10 @@ function card(p, i){
     tagBtn(v.k==='vale'?'ok':v.k==='pasar'?'bad':'warn', 'Por qué este veredicto', 'ver'),
     p.valor ? (p.conviene ? tagBtn('ok','Buen precio','precio') : tagBtn('bad','Caro','precio')) : '',
     p.flood_zona ? (p.flood_riesgo ? tagBtn('bad',`Zona de inundación ${p.flood_zona}`,'flood') : tagBtn('ok','Fuera de zona de inundación','flood')) : '',
-    p.baldio === true ? tagBtn('ok','Baldío','baldio') : '',
+    p.cad_ok ? (p.homestead ? tagBtn('bad','Homestead: 2 años de redención','exen')
+      : p.agricola ? tagBtn('warn','Uso agrícola: 2 años de redención','exen')
+      : tagBtn('ok','Sin homestead ni ag (180 días)','exen')) : tagBtn('','Exenciones sin revisar','exen'),
+    p.baldio === true ? tagBtn('ok', p.cad_ok ? 'Baldío (según el CAD)' : 'Baldío','baldio') : '',
     herencia(p) ? tagBtn('bad','Herencia: revisar título','herencia') : '',
     anios(p) ? tagBtn('warn',`+${anios(p)} año${anios(p)>1?'s':''} de impuestos por pagar`,'impuestos') : ''
   ].join('');
@@ -536,6 +562,7 @@ function card(p, i){
       </div>
       <div class="legal">
         <b>Cuenta en el CAD:</b> ${esc(geoId(p))} · <b>Caso:</b> ${esc(p.cause)}<br>
+        ${p.cad_ok ? `<b>Dueño:</b> ${esc(p.dueno)} · <b>Construcción:</b> ${p.construccion ? money(p.construccion) : '$0'}${p.exenciones ? ` · <b>Exenciones:</b> ${esc(p.exenciones)}` : ''}<br>` : ''}
         ${esc(p.legal)}<br>
         <a href="${esc(p.pdf)}" target="_blank" rel="noopener">Ver lista oficial</a> ·
         <a href="${OFICINA_IMPUESTOS[p.condado]}" target="_blank" rel="noopener">Oficina de impuestos</a>
@@ -602,7 +629,8 @@ $('list').addEventListener('click', e => {
     $('kFav').textContent = FAVS.size; return;
   }
   const cad = e.target.closest('a.cad');
-  if (cad) { try { navigator.clipboard.writeText(cad.dataset.geo); } catch(_){}
+  if (cad) { if (p.cad_detalle) return;  // va directo a la propiedad
+    try { navigator.clipboard.writeText(cad.dataset.geo); } catch(_){}
     cad.textContent = 'Cuenta copiada: pégala en el buscador'; return; }
   const b = e.target.closest('[data-exp]'); if (!b) return;
   e.preventDefault();
