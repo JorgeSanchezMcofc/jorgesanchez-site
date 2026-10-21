@@ -41,15 +41,22 @@ def main():
             avisos.append(f"{c['nombre']}: error con Perdue ({e})")
         if not listas:
             avisos.append(f"{c['nombre']}: todavía no publican lista para el {fecha:%d/%m}.")
-        for tipo, url, txt in listas:
-            regs = parsers.parse_linebarger(txt) if "lgbs.com" in url else parsers.parse_perdue(txt)
+        for tipo, url, pages in listas:
+            regs = parsers.parse_linebarger(pages) if "lgbs.com" in url else parsers.parse_perdue(pages)
             if not regs:
                 avisos.append(f"{c['nombre']}: no pude leer {url} (revisar formato).")
+                continue
+            f_lista = regs[0].get("fecha_lista") or fecha.isoformat()
             for p in regs:
                 if tipo == "Reventa":
                     p["tipo"] = "Reventa"
-                p["pdf"], p["fecha_subasta"] = url, fecha.isoformat()
+                p["pdf"], p["fecha_subasta"] = url, f_lista
                 props.append(analisis.analizar(p, c, cfg))
+            if f_lista < dt.date.today().isoformat():
+                grandes = sorted({p["acres"] for p in regs if (p["acres"] or 0) >= 5}, reverse=True)
+                extra = f", incluye terrenos de {' y '.join(f'{a:g}' for a in grandes)} acres" if grandes else ""
+                avisos.append(f"{c['nombre']}: la última lista de reventas es del {f_lista[8:10]}/{f_lista[5:7]} "
+                              f"({len(regs)} propiedades{extra}). Pregunta al despacho si siguen disponibles.")
 
     props.sort(key=lambda p: p["score"], reverse=True)
     salidas.guardar_csv(props, out_dir / "propiedades.csv")

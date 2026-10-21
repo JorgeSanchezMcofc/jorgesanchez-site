@@ -4,7 +4,6 @@ import io
 import re
 
 import requests
-from pdfminer.high_level import extract_text
 
 UA = {"User-Agent": "Mozilla/5.0 (subastas-bot; uso personal)"}
 PERDUE_PAGES = {
@@ -26,29 +25,28 @@ def proximo_primer_martes(hoy=None):
     raise RuntimeError("sin fecha")
 
 
-DEBUG_DIR = None  # si se define, guarda el texto crudo de cada PDF para revisar el formato
+DEBUG_DIR = None  # si se define, guarda las tablas de cada PDF para revisar el formato
 
 
-def _pdf_text(url):
+def _pdf_pages(url):
+    """Descarga un PDF y regresa [{"text":..., "tables":[...]}, ...] o None si no existe."""
+    import json
+    import pathlib
+    import pdfplumber
     r = requests.get(url, headers=UA, timeout=60)
     if r.status_code == 404:
         return None
     r.raise_for_status()
     if not r.content.startswith(b"%PDF"):
         return None
-    txt = extract_text(io.BytesIO(r.content))
+    with pdfplumber.open(io.BytesIO(r.content)) as pdf:
+        pages = [{"text": pg.extract_text() or "", "tables": pg.extract_tables()} for pg in pdf.pages]
     if DEBUG_DIR:
-        import json
-        import pathlib
-        import pdfplumber
         d = pathlib.Path(DEBUG_DIR)
         d.mkdir(parents=True, exist_ok=True)
         name = url.rsplit("/", 1)[-1].rsplit(".", 1)[0]
-        (d / f"{name}.pdfminer.txt").write_text(txt, encoding="utf-8")
-        with pdfplumber.open(io.BytesIO(r.content)) as pdf:
-            pages = [{"text": pg.extract_text() or "", "tables": pg.extract_tables()} for pg in pdf.pages]
         (d / f"{name}.plumber.json").write_text(json.dumps(pages, ensure_ascii=False, indent=1), encoding="utf-8")
-    return txt
+    return pages
 
 
 def perdue(slug):
@@ -60,13 +58,13 @@ def perdue(slug):
             name = href.rsplit("/", 1)[-1].lower()
             if name.startswith(slug) or re.match(rf"\d{{1,2}}-\d{{4}}{slug}", name):
                 url = href if href.startswith("http") else page.rsplit("/", 1)[0] + "/" + href.lstrip("/")
-                txt = _pdf_text(url)
-                if txt:
-                    out.append((tipo, url, txt))
+                pages = _pdf_pages(url)
+                if pages:
+                    out.append((tipo, url, pages))
     return out
 
 
 def linebarger(county, fecha):
     url = LGB_PDF.format(county=county.replace(" ", "_"), fecha=fecha.strftime("%Y%m%d"))
-    txt = _pdf_text(url)
-    return [("Venta", url, txt)] if txt else []
+    pages = _pdf_pages(url)
+    return [("Venta", url, pages)] if pages else []

@@ -48,6 +48,8 @@ def zona(legal):
 
 def baldio(direccion, legal):
     """Estimado: sin número de casa en la dirección = probablemente terreno baldío."""
+    if re.search(r"\bbldg\b|building|improvements", legal or "", re.I):
+        return False
     if direccion:
         return not re.match(r"^\s*\d", direccion)
     return None  # sin dirección (Perdue): no se sabe hasta revisar el CAD
@@ -57,15 +59,31 @@ def anios_atrasados(notas):
     return len(re.findall(r"\b20\d{2}\b", notas or ""))
 
 
+CIUDADES = ["McAllen", "Edinburg", "Mission", "Pharr", "Weslaco", "Donna", "Mercedes", "San Juan", "Alamo",
+            "La Joya", "Penitas", "Palmview", "Alton", "Elsa", "Edcouch", "La Villa", "Progreso", "Sullivan City",
+            "Hidalgo", "Brownsville", "Harlingen", "San Benito", "Los Fresnos", "Port Isabel", "Rio Hondo",
+            "Santa Rosa", "La Feria", "Combes", "Primera", "Palm Valley", "Laguna Vista", "South Padre Island",
+            "Rancho Viejo", "Olmito", "Lozano", "Bayview", "Los Indios"]
+
+
 def ciudad(direccion):
     m = re.search(r",\s*([A-Z .]+),\s*TX", direccion or "")
-    return m.group(1).title() if m else ""
+    if m:
+        return m.group(1).strip().title().replace("Mcallen", "McAllen")
+    up = (direccion or "").upper()
+    for c in CIUDADES:
+        if re.search(rf"\b{c.upper()}\b", up):
+            return c
+    return ""
 
 
 def analizar(p, condado, cfg):
     crit, puja = cfg["criterios"], cfg["puja"]
     p["condado"] = condado["nombre"]
     p["acres"] = acres(p["legal"])
+    aprox = re.search(r"approximately ([\d.]+) acres", p.get("notas") or "", re.I)
+    if aprox:  # la nota del despacho manda sobre la descripción legal
+        p["acres"] = float(aprox.group(1))
     p["baldio"] = baldio(p["direccion"], p["legal"])
     p["ciudad"] = ciudad(p["direccion"])
     if not p["ciudad"]:
