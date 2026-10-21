@@ -12,8 +12,7 @@ PAGINAS = ["https://www.hidalgoad.org/data-downloads", "https://www.hidalgoad.or
 PAT = re.compile(r"""["'`]([^"'`\s]{0,200}(?:export|download|\.zip|\.csv|\.xlsx|/api/|appraisal)[^"'`\s]{0,200})["'`]""", re.I)
 
 
-LLAVES = ["IsxPKMo2gPRRKeakUztj1D6uqed2", "pwgjf0RoYWbdnJSbpBAjXNRMe9F2", "95ab97a25034446d84379f1c42f2bc1e",
-          "BvYIl5jKN9QpChUB3PVzsTe2ZSI2", "YJIGb4i01jvw0SRdL5Bt", "agZ9n5CUKRfbL9t6CaJOyVSK4Es2"]
+LLAVES = ["95ab97a25034446d84379f1c42f2bc1e"]
 ARCH = re.compile(r"https?://[^\"'\s<>]+?(?:\.zip|\.csv|\.xlsx?|\.txt|filedownload[^\"'\s<>]*)", re.I)
 
 
@@ -21,13 +20,13 @@ def contenido(debug_dir):
     """El texto de la página viene de un CMS público (Builder.io): buscar ahí los archivos."""
     out = {}
     for k in LLAVES:
-        for ruta in ("/data-downloads", "/reports"):
+        for ruta in ("/data-downloads",):
             try:
                 r = requests.get("https://cdn.builder.io/api/v3/content/page",
                                  params={"apiKey": k, "url": ruta, "limit": 1}, headers=UA, timeout=60)
                 t = r.text
                 out[f"{k}{ruta}"] = {"status": r.status_code, "largo": len(t), "archivos": sorted(set(ARCH.findall(t)))[:200],
-                                     "texto": re.sub(r"<[^>]+>", " ", t)[:1500]}
+                                     "json": r.json() if r.ok else t}
             except requests.RequestException as e:
                 out[f"{k}{ruta}"] = {"error": str(e)}
     p = pathlib.Path(debug_dir) / "sondeo_hidalgo_cms.json"
