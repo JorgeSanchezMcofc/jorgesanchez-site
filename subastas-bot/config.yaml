@@ -26,3 +26,6 @@ puja:
 correo:
   para: jorgesanchezjr@hotmail.com
   top: 10
+
+# Temporal: guarda el formato del archivo del CAD en debug-listas/ para revisarlo.
+cad_explorar: true

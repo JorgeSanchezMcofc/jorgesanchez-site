@@ -10,7 +10,7 @@ import pathlib
 
 import yaml
 
-from . import analisis, dashboard, fuentes, parsers, salidas
+from . import analisis, cad, dashboard, fuentes, parsers, salidas
 
 
 def main():
@@ -59,6 +59,13 @@ def main():
                               f"({len(regs)} propiedades{extra}). Pregunta al despacho si siguen disponibles.")
 
     props.sort(key=lambda p: p["score"], reverse=True)
+    if args.debug_dir and cfg.get("cad_explorar"):  # temporal: ver el formato del archivo del CAD
+        for c in cfg["condados"]:
+            try:
+                cad.explorar(c["nombre"], [p["cuenta"].split("&")[0].strip() for p in props if p["condado"] == c["nombre"]],
+                             args.debug_dir)
+            except Exception as e:
+                print(f"CAD {c['nombre']}: {e}")
     salidas.guardar_csv(props, out_dir / "propiedades.csv")
     cuerpo = salidas.reporte_html(props, fecha, cfg["correo"]["top"], avisos)
     (out_dir / "reporte.html").write_text(cuerpo, encoding="utf-8")
