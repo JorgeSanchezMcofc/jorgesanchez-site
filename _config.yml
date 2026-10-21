@@ -5,4 +5,4 @@ exclude:
   - subastas-bot
   - debug-listas
   - middleware.js
-  - Vercel.json
+  - vercel.json
