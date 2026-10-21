@@ -23,6 +23,29 @@ def acres(legal):
     return a
 
 
+SUBDIV = re.compile(
+    r"([A-Za-z][A-Za-z0-9'. &-]{2,50}?)\s+(Subdivision|Subd\b|Estates?|Townsite|Heights|Grant|Orchards|Village|Acres)\b", re.I)
+CITY = re.compile(r"City of ([A-Za-z ]+?)[,.]", re.I)
+
+
+def zona(legal):
+    """Nombre corto de la subdivisión o zona, para mostrar en vez del texto legal."""
+    for m in SUBDIV.finditer(legal or ""):
+        name = re.sub(r"^(.*\b(of|in|the|and|out|being)\s+)", "", m.group(1), flags=re.I).strip()
+        if len(name) < 3 or re.match(r"^(a|an|said|this)$", name, re.I):
+            continue
+        if m.group(2).lower() == "acres" and re.search(r"\d|containing|^(north|south|east|west)", name, re.I):
+            continue  # es una medida ("3.66 acres"), no un nombre
+        word = m.group(2).lower()
+        name = name + ("" if word.startswith("subd") else " " + m.group(2))
+        return name.title().replace("'S", "'s")
+    for part in (legal or "").split(","):
+        part = part.strip()
+        if part and not re.match(r"^(lots?|block|all|\d|the|being|tract|a )", part, re.I):
+            return part.title()[:40]
+    return ""
+
+
 def baldio(direccion, legal):
     """Estimado: sin número de casa en la dirección = probablemente terreno baldío."""
     if direccion:
@@ -45,17 +68,25 @@ def analizar(p, condado, cfg):
     p["acres"] = acres(p["legal"])
     p["baldio"] = baldio(p["direccion"], p["legal"])
     p["ciudad"] = ciudad(p["direccion"])
+    if not p["ciudad"]:
+        m = CITY.search(p["legal"] or "")
+        p["ciudad"] = m.group(1).strip().title() if m else ""
+    p["zona"] = zona(p["legal"])
+    if p["acres"] and p["acres"] >= 0.5:
+        p["titulo"] = f'Terreno de {p["acres"]:g} acres'
+    elif re.match(r"\s*(all of\s+)?lots?\b", p["legal"] or "", re.I):
+        p["titulo"] = "Lote"
+    else:
+        p["titulo"] = "Terreno"
     years = anios_atrasados(p["notas"])
     valor, minimo = p.get("valor") or 0, p.get("minimo") or 0
 
     riesgos = []
     d = (p.get("demandado") or "").upper()
     if "DECEASED" in d or "HEIRS" in d:
-        riesgos.append("Dueño fallecido / herederos (revisar título)")
-    if "ET AL" in d:
-        riesgos.append("Varios demandados")
+        riesgos.append("Herencia: revisar título")
     if years:
-        riesgos.append(f"Debes pagar aparte impuestos de {years} año(s)")
+        riesgos.append(f"+{years} año{'s' if years > 1 else ''} de impuestos por pagar")
     p["riesgos"] = "; ".join(riesgos)
 
     # Impuestos que el comprador hereda (los años 'subject to')
@@ -79,7 +110,7 @@ def analizar(p, condado, cfg):
     if p["tipo"] == "Reventa":
         s += 5
     s -= 3 * max(0, years - 1)
-    if "fallecido" in p["riesgos"]:
+    if "Herencia" in p["riesgos"]:
         s -= 5
     if not p["conviene"]:
         s -= 15
@@ -87,7 +118,7 @@ def analizar(p, condado, cfg):
         s = 0
     p["score"] = int(max(0, min(100, round(s))))
 
-    q = p["direccion"] or f'{p["legal"][:80]} {condado["nombre"]} County TX'
+    q = p["direccion"] or f'{p["zona"]} {p["ciudad"] or condado["nombre"] + " County"} TX'
     p["mapa"] = "https://www.google.com/maps/search/?api=1&query=" + quote_plus(q)
     p["cad"] = condado["cad"]
     return p

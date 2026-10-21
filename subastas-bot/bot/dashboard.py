@@ -5,7 +5,7 @@ import pathlib
 
 import yaml
 
-CAMPOS = ["condado", "fecha_subasta", "tipo", "cause", "cuenta", "direccion", "ciudad", "legal",
+CAMPOS = ["condado", "fecha_subasta", "tipo", "cause", "cuenta", "direccion", "ciudad", "zona", "titulo", "legal",
           "acres", "baldio", "minimo", "valor", "puja_max", "conviene", "impuestos_est", "score",
           "riesgos", "estatus", "mapa", "cad", "pdf", "visto"]
 

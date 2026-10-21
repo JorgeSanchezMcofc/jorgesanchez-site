@@ -45,8 +45,9 @@ input[type=number]{width:80px}
 .score.hi{background:var(--gold);color:var(--deep);border-color:var(--gold)}
 .meta{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .title{font-weight:500;margin:2px 0 6px}
-.legal{font-size:13px;color:#c9c9c9;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
-.legal.open{-webkit-line-clamp:unset}
+.legal{display:none;font-size:12.5px;color:#bdbdbd;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.legal.show{display:block}
+.title{font-size:17px}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .tag{font-size:11.5px;border-radius:6px;padding:2px 8px;background:#2d2d2d;border:1px solid var(--line)}
 .tag.warn{border-color:#6b4a1d;color:#f0c27a}
@@ -77,7 +78,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
   <header>
     <div>
       <h1>Subastas <span>RGV</span></h1>
-      <div class="sub">Tax sales de Hidalgo y Cameron · primer martes de cada mes</div>
+      <div class="sub">Hidalgo y Cameron · subastas el primer martes de cada mes</div>
     </div>
     <div class="upd mono" id="upd">Cargando…</div>
   </header>
@@ -94,16 +95,15 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
     <select id="fCondado" aria-label="Condado"><option value="">Ambos condados</option><option>Hidalgo</option><option>Cameron</option></select>
     <label class="chip">Acres ≥ <input type="number" id="fAcres" min="0" step="0.5" value="0"></label>
     <label class="chip"><input type="checkbox" id="fBaldio"> Solo baldíos</label>
-    <label class="chip"><input type="checkbox" id="fConviene"> Solo si conviene</label>
+    <label class="chip"><input type="checkbox" id="fConviene"> Solo buen precio</label>
     <label class="chip"><input type="checkbox" id="fCancel" checked> Ocultar canceladas</label>
-    <input type="search" id="fQ" placeholder="Buscar ciudad, subdivisión, cuenta…">
+    <input type="search" id="fQ" placeholder="Buscar ciudad o colonia…">
   </div>
-  <div class="count" id="count"></div>
+  <div class="count"><span id="count"></span> · El score (0 a 100) sube con más acres, si es baldío y si sale barato contra su valor.</div>
   <div class="list" id="list"></div>
 
   <footer>
-    Datos de las listas públicas de Perdue Brandon y Linebarger. Score, acres, "baldío" y puja máxima son estimados del bot.
-    Homestead, ag exemption y título se confirman en el CAD y con una title company antes de pujar. Ventas "as is". No es asesoría legal ni financiera.
+    Datos de las listas públicas de los condados. Los números son estimados: confirma título y exenciones antes de pujar.
   </footer>
 </div>
 
@@ -128,10 +128,10 @@ function kpis(){
   const d = prox ? daysTo(prox) : null;
   $('kpis').innerHTML = `
     <div class="kpi gold"><div class="l">Próxima subasta</div><div class="v">${prox ? new Date(prox+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'}).replace('.','') : '—'}</div><div class="s">${d==null?'':d>0?`en ${d} días`:d===0?'hoy':'ya pasó'}</div></div>
-    <div class="kpi"><div class="l">En lista</div><div class="v">${cur.length}</div><div class="s">activas, ambos condados</div></div>
-    <div class="kpi"><div class="l">Terrenos ≥ 1 acre</div><div class="v">${land}</div><div class="s">según descripción legal</div></div>
-    <div class="kpi"><div class="l">Convienen</div><div class="v">${ok}</div><div class="s">puja máx. ≥ mínimo</div></div>
-    <div class="kpi"><div class="l">Ganadas</div><div class="v">${DATA.ganadas.length}</div><div class="s">en periodo de redención</div></div>`;
+    <div class="kpi"><div class="l">Propiedades</div><div class="v">${cur.length}</div><div class="s">en la próxima subasta</div></div>
+    <div class="kpi"><div class="l">Terrenos 1+ acre</div><div class="v">${land}</div><div class="s">los que buscas</div></div>
+    <div class="kpi"><div class="l">Buen precio</div><div class="v">${ok}</div><div class="s">el mínimo está abajo de tu tope</div></div>
+    <div class="kpi"><div class="l">Ganadas</div><div class="v">${DATA.ganadas.length}</div><div class="s">esperando redención</div></div>`;
   $('avisos').innerHTML = (DATA.avisos || []).map(a => `<div class="aviso">${esc(a)}</div>`).join('');
   $('upd').innerHTML = `Actualizado<br>${new Date(DATA.actualizado).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}`;
 }
@@ -139,9 +139,7 @@ function kpis(){
 function won(){
   const g = DATA.ganadas || [];
   if(!g.length){
-    $('won').innerHTML = `<div class="empty">Todavía no hay propiedades ganadas. Cuando ganes una, agrégala en
-      <code>subastas-bot/ganadas.yaml</code> y aquí verás cuántos días faltan para que termine la redención
-      y cuánto recibirías si el dueño la recupera.</div>`;
+    $('won').innerHTML = `<div class="empty">Aquí vas a ver las que ganes y cuántos días faltan para que sean tuyas. <a href="https://github.com/JorgeSanchezMcofc/jorgesanchez-site/edit/main/subastas-bot/ganadas.yaml" target="_blank" rel="noopener">Agregar una</a></div>`;
     return;
   }
   $('won').innerHTML = `<div class="won">${g.map(w => {
@@ -153,7 +151,7 @@ function won(){
       <div class="bar"><i style="width:${pct}%"></i></div>
       <div class="meta">${left>0?`Faltan ${left} días`:'Redención terminada'} · vence ${fdate(w.vence)}</div>
       <div class="tags"><span class="tag">Pagaste ${money(w.precio)}</span><span class="tag ok">Si redimen: ${money(w.si_redimen_recibes)}</span></div>
-      ${w.notas?`<div class="legal" style="margin-top:8px">${esc(w.notas)}</div>`:''}
+      ${w.notas?`<div class="sub">${esc(w.notas)}</div>`:''}
     </div>`;}).join('')}</div>`;
 }
 
@@ -177,30 +175,31 @@ function list(){
   $('list').innerHTML = rows.length ? rows.map(p => {
     const off = /cancel/i.test(p.estatus || '');
     const riesgos = (p.riesgos || '').split('; ').filter(Boolean).map(r =>
-      `<span class="tag ${/fallecido/i.test(r)?'bad':'warn'}">${esc(r)}</span>`).join('');
-    const where = p.direccion || p.legal.split(',').slice(0,2).join(',');
+      `<span class="tag ${/Herencia/.test(r)?'bad':'warn'}">${esc(r)}</span>`).join('');
+    const titulo = (p.titulo || 'Propiedad') + (p.zona ? ' · ' + p.zona : '');
+    const lugar = [p.direccion ? p.direccion.split(',')[0] : '', p.ciudad, p.condado].filter(Boolean).join(' · ');
     return `<article class="prop${off?' off':''}">
-      <div class="score${p.score>=40?' hi':''}">${p.score}</div>
+      <div class="score${p.score>=40?' hi':''}" title="Score">${p.score}</div>
       <div>
-        <div class="meta">${esc(p.condado)}${p.ciudad?' · '+esc(p.ciudad):''} · ${esc(p.tipo)} · ${fdate(p.fecha_subasta)}${off?' · CANCELADA':''}</div>
-        <div class="title">${esc(where)}</div>
-        <div class="legal" onclick="this.classList.toggle('open')">${esc(p.legal)}</div>
+        <div class="title">${esc(titulo)}</div>
+        <div class="meta">${esc(lugar)}${p.tipo==='Reventa'?' · Reventa':''}${off?' · Cancelada':''}</div>
         <div class="tags">
-          <span class="tag">${p.acres!=null?p.acres+' acres':'acres ¿?'}</span>
-          ${p.baldio===true?'<span class="tag ok">Probable baldío</span>':p.baldio===false?'<span class="tag">Con construcción</span>':''}
-          ${p.conviene?'<span class="tag ok">Conviene</span>':'<span class="tag bad">Mínimo &gt; puja máx.</span>'}
+          ${p.conviene?'<span class="tag ok">Buen precio</span>':'<span class="tag bad">Caro</span>'}
+          ${p.baldio===true?'<span class="tag ok">Baldío</span>':''}
           ${riesgos}
         </div>
         <div class="links">
           <a href="${esc(p.mapa)}" target="_blank" rel="noopener">Mapa</a>
-          <a href="${esc(p.cad)}" target="_blank" rel="noopener">CAD (cuenta ${esc(p.cuenta)})</a>
-          <a href="${esc(p.pdf)}" target="_blank" rel="noopener">Lista PDF</a>
+          <a href="#" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(p.cuenta)}');this.textContent='Cuenta copiada';return false">Copiar cuenta</a>
+          <a href="${esc(p.cad)}" target="_blank" rel="noopener">CAD</a>
+          <a href="#" onclick="this.closest('article').querySelector('.legal').classList.toggle('show');return false">Más info</a>
         </div>
+        <div class="legal">${esc(p.legal)}<br><a href="${esc(p.pdf)}" target="_blank" rel="noopener">Ver lista oficial</a> · Caso ${esc(p.cause)} · Cuenta ${esc(p.cuenta)}</div>
       </div>
       <div class="nums">
         <div><b>${money(p.minimo)}</b>Mínimo</div>
-        <div><b>${money(p.valor)}</b>Valor CAD</div>
-        <div class="bid"><b>${money(p.puja_max)}</b>Puja máx.</div>
+        <div><b>${money(p.valor)}</b>Valor</div>
+        <div class="bid"><b>${money(p.puja_max)}</b>Pagar hasta</div>
       </div>
     </article>`;}).join('') : '<div class="empty">Nada con estos filtros.</div>';
 }
