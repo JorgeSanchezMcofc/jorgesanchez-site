@@ -1,0 +1,28 @@
+# Configuración del bot de subastas. Cambia los números aquí, no en el código.
+
+condados:
+  - nombre: Hidalgo
+    # Hidalgo County lo maneja Linebarger; algunas escuelas/ciudades pueden salir en Perdue.
+    linebarger: HIDALGO COUNTY
+    perdue: hidalgo
+    cad: https://www.hidalgoad.org
+    tasa_impuesto: 0.025      # aprox. de impuestos al año sobre el valor (todas las entidades)
+  - nombre: Cameron
+    # Cameron County lo maneja Perdue; algunas ciudades pueden salir en Linebarger.
+    linebarger: CAMERON COUNTY
+    perdue: cameron
+    cad: https://www.cameroncad.org/Pages/PropertySearch
+    tasa_impuesto: 0.026
+
+criterios:
+  acres_minimo: 1        # abajo de esto baja el score
+  acres_objetivo: 10     # el tamaño que buscas
+
+puja:
+  pct_del_valor: 0.55    # lo máximo que pagarías como % del valor de tasación
+  costo_quiet_title: 3500
+  costo_survey: 1000
+
+correo:
+  para: jorgesanchezjr@hotmail.com
+  top: 10

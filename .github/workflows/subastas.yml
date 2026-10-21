@@ -1,0 +1,53 @@
+name: Subastas semanal
+
+on:
+  schedule:
+    - cron: "41 13 * * 3"            # miércoles en la mañana (hora del Valle)
+  workflow_dispatch:                  # botón "Run workflow" para correrlo a mano
+    inputs:
+      fecha:
+        description: "Fecha de subasta AAAA-MM-DD (vacío = próximo primer martes)"
+        required: false
+  push:
+    paths:
+      - "subastas-bot/ganadas.yaml"   # al agregar una propiedad ganada, se actualiza el dashboard
+
+permissions:
+  contents: write
+
+concurrency:
+  group: subastas
+  cancel-in-progress: false
+
+jobs:
+  correr:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: subastas-bot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Correr bot
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: |
+          ARGS="--json ../subastas/data.json"
+          if [ -n "${{ github.event.inputs.fecha }}" ]; then ARGS="$ARGS --fecha ${{ github.event.inputs.fecha }}"; fi
+          if [ "${{ github.event_name }}" = "push" ]; then ARGS="$ARGS --sin-correo"; fi
+          python -m bot.main $ARGS
+      - name: Publicar en jorgesanchez.me/subastas
+        run: |
+          git config user.name "subastas-bot"
+          git config user.email "subastas-bot@users.noreply.github.com"
+          git add ../subastas/data.json
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -m "Subastas: actualizar datos"
+          git pull --rebase
+          git push

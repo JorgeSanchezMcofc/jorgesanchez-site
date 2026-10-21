@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Subastas RGV · Jorge Sanchez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#141414; --mid:#1f1f1f; --card:#232323; --line:#333; --gold:#D4A843; --gold-l:#E8C870;
+  --gold-dim:#8B6A1A; --cobalt:#4A84E8; --green:#4CB782; --red:#E5675B; --text:#F5F4F0; --muted:#9a9a9a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--deep);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.45;padding:28px 16px 60px}
+a{color:var(--gold-l);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1100px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:18px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,72px);letter-spacing:1px;line-height:.9}
+h1 span{color:var(--gold)}
+.sub{color:var(--muted);font-size:14px;margin-top:6px}
+.mono{font-family:'DM Mono',monospace}
+.upd{color:var(--muted);font-size:12px;text-align:right}
+h2{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.5px;margin:34px 0 12px;color:var(--gold-l)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi{background:var(--mid);border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi .l{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kpi .v{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1.05;margin-top:4px}
+.kpi .s{font-size:12px;color:var(--muted)}
+.kpi.gold .v{color:var(--gold)}
+.avisos{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.aviso{background:#2a2414;border-left:3px solid var(--gold);padding:8px 12px;border-radius:6px;font-size:13px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--mid);border:1px solid var(--line);border-radius:12px;padding:12px;position:sticky;top:8px;z-index:5}
+select,input[type=search],input[type=number]{background:var(--deep);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:14px}
+input[type=search]{flex:1;min-width:160px}
+input[type=number]{width:80px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;user-select:none;background:var(--deep)}
+.chip input{accent-color:var(--gold)}
+.count{color:var(--muted);font-size:13px;margin:12px 2px}
+.list{display:flex;flex-direction:column;gap:10px}
+.prop{display:grid;grid-template-columns:64px 1fr auto;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;align-items:start}
+.prop.off{opacity:.45}
+.score{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:26px;border:2px solid var(--gold-dim);color:var(--gold)}
+.score.hi{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+.meta{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.title{font-weight:500;margin:2px 0 6px}
+.legal{font-size:13px;color:#c9c9c9;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.legal.open{-webkit-line-clamp:unset}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:11.5px;border-radius:6px;padding:2px 8px;background:#2d2d2d;border:1px solid var(--line)}
+.tag.warn{border-color:#6b4a1d;color:#f0c27a}
+.tag.bad{border-color:#6b2a24;color:#f19c93}
+.tag.ok{border-color:#245a40;color:#8fe0b6}
+.links{display:flex;gap:12px;margin-top:10px;font-size:13px}
+.nums{text-align:right;min-width:150px}
+.nums div{font-size:12px;color:var(--muted)}
+.nums b{display:block;font-family:'DM Mono',monospace;font-weight:500;font-size:14px;color:var(--text);margin-bottom:4px}
+.nums .bid b{color:var(--gold);font-size:17px}
+.won{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.wcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.bar{height:8px;background:#333;border-radius:4px;overflow:hidden;margin:10px 0 6px}
+.bar i{display:block;height:100%;background:var(--gold)}
+.empty{background:var(--mid);border:1px dashed var(--line);border-radius:12px;padding:18px;color:var(--muted);font-size:14px}
+.empty code{font-family:'DM Mono',monospace;color:var(--gold-l)}
+footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:680px){
+  .prop{grid-template-columns:48px 1fr}
+  .score{width:44px;height:44px;font-size:21px}
+  .nums{grid-column:1/-1;text-align:left;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;min-width:0}
+  .filters{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Subastas <span>RGV</span></h1>
+      <div class="sub">Tax sales de Hidalgo y Cameron · primer martes de cada mes</div>
+    </div>
+    <div class="upd mono" id="upd">Cargando…</div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+  <div class="avisos" id="avisos"></div>
+
+  <h2>Mis propiedades</h2>
+  <div id="won"></div>
+
+  <h2>Propiedades en subasta</h2>
+  <div class="filters">
+    <select id="fFecha" aria-label="Subasta"></select>
+    <select id="fCondado" aria-label="Condado"><option value="">Ambos condados</option><option>Hidalgo</option><option>Cameron</option></select>
+    <label class="chip">Acres ≥ <input type="number" id="fAcres" min="0" step="0.5" value="0"></label>
+    <label class="chip"><input type="checkbox" id="fBaldio"> Solo baldíos</label>
+    <label class="chip"><input type="checkbox" id="fConviene"> Solo si conviene</label>
+    <label class="chip"><input type="checkbox" id="fCancel" checked> Ocultar canceladas</label>
+    <input type="search" id="fQ" placeholder="Buscar ciudad, subdivisión, cuenta…">
+  </div>
+  <div class="count" id="count"></div>
+  <div class="list" id="list"></div>
+
+  <footer>
+    Datos de las listas públicas de Perdue Brandon y Linebarger. Score, acres, "baldío" y puja máxima son estimados del bot.
+    Homestead, ag exemption y título se confirman en el CAD y con una title company antes de pujar. Ventas "as is". No es asesoría legal ni financiera.
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const money = n => n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fdate = iso => { if(!iso) return '—'; const [y,m,d] = iso.slice(0,10).split('-'); return `${d}/${m}/${y}`; };
+const daysTo = iso => Math.ceil((new Date(iso + 'T10:00:00-06:00') - new Date()) / 864e5);
+let DATA = {propiedades: [], ganadas: []};
+
+function save(){ try{ localStorage.setItem('subastasFiltros', JSON.stringify({
+  c:$('fCondado').value, a:$('fAcres').value, b:$('fBaldio').checked, v:$('fConviene').checked, x:$('fCancel').checked })) }catch(e){} }
+function load(){ try{ const f = JSON.parse(localStorage.getItem('subastasFiltros') || 'null'); if(!f) return;
+  $('fCondado').value=f.c; $('fAcres').value=f.a; $('fBaldio').checked=f.b; $('fConviene').checked=f.v; $('fCancel').checked=f.x; }catch(e){} }
+
+function kpis(){
+  const prox = DATA.proxima_subasta;
+  const cur = DATA.propiedades.filter(p => p.fecha_subasta === prox && !/cancel/i.test(p.estatus || ''));
+  const land = cur.filter(p => (p.acres || 0) >= 1).length;
+  const ok = cur.filter(p => p.conviene).length;
+  const d = prox ? daysTo(prox) : null;
+  $('kpis').innerHTML = `
+    <div class="kpi gold"><div class="l">Próxima subasta</div><div class="v">${prox ? new Date(prox+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'}).replace('.','') : '—'}</div><div class="s">${d==null?'':d>0?`en ${d} días`:d===0?'hoy':'ya pasó'}</div></div>
+    <div class="kpi"><div class="l">En lista</div><div class="v">${cur.length}</div><div class="s">activas, ambos condados</div></div>
+    <div class="kpi"><div class="l">Terrenos ≥ 1 acre</div><div class="v">${land}</div><div class="s">según descripción legal</div></div>
+    <div class="kpi"><div class="l">Convienen</div><div class="v">${ok}</div><div class="s">puja máx. ≥ mínimo</div></div>
+    <div class="kpi"><div class="l">Ganadas</div><div class="v">${DATA.ganadas.length}</div><div class="s">en periodo de redención</div></div>`;
+  $('avisos').innerHTML = (DATA.avisos || []).map(a => `<div class="aviso">${esc(a)}</div>`).join('');
+  $('upd').innerHTML = `Actualizado<br>${new Date(DATA.actualizado).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}`;
+}
+
+function won(){
+  const g = DATA.ganadas || [];
+  if(!g.length){
+    $('won').innerHTML = `<div class="empty">Todavía no hay propiedades ganadas. Cuando ganes una, agrégala en
+      <code>subastas-bot/ganadas.yaml</code> y aquí verás cuántos días faltan para que termine la redención
+      y cuánto recibirías si el dueño la recupera.</div>`;
+    return;
+  }
+  $('won').innerHTML = `<div class="won">${g.map(w => {
+    const total = w.dias_redencion || 180, left = Math.max(0, w.dias_restantes);
+    const pct = Math.min(100, Math.round((1 - left/total) * 100));
+    return `<div class="wcard">
+      <div class="meta">${esc(w.condado)} · ${esc(w.cuenta)}</div>
+      <div class="title">${esc(w.descripcion || '')}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="meta">${left>0?`Faltan ${left} días`:'Redención terminada'} · vence ${fdate(w.vence)}</div>
+      <div class="tags"><span class="tag">Pagaste ${money(w.precio)}</span><span class="tag ok">Si redimen: ${money(w.si_redimen_recibes)}</span></div>
+      ${w.notas?`<div class="legal" style="margin-top:8px">${esc(w.notas)}</div>`:''}
+    </div>`;}).join('')}</div>`;
+}
+
+function fechas(){
+  const fs = [...new Set(DATA.propiedades.map(p => p.fecha_subasta))].sort().reverse();
+  $('fFecha').innerHTML = fs.map(f => `<option value="${f}">Subasta ${fdate(f)}${f===DATA.proxima_subasta?' (próxima)':''}</option>`).join('') +
+    '<option value="">Todas las subastas</option>';
+  $('fFecha').value = fs.includes(DATA.proxima_subasta) ? DATA.proxima_subasta : (fs[0] || '');
+}
+
+function list(){
+  const f = {fecha:$('fFecha').value, c:$('fCondado').value, a:+$('fAcres').value||0, b:$('fBaldio').checked,
+             v:$('fConviene').checked, x:$('fCancel').checked, q:$('fQ').value.trim().toLowerCase()};
+  const rows = DATA.propiedades.filter(p =>
+    (!f.fecha || p.fecha_subasta === f.fecha) && (!f.c || p.condado === f.c) &&
+    (!f.a || (p.acres || 0) >= f.a) && (!f.b || p.baldio === true) && (!f.v || p.conviene) &&
+    (!f.x || !/cancel/i.test(p.estatus || '')) &&
+    (!f.q || [p.direccion,p.ciudad,p.legal,p.cuenta,p.cause].join(' ').toLowerCase().includes(f.q))
+  ).sort((a,b) => (b.score||0) - (a.score||0));
+  $('count').textContent = `${rows.length} propiedad${rows.length===1?'':'es'}`;
+  $('list').innerHTML = rows.length ? rows.map(p => {
+    const off = /cancel/i.test(p.estatus || '');
+    const riesgos = (p.riesgos || '').split('; ').filter(Boolean).map(r =>
+      `<span class="tag ${/fallecido/i.test(r)?'bad':'warn'}">${esc(r)}</span>`).join('');
+    const where = p.direccion || p.legal.split(',').slice(0,2).join(',');
+    return `<article class="prop${off?' off':''}">
+      <div class="score${p.score>=40?' hi':''}">${p.score}</div>
+      <div>
+        <div class="meta">${esc(p.condado)}${p.ciudad?' · '+esc(p.ciudad):''} · ${esc(p.tipo)} · ${fdate(p.fecha_subasta)}${off?' · CANCELADA':''}</div>
+        <div class="title">${esc(where)}</div>
+        <div class="legal" onclick="this.classList.toggle('open')">${esc(p.legal)}</div>
+        <div class="tags">
+          <span class="tag">${p.acres!=null?p.acres+' acres':'acres ¿?'}</span>
+          ${p.baldio===true?'<span class="tag ok">Probable baldío</span>':p.baldio===false?'<span class="tag">Con construcción</span>':''}
+          ${p.conviene?'<span class="tag ok">Conviene</span>':'<span class="tag bad">Mínimo &gt; puja máx.</span>'}
+          ${riesgos}
+        </div>
+        <div class="links">
+          <a href="${esc(p.mapa)}" target="_blank" rel="noopener">Mapa</a>
+          <a href="${esc(p.cad)}" target="_blank" rel="noopener">CAD (cuenta ${esc(p.cuenta)})</a>
+          <a href="${esc(p.pdf)}" target="_blank" rel="noopener">Lista PDF</a>
+        </div>
+      </div>
+      <div class="nums">
+        <div><b>${money(p.minimo)}</b>Mínimo</div>
+        <div><b>${money(p.valor)}</b>Valor CAD</div>
+        <div class="bid"><b>${money(p.puja_max)}</b>Puja máx.</div>
+      </div>
+    </article>`;}).join('') : '<div class="empty">Nada con estos filtros.</div>';
+}
+
+['fFecha','fCondado','fAcres','fBaldio','fConviene','fCancel','fQ'].forEach(id =>
+  $(id).addEventListener('input', () => { save(); list(); }));
+
+fetch('data.json?v=' + Date.now()).then(r => r.json()).then(d => {
+  DATA = d; load(); kpis(); won(); fechas(); list();
+}).catch(() => { $('upd').textContent = 'No se pudieron cargar los datos'; });
+</script>
+</body>
+</html>

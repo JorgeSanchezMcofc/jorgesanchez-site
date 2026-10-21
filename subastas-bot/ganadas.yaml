@@ -1,0 +1,14 @@
+# Propiedades que ganaste. Agrega una entrada por cada una y el dashboard
+# calcula cuándo vence el periodo de redención y cuánto recibes si el dueño la recupera.
+#
+# Ejemplo (quita el # para usarlo):
+#  - cuenta: "7479601870010000"
+#    condado: Cameron
+#    descripcion: "1.092 acres, El Jardin, Brownsville"
+#    fecha_compra: 2026-11-03
+#    fecha_deed: 2026-11-24        # cuando registren el deed (opcional; si no, usa fecha_compra)
+#    precio: 15000
+#    dias_redencion: 180           # 180 normal, 730 si era homestead o ag exemption
+#    notas: ""
+
+ganadas: []
