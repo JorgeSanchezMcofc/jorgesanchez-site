@@ -44,20 +44,36 @@ input[type=number]{width:80px}
 .score{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:26px;border:2px solid var(--gold-dim);color:var(--gold)}
 .score.hi{background:var(--gold);color:var(--deep);border-color:var(--gold)}
 .meta{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.title{font-weight:500;margin:2px 0 6px}
+.title{font-weight:500;margin:2px 0 6px;font-size:17px}
+.ficha{display:grid;grid-template-columns:96px 1fr;gap:3px 12px;align-items:baseline}
+.ficha dt{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ficha dd{font-size:14.5px}
+.ficha dd.cond{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.5px;color:var(--gold-l);line-height:1}
+.ficha dd.desc{font-weight:500}
+.ficha dd .z{color:var(--muted);font-weight:400}
 .legal{display:none;font-size:12.5px;color:#bdbdbd;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
 .legal.show{display:block}
-.title{font-size:17px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.tag{font-size:11.5px;border-radius:6px;padding:2px 8px;background:#2d2d2d;border:1px solid var(--line)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{font:inherit;font-size:12px;border-radius:6px;padding:3px 9px;background:#2d2d2d;border:1px solid var(--line);color:var(--text);cursor:pointer}
+.tag::after{content:" ⓘ";opacity:.6}
+.tag:hover{filter:brightness(1.25)}
+.tag.on{outline:1px solid currentColor}
 .tag.warn{border-color:#6b4a1d;color:#f0c27a}
 .tag.bad{border-color:#6b2a24;color:#f19c93}
 .tag.ok{border-color:#245a40;color:#8fe0b6}
-.links{display:flex;gap:12px;margin-top:10px;font-size:13px}
-.nums{text-align:right;min-width:150px}
-.nums div{font-size:12px;color:var(--muted)}
-.nums b{display:block;font-family:'DM Mono',monospace;font-weight:500;font-size:14px;color:var(--text);margin-bottom:4px}
-.nums .bid b{color:var(--gold);font-size:17px}
+.exp{display:none;margin-top:10px;background:#1b1b1b;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;font-size:13.5px;color:#d8d8d8}
+.exp.show{display:block}
+.exp h4{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-l);margin-bottom:6px}
+.exp p+p,.exp p+ol,.exp ol+p,.exp table+p{margin-top:8px}
+.exp ol{padding-left:20px;margin-top:6px} .exp li{margin:3px 0}
+.exp table{border-collapse:collapse;margin-top:6px;font-family:'DM Mono',monospace;font-size:13px}
+.exp td{padding:2px 14px 2px 0} .exp td:last-child{text-align:right;padding-right:0}
+.exp tr.tot td{border-top:1px solid var(--line);padding-top:5px;color:var(--gold);font-weight:500}
+.links{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:13px}
+.nums{display:flex;flex-direction:column;gap:10px;min-width:150px;text-align:right}
+.nums .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.nums .n{font-family:'DM Mono',monospace;font-weight:500;font-size:16px;color:var(--text)}
+.nums .bid .n{color:var(--gold);font-size:19px}
 .won{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .wcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
 .bar{height:8px;background:#333;border-radius:4px;overflow:hidden;margin:10px 0 6px}
@@ -68,7 +84,8 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
 @media (max-width:680px){
   .prop{grid-template-columns:48px 1fr}
   .score{width:44px;height:44px;font-size:21px}
-  .nums{grid-column:1/-1;text-align:left;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;min-width:0}
+  .nums{grid-column:1/-1;text-align:left;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;min-width:0;border-top:1px solid var(--line);padding-top:10px}
+  .ficha{grid-template-columns:84px 1fr}
   .filters{position:static}
 }
 </style>
@@ -99,7 +116,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
     <label class="chip"><input type="checkbox" id="fCancel" checked> Ocultar canceladas</label>
     <input type="search" id="fQ" placeholder="Buscar ciudad o colonia…">
   </div>
-  <div class="count"><span id="count"></span> · El score (0 a 100) sube con más acres, si es baldío y si sale barato contra su valor.</div>
+  <div class="count"><span id="count"></span> · Pica cualquier etiqueta para ver qué significa y qué hacer.</div>
   <div class="list" id="list"></div>
 
   <footer>
@@ -162,6 +179,82 @@ function fechas(){
   $('fFecha').value = fs.includes(DATA.proxima_subasta) ? DATA.proxima_subasta : (fs[0] || '');
 }
 
+// Mismos números que subastas-bot/config.yaml (si los cambias allá, cámbialos aquí).
+const PARAM = {pct: 0.55, quiet: 3500, survey: 1000, tasa: {Hidalgo: 0.025, Cameron: 0.026}};
+const OFICINA_IMPUESTOS = {
+  Hidalgo: 'https://actweb.acttax.com/act_webdev/hidalgo/index.jsp',
+  Cameron: 'https://camerontax.go2gov.net/cameron/cart/search/showAccountSearch.do'
+};
+const pct = n => (n * 100).toLocaleString('en-US', {maximumFractionDigits: 1}) + '%';
+const titleCase = s => String(s || '').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+
+// Cuenta como la busca el CAD. Cameron: 16 dígitos -> 85-7140-0200-0100-10. Hidalgo ya viene con guiones.
+function geoId(p){
+  const c = String(p.cuenta || '').split('&')[0].trim();
+  if (p.condado === 'Cameron' && /^\d{16}$/.test(c))
+    return `${c.slice(0,2)}-${c.slice(2,6)}-${c.slice(6,10)}-${c.slice(10,14)}-${c.slice(14)}`;
+  return c;
+}
+const cadUrl = p => p.condado === 'Cameron' ? 'https://cameron.prodigycad.com/property-search' : (p.cad || 'https://www.hidalgoad.org');
+const anios = p => +((p.riesgos || '').match(/\+(\d+) año/) || [])[1] || 0;
+
+function expPrecio(p){
+  const v = p.valor || 0, base = v * PARAM.pct, imp = p.impuestos_est || 0;
+  const tabla = `<table>
+    <tr><td>Valor del CAD</td><td>${money(v)}</td></tr>
+    <tr><td>× ${pct(PARAM.pct)} (lo máximo que quieres pagar)</td><td>${money(base)}</td></tr>
+    <tr><td>− Quiet title (abogado para limpiar título)</td><td>−${money(PARAM.quiet)}</td></tr>
+    <tr><td>− Survey (medición del terreno)</td><td>−${money(PARAM.survey)}</td></tr>
+    <tr><td>− Impuestos atrasados que heredas (estimado)</td><td>−${money(imp)}</td></tr>
+    <tr class="tot"><td>Pagar hasta (redondeado)</td><td>${money(p.puja_max)}</td></tr></table>`;
+  const veredicto = p.conviene
+    ? `<p><b>Buen precio</b> porque el mínimo para pujar (${money(p.minimo)}) está abajo de tu tope (${money(p.puja_max)}). Te quedan ${money(p.puja_max - p.minimo)} de margen para subir en la subasta.</p>`
+    : `<p><b>Caro</b> porque el mínimo para pujar (${money(p.minimo)}) ya está arriba de tu tope (${money(p.puja_max)}). Con estos números no conviene, salvo que el valor real sea más alto que el del CAD.</p>`;
+  return `<h4>Cómo se calcula</h4>${veredicto}${tabla}
+    <p>El valor del CAD casi siempre está abajo del precio de mercado, por eso el 55% es conservador. Si quieres ser más o menos agresivo, se cambia el porcentaje.</p>`;
+}
+
+function expHerencia(p){
+  return `<h4>Herencia: qué significa</h4>
+    <p>La demanda está contra un dueño que ya murió o contra "sus herederos". El condado sí puede vender así, pero hay más riesgo de que alguien reclame después o de que el título no quede limpio para revender o sacar seguro de título.</p>
+    <h4 style="margin-top:10px">Pasos antes de pujar</h4>
+    <ol>
+      <li>Busca el caso <b>${esc(p.cause)}</b> en el District Clerk del condado y revisa que hayan notificado a los herederos (citación por edicto o un abogado ad litem nombrado por el juez).</li>
+      <li>En el County Clerk busca si hay sucesión (probate) o un affidavit of heirship a nombre del dueño. Si hay, ahí ves quiénes son los herederos.</li>
+      <li>Revisa en el CAD quién aparece como dueño hoy y a qué dirección le llegan los avisos.</li>
+      <li>Cuenta con pagar un quiet title (ya lo resté del "Pagar hasta": ${money(PARAM.quiet)}) para poder vender o asegurar el título después.</li>
+      <li>Si la quieres pujar fuerte, pásale el número de caso a una title company o abogado antes de la subasta.</li>
+    </ol>`;
+}
+
+function expImpuestos(p){
+  const n = anios(p), t = PARAM.tasa[p.condado] || 0.025;
+  return `<h4>${n} año${n>1?'s':''} de impuestos por pagar</h4>
+    <p>La lista oficial dice que esta venta es "subject to" impuestos de ${n} año${n>1?'s':''} que no entraron en la demanda. Esos los pagas tú después de ganar, aparte de lo que pujes.</p>
+    <table>
+      <tr><td>Valor del CAD</td><td>${money(p.valor)}</td></tr>
+      <tr><td>× tasa aprox. ${pct(t)} × ${n} año${n>1?'s':''}</td><td></td></tr>
+      <tr class="tot"><td>Estimado a pagar</td><td>${money(p.impuestos_est)}</td></tr>
+    </table>
+    <p>Es un estimado. Para el monto exacto (con multas e intereses), busca la cuenta <b>${esc(geoId(p))}</b> en la <a href="${OFICINA_IMPUESTOS[p.condado]}" target="_blank" rel="noopener">oficina de impuestos de ${esc(p.condado)}</a>.</p>`;
+}
+
+function expBaldio(){
+  return `<h4>Baldío (estimado)</h4><p>La dirección no trae número de casa, así que probablemente no tiene construcción. Confírmalo en el CAD: si "Improvement" sale en $0, es terreno solo.</p>`;
+}
+
+function expScore(p){
+  return `<h4>Score ${p.score} de 100</h4>
+    <ol>
+      <li>Hasta 35 puntos por tamaño (llega al máximo con 10 acres).</li>
+      <li>20 puntos si parece baldío.</li>
+      <li>Hasta 25 puntos según qué tan abajo del valor está el mínimo.</li>
+      <li>Resta si tiene herencia, varios años de impuestos o si sale caro.</li>
+    </ol>`;
+}
+
+function tagBtn(cls, label, kind){ return `<button type="button" class="tag ${cls}" data-exp="${kind}">${esc(label)}</button>`; }
+
 function list(){
   const f = {fecha:$('fFecha').value, c:$('fCondado').value, a:+$('fAcres').value||0, b:$('fBaldio').checked,
              v:$('fConviene').checked, x:$('fCancel').checked, q:$('fQ').value.trim().toLowerCase()};
@@ -169,40 +262,67 @@ function list(){
     (!f.fecha || p.fecha_subasta === f.fecha) && (!f.c || p.condado === f.c) &&
     (!f.a || (p.acres || 0) >= f.a) && (!f.b || p.baldio === true) && (!f.v || p.conviene) &&
     (!f.x || !/cancel/i.test(p.estatus || '')) &&
-    (!f.q || [p.direccion,p.ciudad,p.legal,p.cuenta,p.cause].join(' ').toLowerCase().includes(f.q))
+    (!f.q || [p.direccion,p.ciudad,p.legal,p.cuenta,p.cause,p.zona].join(' ').toLowerCase().includes(f.q))
   ).sort((a,b) => (b.score||0) - (a.score||0));
   $('count').textContent = `${rows.length} propiedad${rows.length===1?'':'es'}`;
-  $('list').innerHTML = rows.length ? rows.map(p => {
+  window.ROWS = rows;
+  $('list').innerHTML = rows.length ? rows.map((p, i) => {
     const off = /cancel/i.test(p.estatus || '');
-    const riesgos = (p.riesgos || '').split('; ').filter(Boolean).map(r =>
-      `<span class="tag ${/Herencia/.test(r)?'bad':'warn'}">${esc(r)}</span>`).join('');
-    const titulo = (p.titulo || 'Propiedad') + (p.zona ? ' · ' + p.zona : '');
-    const lugar = [p.direccion ? p.direccion.split(',')[0] : '', p.ciudad, p.condado].filter(Boolean).join(' · ');
-    return `<article class="prop${off?' off':''}">
+    const calle = p.direccion ? titleCase(p.direccion.split(',')[0]) : '';
+    const tags = [
+      p.valor ? (p.conviene ? tagBtn('ok','Buen precio','precio') : tagBtn('bad','Caro','precio')) : '',
+      p.baldio === true ? tagBtn('ok','Baldío','baldio') : '',
+      /Herencia/.test(p.riesgos||'') ? tagBtn('bad','Herencia: revisar título','herencia') : '',
+      anios(p) ? tagBtn('warn',`+${anios(p)} año${anios(p)>1?'s':''} de impuestos por pagar`,'impuestos') : '',
+      tagBtn('','Score '+p.score,'score')
+    ].join('');
+    return `<article class="prop${off?' off':''}" data-i="${i}">
       <div class="score${p.score>=40?' hi':''}" title="Score">${p.score}</div>
       <div>
-        <div class="title">${esc(titulo)}</div>
-        <div class="meta">${esc(lugar)}${p.tipo==='Reventa'?' · Reventa':''}${off?' · Cancelada':''}</div>
-        <div class="tags">
-          ${p.conviene?'<span class="tag ok">Buen precio</span>':'<span class="tag bad">Caro</span>'}
-          ${p.baldio===true?'<span class="tag ok">Baldío</span>':''}
-          ${riesgos}
-        </div>
+        <dl class="ficha">
+          <dt>Condado</dt><dd class="cond">${esc(p.condado)}</dd>
+          <dt>Ciudad</dt><dd>${esc(p.ciudad || 'Sin ciudad (rural)')}</dd>
+          <dt>Dirección</dt><dd>${esc(calle || 'Sin dirección en la lista')}</dd>
+          <dt>Descripción</dt><dd class="desc">${esc(p.titulo || 'Propiedad')}${p.zona?` <span class="z">· ${esc(p.zona)}</span>`:''}${p.tipo==='Reventa'?' <span class="z">· Reventa</span>':''}${off?' <span class="z">· Cancelada</span>':''}</dd>
+        </dl>
+        <div class="tags">${tags}</div>
+        <div class="exp"></div>
         <div class="links">
           <a href="${esc(p.mapa)}" target="_blank" rel="noopener">Mapa</a>
-          <a href="#" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(p.cuenta)}');this.textContent='Cuenta copiada';return false">Copiar cuenta</a>
-          <a href="${esc(p.cad)}" target="_blank" rel="noopener">CAD</a>
-          <a href="#" onclick="this.closest('article').querySelector('.legal').classList.toggle('show');return false">Más info</a>
+          <a href="${cadUrl(p)}" target="_blank" rel="noopener" data-geo="${esc(geoId(p))}" class="cad">Ver en el CAD</a>
+          <a href="#" data-exp="info">Más info</a>
         </div>
-        <div class="legal">${esc(p.legal)}<br><a href="${esc(p.pdf)}" target="_blank" rel="noopener">Ver lista oficial</a> · Caso ${esc(p.cause)} · Cuenta ${esc(p.cuenta)}</div>
+        <div class="legal">
+          <b>Cuenta en el CAD:</b> ${esc(geoId(p))} · <b>Caso:</b> ${esc(p.cause)}<br>
+          ${esc(p.legal)}<br>
+          <a href="${esc(p.pdf)}" target="_blank" rel="noopener">Ver lista oficial</a> ·
+          <a href="${OFICINA_IMPUESTOS[p.condado]}" target="_blank" rel="noopener">Oficina de impuestos</a>
+          <p style="margin-top:8px;color:var(--muted)">Si ganas: el dueño puede recuperarla pagándote lo que pujaste +25% el primer año (o +50% el segundo). Tiene 180 días, o 2 años si era su casa (homestead) o terreno agrícola.</p>
+        </div>
       </div>
       <div class="nums">
-        <div><b>${money(p.minimo)}</b>Mínimo</div>
-        <div><b>${money(p.valor)}</b>Valor</div>
-        <div class="bid"><b>${money(p.puja_max)}</b>Pagar hasta</div>
+        <div><div class="l">Mínimo</div><div class="n">${money(p.minimo)}</div></div>
+        <div><div class="l">Valor</div><div class="n">${money(p.valor)}</div></div>
+        <div class="bid"><div class="l">Pagar hasta</div><div class="n">${money(p.puja_max)}</div></div>
       </div>
     </article>`;}).join('') : '<div class="empty">Nada con estos filtros.</div>';
 }
+
+const EXP = {precio: expPrecio, herencia: expHerencia, impuestos: expImpuestos, baldio: expBaldio, score: expScore};
+$('list').addEventListener('click', e => {
+  const art = e.target.closest('article'); if (!art) return;
+  const p = window.ROWS[+art.dataset.i];
+  const cad = e.target.closest('a.cad');
+  if (cad) { try { navigator.clipboard.writeText(cad.dataset.geo); } catch(_){}
+    cad.textContent = 'Cuenta copiada: pégala en el buscador'; return; }
+  const b = e.target.closest('[data-exp]'); if (!b) return;
+  e.preventDefault();
+  if (b.dataset.exp === 'info') { art.querySelector('.legal').classList.toggle('show'); return; }
+  const box = art.querySelector('.exp'), was = b.classList.contains('on');
+  art.querySelectorAll('.tag.on').forEach(t => t.classList.remove('on'));
+  if (was) { box.classList.remove('show'); return; }
+  b.classList.add('on'); box.innerHTML = EXP[b.dataset.exp](p); box.classList.add('show');
+});
 
 ['fFecha','fCondado','fAcres','fBaldio','fConviene','fCancel','fQ'].forEach(id =>
   $(id).addEventListener('input', () => { save(); list(); }));
