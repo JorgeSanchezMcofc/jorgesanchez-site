@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-21T03:49+00:00",
+ "actualizado": "2026-10-21T05:05+00:00",
  "proxima_subasta": "2026-11-03",
  "avisos": [
   "Hidalgo: la última lista de reventas es del 07/07 (6 propiedades). Pregunta al despacho si siguen disponibles.",
@@ -30,7 +30,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=23211+PARKER+RD%2C+SANTA+ROSA%2C+TX+78593-2215",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.221532,
+   "lng": -97.820558,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -56,7 +61,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=BLUEBONNET+DR%2C+DONNA%2C+TX+78537",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -82,7 +92,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=JEFFERSON+AVE%2C+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -108,7 +123,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=JEFFERSON+AVE+RIO+HONDO%2C+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -134,7 +154,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=JEFFERSON+AVE%2C+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -160,7 +185,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=E+ST+ANNE+DR%2C+PHARR%2C+TX+78577",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.119316,
+   "lng": -98.191587,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -186,7 +216,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=E+EXPRESSWAY+83%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.246376,
+   "lng": -98.466134,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -212,7 +247,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=6264+MONTE+BONITO%2C+BROWNSVILLE%2C+TX+78521-6219",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 25.878661,
+   "lng": -97.42301,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -238,7 +278,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=La+Posada+South+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -264,7 +309,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Heron+Cove+Estates+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -290,7 +340,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=418+ARROYO+AVE%2C+SANTA+ROSA%2C+TX+78593",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.260715,
+   "lng": -97.822225,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -316,7 +371,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=East+Brownsville+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -342,7 +402,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Alamo+Heights+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -368,7 +433,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=La+Posada+South+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -394,7 +464,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Original+Townsite+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -420,7 +495,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1131+ELIZABETH+DR%2C+PALMVIEW%2C+TX+78572",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.232063,
+   "lng": -98.357681,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -446,7 +526,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=629+W+STATE+ST%2C+PHARR%2C+TX+78577",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.196833,
+   "lng": -98.190925,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -472,7 +557,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=6716+LA+HOMA+DR%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -498,7 +588,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Mckenzie+Acres+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -524,7 +619,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Roosevelt+Estate+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -550,7 +650,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=5404+TAURUS+LANE%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -576,7 +681,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=504+CALLE+SAN+JOSE%2C+SAN+BENITO%2C+TX+78586-8422",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.053639,
+   "lng": -97.649782,
+   "flood_zona": "X (0.2%)",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -602,7 +712,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=114+ACAPULCO",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -628,7 +743,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=34607+FM+510",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -654,7 +774,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=210+5TH+AVE%2C+SAN+BENITO%2C+TX+78586",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -680,7 +805,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1677+CALLE+SAN+PEDRO+SAN+BENITO%2C+SAN+BENITO%2C+TX+78586",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.054833,
+   "lng": -97.646461,
+   "flood_zona": "X (0.2%)",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -706,7 +836,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=El+Jardin+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -732,7 +867,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=E+MAIN+AVE%2C+ALTON%2C+TX+78573",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.286027,
+   "lng": -98.305955,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -758,7 +898,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=709+HERB+DR%2C+PHARR%2C+TX+78577",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.120383,
+   "lng": -98.183764,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -784,7 +929,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=18013+PARKER+RD+SANTA+ROSA",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -810,7 +960,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1968+MONACO+DR+BROWNSVILLE%2C+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 25.882253,
+   "lng": -97.441052,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -836,7 +991,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=13126+ASH+AVE%2C+EDINBURG%2C+TX+78539",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.300821,
+   "lng": -98.034599,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -862,7 +1022,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=17815+SALIDA+DEL+SOL+AVE%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -888,7 +1053,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=258+EL+VALLE+DR+BROWNSVILLE",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -914,7 +1084,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Espiritu+Santo+Grant+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -940,7 +1115,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=8028+W+MILITARY+RD%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -966,7 +1146,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=7124+ABRAM+BLVD%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -992,7 +1177,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=819+S+5TH+ST+%28REAR%29%2C+HIDALGO%2C+TX+78557",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.097307,
+   "lng": -98.258174,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1018,7 +1208,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2556+COTTAGE+DR%2C+BROWNSVILLE%2C+TX+78521-8031",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 25.888535,
+   "lng": -97.438727,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1044,7 +1239,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1015+MILPA+VERDE%2C+BROWNSVILLE%2C+TX+78521-4675",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 25.890292,
+   "lng": -97.453327,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1070,7 +1270,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=520+E+CANO+ST%2C+EDINBURG%2C+TX+78539-4710",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.29964,
+   "lng": -98.15789,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1096,7 +1301,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Morningside+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1122,7 +1332,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=120+E+11+1%2F2+ST+ST%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.235702,
+   "lng": -98.480857,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1148,7 +1363,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=ELISA+ST%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1174,7 +1394,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=17651+SAN+JOSE+RD%2C+LA+VILLA%2C+TX+78562",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1200,7 +1425,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1711+HIDALGO+ST%2C+DONNA%2C+TX+78537",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.12929,
+   "lng": -98.052585,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1226,7 +1456,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=810+MENDEZ+ST+HARLINGEN",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1252,7 +1487,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2205+EBONY+AVE%2C+MCALLEN%2C+TX+78501-6919",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.209587,
+   "lng": -98.242621,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1278,7 +1518,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=503+W+STATE+ST%2C+PHARR%2C+TX+78577",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.196573,
+   "lng": -98.189534,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1304,7 +1549,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Bella+Vista+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1330,7 +1580,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=ROGERS+RD%2C+EDINBURG%2C+TX+78539",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.333065,
+   "lng": -98.179123,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1356,7 +1611,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2506+SANTIAGO+ST%2C+EDINBURG%2C+TX+78542-0694",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.318665,
+   "lng": -98.09991,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1382,7 +1642,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2406+N+83RD+ST%2C+EDINBURG%2C+TX+78542-0103",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.311887,
+   "lng": -98.07068,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1408,7 +1673,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=El+Jardin+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1434,7 +1704,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=317+2ND+1%2F2%2C+SAN+JUAN%2C+TX+78589",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.192773,
+   "lng": -98.151451,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1460,7 +1735,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=321+W+2+1%2F2+DR%2C+SAN+JUAN%2C+TX+78589",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.193612,
+   "lng": -98.158328,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1486,7 +1766,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=320+W+3RD+ST%2C+SAN+JUAN%2C+TX+78589",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.192742,
+   "lng": -98.158463,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1512,7 +1797,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=1211+S+23RD+ST%2C+MCALLEN%2C+TX+78501",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.196226,
+   "lng": -98.246647,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1538,7 +1828,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2400+EXPRESSWAY+83%2C+PENITAS%2C+TX+78576",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.241557,
+   "lng": -98.434017,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1564,7 +1859,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=7000+LUCERO+COURT%2C+LA+JOYA%2C+TX+78560",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1590,7 +1890,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=2016+N+CAGE+BLVD%2C+PHARR%2C+TX+78577",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 26.212605,
+   "lng": -98.180655,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1616,7 +1921,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Block+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1642,7 +1952,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=27422+GUELKER+RD+BROWNSVILLE%2C+78520",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1668,7 +1983,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Taiwan+Shrimp+Farm+Development+%231+Subdiv+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1694,7 +2014,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=6958+NANSA+DR%2C+BROWNSVILLE%2C+TX+78526-6620",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": 25.944693,
+   "lng": -97.416521,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1720,7 +2045,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Unrecorded+Green+Tree+Hidalgo+County+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1746,7 +2076,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Adams+Tract+Hidalgo+County+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1772,7 +2107,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Adams+Tract+Hidalgo+County+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1798,7 +2138,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Los+Ejidos+De+Reynosa+Grant+Hidalgo+County+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1824,7 +2169,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Capisallo+District+Hidalgo+County+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Hidalgo",
@@ -1850,7 +2200,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=J.+Murray+Hooke+Weslaco+TX",
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
-   "visto": "2026-10-21"
+   "visto": "2026-10-21",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1876,7 +2231,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Palm+Park+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1902,7 +2262,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=In+Cameron+County+Cameron+County+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   },
   {
    "condado": "Cameron",
@@ -1928,7 +2293,12 @@
    "mapa": "https://www.google.com/maps/search/?api=1&query=Original+Townsite+Brownsville+TX",
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
-   "visto": "2026-10-20"
+   "visto": "2026-10-20",
+   "lat": null,
+   "lng": null,
+   "flood_zona": null,
+   "flood_riesgo": null,
+   "geo_v": 1
   }
  ],
  "ganadas": []
