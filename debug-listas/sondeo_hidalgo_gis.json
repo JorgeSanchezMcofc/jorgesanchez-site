@@ -1,0 +1,60 @@
+{
+ "archivos": [
+  {
+   "path": "jimwells_parcels.zip",
+   "id": "1p1__VdFm7AalM7qQIRI66N4sHrq9wprm"
+  },
+  {
+   "path": "jimwells_roads.zip",
+   "id": "1tpHfAsUI0saq06GMei9MzEkn7b6WYf86"
+  },
+  {
+   "path": "jimwells_subdivisions.zip",
+   "id": "1M1yl8lOGvg691z6kx27otx5l4jgo9Odz"
+  }
+ ],
+ "bajado": {
+  "nombre": "jimwells_parcels.zip",
+  "bytes": 2789452
+ },
+ "contenido": [
+  [
+   "jimwells_parcels.dbf",
+   1977754
+  ],
+  [
+   "jimwells_parcels.prj",
+   574
+  ],
+  [
+   "jimwells_parcels.shp",
+   4746120
+  ],
+  [
+   "jimwells_parcels.shx",
+   219836
+  ]
+ ],
+ "columnas": [
+  "pid",
+  "tp_area",
+  "county"
+ ],
+ "ejemplos": [
+  {
+   "pid": 23248,
+   "tp_area": 0.256,
+   "county": "Jim Wells"
+  },
+  {
+   "pid": 32086,
+   "tp_area": 0.984,
+   "county": "Jim Wells"
+  },
+  {
+   "pid": 10854,
+   "tp_area": null,
+   "county": "Jim Wells"
+  }
+ ]
+}
