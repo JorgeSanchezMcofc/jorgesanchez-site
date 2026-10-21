@@ -10,7 +10,7 @@ import pathlib
 
 import yaml
 
-from . import analisis, cad, dashboard, fuentes, parsers, salidas
+from . import analisis, cad, dashboard, fuentes, parsers, salidas, sondeo
 
 
 def main():
@@ -59,6 +59,11 @@ def main():
                               f"({len(regs)} propiedades{extra}). Pregunta al despacho si siguen disponibles.")
 
     props.sort(key=lambda p: p["score"], reverse=True)
+    if args.debug_dir and cfg.get("sondeo_hidalgo"):  # temporal
+        try:
+            sondeo.correr(args.debug_dir)
+        except Exception as e:  # noqa: BLE001
+            print("sondeo:", e)
     avisos += cad.enriquecer(props, root.parent / "debug-listas" / "cad_cache.json", cfg)
     props.sort(key=lambda p: p["score"], reverse=True)
     salidas.guardar_csv(props, out_dir / "propiedades.csv")

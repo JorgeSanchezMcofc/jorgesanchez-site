@@ -27,3 +27,5 @@ correo:
   para: jorgesanchezjr@hotmail.com
   top: 10
 
+# Temporal: buscar el archivo del CAD de Hidalgo.
+sondeo_hidalgo: true
