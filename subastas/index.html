@@ -7,7 +7,7 @@
 <title>Subastas RGV · Jorge Sanchez</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
 <style>
 :root{
   --deep:#141414; --mid:#1f1f1f; --card:#232323; --line:#333; --gold:#D4A843; --gold-l:#E8C870;
@@ -74,7 +74,10 @@ h2 small{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);lett
 
 /* Satélite */
 .sat{position:relative;background:#0e0e0e center/cover no-repeat;border-radius:10px;overflow:hidden}
-.sat::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.5)}
+.sat::after{content:"";position:absolute;z-index:1;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.5)}
+.sat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sat.nofoto img{display:none}
+.sat.nofoto{background:repeating-linear-gradient(45deg,#1b1b1b,#1b1b1b 8px,#202020 8px,#202020 16px)}
 .sat.aprox::after{width:60px;height:60px;margin:-30px 0 0 -30px;border:2px dashed #fff;background:rgba(255,255,255,.08)}
 .aproxtxt{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:2px 7px;border-radius:5px;z-index:1}
 .sat.none{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;color:var(--muted);font-size:12px;text-align:center;padding:10px;background:repeating-linear-gradient(45deg,#1b1b1b,#1b1b1b 8px,#202020 8px,#202020 16px)}
@@ -225,12 +228,12 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid va
   <div class="list" id="list"></div>
 
   <footer>
-    Datos de las listas públicas de los condados, FEMA y el Census. Imágenes satelitales: Esri, Maxar, Earthstar Geographics.
+    Datos de las listas públicas de los condados, FEMA y el Census. Imágenes satelitales: USGS y Esri. Calles: © OpenStreetMap.
     Los números son estimados: confirma título, impuestos y exenciones antes de pujar.
   </footer>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const money = n => n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US');
@@ -288,18 +291,28 @@ function veredicto(p){
 }
 const verPill = (v, why=true) => `<span class="ver ${v.k}">${v.t}</span>${why?`<span class="porque">${esc(v.r)}</span>`:''}`;
 
-// Foto satelital (Esri World Imagery) centrada en la propiedad.
-function satUrl(p, w=400, h=260){
+// Foto satelital centrada en la propiedad. Primero USGS (público), si falla Esri.
+const SAT = [
+  'https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/export',
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export'
+];
+function satUrl(p, w=400, h=260, i=0){
   const ac = p.acres || 0.25;
   let d = Math.min(0.006, Math.max(0.0007, Math.sqrt(ac * 4047) / 111000 * 1.4));
   if (p.geo_aprox) d = Math.max(d, 0.004);  // solo sabemos la calle o la colonia: vista más abierta
   const dx = d * (w / h) / Math.cos(p.lat * Math.PI / 180);
   const bbox = [p.lng - dx, p.lat - d, p.lng + dx, p.lat + d].map(n => n.toFixed(6)).join(',');
-  return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=${bbox}&bboxSR=4326&imageSR=3857&size=${w},${h}&format=jpg&f=image`;
+  return `${SAT[i]}?bbox=${bbox}&bboxSR=4326&imageSR=3857&size=${w},${h}&format=jpg&f=image`;
+}
+function satFallo(img){
+  const i = +(img.dataset.i || 0) + 1;
+  if (i < SAT.length) { img.dataset.i = i; img.src = img.dataset.src.replace(SAT[0], SAT[i]); }
+  else img.closest('.sat').classList.add('nofoto');
 }
 function satBox(p, cls='', w=400, h=260){
   if (p.lat == null) return `<div class="sat none ${cls}"><span>Sin ubicación exacta</span>${p.mapa?`<a href="${esc(p.mapa)}" target="_blank" rel="noopener">Buscar en Google Maps</a>`:''}</div>`;
-  return `<div class="sat ${cls}${p.geo_aprox?' aprox':''}" style="background-image:url('${satUrl(p, w, h)}')">${p.geo_aprox?'<span class="aproxtxt">Ubicación aproximada</span>':''}<a href="https://www.google.com/maps/@${p.lat},${p.lng},250m/data=!3m1!1e3" target="_blank" rel="noopener" aria-label="Ver en Google Maps satelital"></a></div>`;
+  const u = satUrl(p, w, h);
+  return `<div class="sat ${cls}${p.geo_aprox?' aprox':''}"><img src="${u}" data-src="${u}" alt="Foto satelital" loading="lazy" onerror="satFallo(this)">${p.geo_aprox?'<span class="aproxtxt">Ubicación aproximada</span>':''}<a href="https://www.google.com/maps/@${p.lat},${p.lng},250m/data=!3m1!1e3" target="_blank" rel="noopener" aria-label="Ver en Google Maps satelital"></a></div>`;
 }
 
 /* ---------- Explicaciones ---------- */
@@ -426,10 +439,22 @@ function mapa(rows){
   if (!window.L) { $('mapa').innerHTML = '<div class="empty">No se pudo cargar el mapa.</div>'; return; }
   if (!MAP) {
     MAP = L.map('mapa', {scrollWheelZoom: false}).setView([26.2, -97.9], 9);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {maxZoom: 19, attribution: 'Esri, Maxar, Earthstar Geographics'}).addTo(MAP);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      {maxZoom: 19}).addTo(MAP);
+    const capas = {
+      'Satélite': L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',
+        {maxZoom: 16, maxNativeZoom: 16, attribution: 'USGS'}),
+      'Satélite (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {maxZoom: 19, attribution: 'Esri, Maxar, Earthstar Geographics'}),
+      'Calles': L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {maxZoom: 19, attribution: '© OpenStreetMap'})
+    };
+    // Si una capa no carga, cambia sola a la siguiente.
+    const orden = Object.values(capas); let actual = 0, fallas = 0;
+    orden.forEach((c, i) => c.on('tileerror', () => {
+      if (i !== actual || ++fallas < 4 || actual >= orden.length - 1) return;
+      MAP.removeLayer(c); actual++; fallas = 0; orden[actual].addTo(MAP);
+    }));
+    orden[0].addTo(MAP);
+    L.control.layers(capas, null, {position: 'topright'}).addTo(MAP);
     LAYER = L.layerGroup().addTo(MAP);
   }
   LAYER.clearLayers();
