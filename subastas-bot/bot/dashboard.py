@@ -5,9 +5,11 @@ import pathlib
 
 import yaml
 
+from . import geo
+
 CAMPOS = ["condado", "fecha_subasta", "tipo", "cause", "cuenta", "direccion", "ciudad", "zona", "titulo", "legal",
           "acres", "baldio", "minimo", "valor", "puja_max", "conviene", "impuestos_est", "score",
-          "riesgos", "estatus", "mapa", "cad", "pdf", "visto"]
+          "riesgos", "estatus", "mapa", "cad", "pdf", "visto", *geo.CAMPOS]
 
 
 def _key(p):
@@ -52,6 +54,7 @@ def escribir(props, json_path, ganadas_path, fecha, avisos):
     for p in props:
         prev = viejo.get(_key(p))
         p["visto"] = (prev or {}).get("visto") or hoy
+        geo.enriquecer(p, prev)
         viejo[_key(p)] = {k: p.get(k) for k in CAMPOS}
     todas = sorted(viejo.values(), key=lambda p: (p["fecha_subasta"] or "", p["score"] or 0), reverse=True)
     json_path.parent.mkdir(parents=True, exist_ok=True)

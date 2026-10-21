@@ -5,7 +5,9 @@ import pathlib
 
 import yaml
 
-from bot import analisis, dashboard, fuentes, parsers, salidas
+from bot import analisis, dashboard, fuentes, geo, parsers, salidas
+
+geo.ACTIVO = False  # sin internet en los tests
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FIX = ROOT / "tests" / "fixtures"
@@ -73,3 +75,11 @@ def test_salidas_y_dashboard(tmp_path):
     dashboard.escribir(r, tmp_path / "data.json", tmp_path / "no.yaml", dt.date(2026, 11, 3), [])
     d = json.loads((tmp_path / "data.json").read_text())
     assert len(d["propiedades"]) == 31 and d["ganadas"] == []
+
+
+def test_geo_limpia_y_reutiliza():
+    assert "REAR" not in geo._limpia("819 S 5TH ST (REAR), HIDALGO, TX 78557")
+    assert "78557-1234" not in geo._limpia("819 S 5TH ST, HIDALGO, TX 78557-1234")
+    prev = {"lat": 26.1, "lng": -98.2, "flood_zona": "AE", "flood_riesgo": True, "geo_v": geo.VERSION}
+    p = geo.enriquecer({"direccion": "x"}, prev)
+    assert p["flood_zona"] == "AE" and p["lat"] == 26.1
