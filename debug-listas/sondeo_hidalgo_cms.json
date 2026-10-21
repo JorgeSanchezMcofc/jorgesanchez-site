@@ -1,0 +1,74 @@
+{
+ "IsxPKMo2gPRRKeakUztj1D6uqed2/data-downloads": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "IsxPKMo2gPRRKeakUztj1D6uqed2/reports": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "pwgjf0RoYWbdnJSbpBAjXNRMe9F2/data-downloads": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "pwgjf0RoYWbdnJSbpBAjXNRMe9F2/reports": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "95ab97a25034446d84379f1c42f2bc1e/data-downloads": {
+  "status": 200,
+  "largo": 15066,
+  "archivos": [],
+  "texto": "{\"results\":[{\"createdDate\":1714495705420,\"id\":\"7d483b2474b544ec9d01fa8816b10cdc\",\"name\":\"Data Downloads\",\"modelId\":\"38534c704ac641aa957db0cc32c86181\",\"published\":\"published\",\"meta\":{\"hasAutosaves\":false,\"hasLinks\":false,\"kind\":\"page\",\"lastPreviewUrl\":\"https://preview.builder.codes?model=page&previewing=true&apiKey=95ab97a25034446d84379f1c42f2bc1e&builder.space=95ab97a25034446d84379f1c42f2bc1e&builder.user.permissions=read%2Ccreate%2Cpublish%2CeditCode%2CeditDesigns%2Cadmin%2CeditLayouts%2CeditLayers%2CeditContentPriority%2CeditFolders%2CeditProjects%2CmodifyMcpServers%2CmodifyWorkflowIntegrations%2CmodifyProjectSettings%2CconnectCodeRepository%2CcreateProjects%2CindexDesignSystems%2CsendPullRequests&builder.user.role.name=Admin&builder.user.role.id=admin&builder.cachebust=true&builder.preview=page&builder.noCache=true&builder.allowTextEdit=true&__builder_editing__=true&builder.overrides.page=7d483b2474b544ec9d01fa8816b10cdc&builder.overrides.7d483b2474b544ec9d01fa8816b10cdc=7d483b2474b544ec9d01fa8816b10cdc&builder.overrides.page:/=7d483b2474b544ec9d01fa8816b10cdc&builder.options.locale=Default\"},\"query\":[{\"@type\":\"@builder.io/core:Query\",\"operator\":\"is\",\"property\":\"urlPath\",\"value\":\"/data-downloads\"}],\"data\":{\"cssCode\":\"/*\\n* Custom CSS styles\\n*\\n* Global by default, but use `&` to scope to just this content, e.g.\\n*\\n*   & .foo {\\n*     color: 'red'\\n*   }\\n*/\\nul {\\n  list-style: none;\\n}\\n\\n\\na:link {\\n      text-decoration: none;\\n}\\n\\n.btn-95,\\n.btn-95 *,\\n.btn-95 :afte"
+ },
+ "95ab97a25034446d84379f1c42f2bc1e/reports": {
+  "status": 200,
+  "largo": 14,
+  "archivos": [],
+  "texto": "{\"results\":[]}"
+ },
+ "BvYIl5jKN9QpChUB3PVzsTe2ZSI2/data-downloads": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "BvYIl5jKN9QpChUB3PVzsTe2ZSI2/reports": {
+  "status": 401,
+  "largo": 103,
+  "archivos": [],
+  "texto": "{\"status\":401,\"message\":\"Authorization required\",\"detail\":\"For help please contact support@builder.io\"}"
+ },
+ "YJIGb4i01jvw0SRdL5Bt/data-downloads": {
+  "status": 200,
+  "largo": 14,
+  "archivos": [],
+  "texto": "{\"results\":[]}"
+ },
+ "YJIGb4i01jvw0SRdL5Bt/reports": {
+  "status": 200,
+  "largo": 14,
+  "archivos": [],
+  "texto": "{\"results\":[]}"
+ },
+ "agZ9n5CUKRfbL9t6CaJOyVSK4Es2/data-downloads": {
+  "status": 404,
+  "largo": 42,
+  "archivos": [],
+  "texto": "{\"status\":404,\"message\":\"Model not found\"}"
+ },
+ "agZ9n5CUKRfbL9t6CaJOyVSK4Es2/reports": {
+  "status": 404,
+  "largo": 42,
+  "archivos": [],
+  "texto": "{\"status\":404,\"message\":\"Model not found\"}"
+ }
+}
