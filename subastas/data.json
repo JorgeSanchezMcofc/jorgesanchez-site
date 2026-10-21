@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-21T05:05+00:00",
+ "actualizado": "2026-10-21T05:11+00:00",
  "proxima_subasta": "2026-11-03",
  "avisos": [
   "Hidalgo: la última lista de reventas es del 07/07 (6 propiedades). Pregunta al despacho si siguen disponibles.",
@@ -33,9 +33,10 @@
    "visto": "2026-10-20",
    "lat": 26.221532,
    "lng": -97.820558,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -62,11 +63,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.170297,
+   "lng": -97.680929,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -93,11 +95,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.188291,
+   "lng": -97.541904,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -126,9 +129,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -155,11 +159,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.195914,
+   "lng": -97.691157,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -188,9 +193,10 @@
    "visto": "2026-10-20",
    "lat": 26.119316,
    "lng": -98.191587,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -219,9 +225,10 @@
    "visto": "2026-10-20",
    "lat": 26.246376,
    "lng": -98.466134,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -250,9 +257,10 @@
    "visto": "2026-10-20",
    "lat": 25.878661,
    "lng": -97.42301,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -279,11 +287,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.890474,
+   "lng": -97.450216,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -310,11 +319,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.955792,
+   "lng": -97.424736,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -343,9 +353,10 @@
    "visto": "2026-10-20",
    "lat": 26.260715,
    "lng": -97.822225,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -372,11 +383,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.900899,
+   "lng": -97.501338,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -403,11 +415,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.907857,
+   "lng": -97.514658,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -434,11 +447,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.890474,
+   "lng": -97.450216,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -465,11 +479,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.90424,
+   "lng": -97.50273,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -498,9 +513,10 @@
    "visto": "2026-10-20",
    "lat": 26.232063,
    "lng": -98.357681,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -529,9 +545,10 @@
    "visto": "2026-10-20",
    "lat": 26.196833,
    "lng": -98.190925,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -558,11 +575,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.252522,
+   "lng": -98.473007,
+   "geo_aprox": false,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -589,11 +607,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.926108,
+   "lng": -97.451449,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -620,11 +639,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.914385,
+   "lng": -97.48304,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -651,11 +671,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.233968,
+   "lng": -98.476082,
+   "geo_aprox": false,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -684,9 +705,10 @@
    "visto": "2026-10-20",
    "lat": 26.053639,
    "lng": -97.649782,
+   "geo_aprox": null,
    "flood_zona": "X (0.2%)",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -713,11 +735,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.925017,
+   "lng": -97.43556,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -744,11 +767,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.123124,
+   "lng": -97.608572,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -775,11 +799,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
-   "flood_zona": null,
-   "flood_riesgo": null,
-   "geo_v": 1
+   "lat": 26.146244,
+   "lng": -97.630875,
+   "geo_aprox": false,
+   "flood_zona": "X",
+   "flood_riesgo": false,
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -808,9 +833,10 @@
    "visto": "2026-10-20",
    "lat": 26.054833,
    "lng": -97.646461,
+   "geo_aprox": null,
    "flood_zona": "X (0.2%)",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -837,11 +863,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.197288,
+   "lng": -97.751208,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -870,9 +897,10 @@
    "visto": "2026-10-20",
    "lat": 26.286027,
    "lng": -98.305955,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -901,9 +929,10 @@
    "visto": "2026-10-20",
    "lat": 26.120383,
    "lng": -98.183764,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -930,11 +959,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.229364,
+   "lng": -97.820724,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -963,9 +993,10 @@
    "visto": "2026-10-20",
    "lat": 25.882253,
    "lng": -97.441052,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -994,9 +1025,10 @@
    "visto": "2026-10-20",
    "lat": 26.300821,
    "lng": -98.034599,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1023,11 +1055,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.324236,
+   "lng": -98.440297,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1054,11 +1087,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.920525,
+   "lng": -97.432496,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1087,9 +1121,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1116,11 +1151,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.233582,
+   "lng": -98.484142,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1149,9 +1185,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1180,9 +1217,10 @@
    "visto": "2026-10-20",
    "lat": 26.097307,
    "lng": -98.258174,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1211,9 +1249,10 @@
    "visto": "2026-10-20",
    "lat": 25.888535,
    "lng": -97.438727,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1242,9 +1281,10 @@
    "visto": "2026-10-20",
    "lat": 25.890292,
    "lng": -97.453327,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1273,9 +1313,10 @@
    "visto": "2026-10-20",
    "lat": 26.29964,
    "lng": -98.15789,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1302,11 +1343,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.127241,
+   "lng": -97.169313,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1335,9 +1377,10 @@
    "visto": "2026-10-20",
    "lat": 26.235702,
    "lng": -98.480857,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1364,11 +1407,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_HIDALGO_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.241278,
+   "lng": -98.425735,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1397,9 +1441,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1428,9 +1473,10 @@
    "visto": "2026-10-20",
    "lat": 26.12929,
    "lng": -98.052585,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1457,11 +1503,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.207221,
+   "lng": -97.702711,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1490,9 +1537,10 @@
    "visto": "2026-10-20",
    "lat": 26.209587,
    "lng": -98.242621,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1521,9 +1569,10 @@
    "visto": "2026-10-20",
    "lat": 26.196573,
    "lng": -98.189534,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1550,11 +1599,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.953851,
+   "lng": -97.543534,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1583,9 +1633,10 @@
    "visto": "2026-10-20",
    "lat": 26.333065,
    "lng": -98.179123,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1614,9 +1665,10 @@
    "visto": "2026-10-20",
    "lat": 26.318665,
    "lng": -98.09991,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1645,9 +1697,10 @@
    "visto": "2026-10-20",
    "lat": 26.311887,
    "lng": -98.07068,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1674,11 +1727,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://pbfcm.com/docs/taxdocs/sales/11-2026camerontaxsale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 26.197288,
+   "lng": -97.751208,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1707,9 +1761,10 @@
    "visto": "2026-10-20",
    "lat": 26.192773,
    "lng": -98.151451,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1738,9 +1793,10 @@
    "visto": "2026-10-20",
    "lat": 26.193612,
    "lng": -98.158328,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1769,9 +1825,10 @@
    "visto": "2026-10-20",
    "lat": 26.192742,
    "lng": -98.158463,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1800,9 +1857,10 @@
    "visto": "2026-10-20",
    "lat": 26.196226,
    "lng": -98.246647,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1831,9 +1889,10 @@
    "visto": "2026-10-20",
    "lat": 26.241557,
    "lng": -98.434017,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1862,9 +1921,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -1893,9 +1953,10 @@
    "visto": "2026-10-20",
    "lat": 26.212605,
    "lng": -98.180655,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1922,11 +1983,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.921794,
+   "lng": -97.476062,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1953,11 +2015,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://taxsalesib.lgbs.com/images/lit_ps_images/ib-emails/County_Sale_list_CAMERON_COUNTY_20261103.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.966493,
+   "lng": -97.516303,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -1986,9 +2049,10 @@
    "visto": "2026-10-20",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -2017,9 +2081,10 @@
    "visto": "2026-10-20",
    "lat": 25.944693,
    "lng": -97.416521,
+   "geo_aprox": null,
    "flood_zona": "X",
    "flood_riesgo": false,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2048,9 +2113,10 @@
    "visto": "2026-10-21",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2079,9 +2145,10 @@
    "visto": "2026-10-21",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2110,9 +2177,10 @@
    "visto": "2026-10-21",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2141,9 +2209,10 @@
    "visto": "2026-10-21",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2170,11 +2239,12 @@
    "cad": "https://www.hidalgoad.org",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/hidalgotaxresale.pdf",
    "visto": "2026-10-21",
-   "lat": null,
-   "lng": null,
+   "lat": 26.218261,
+   "lng": -98.232208,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Hidalgo",
@@ -2203,9 +2273,10 @@
    "visto": "2026-10-21",
    "lat": null,
    "lng": null,
+   "geo_aprox": null,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -2232,11 +2303,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.93877,
+   "lng": -97.462766,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -2263,11 +2335,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.936895,
+   "lng": -97.497547,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   },
   {
    "condado": "Cameron",
@@ -2294,11 +2367,12 @@
    "cad": "https://www.cameroncad.org/Pages/PropertySearch",
    "pdf": "https://www.pbfcm.com/docs/taxdocs/resales/cameroncountytaxresale.pdf",
    "visto": "2026-10-20",
-   "lat": null,
-   "lng": null,
+   "lat": 25.90424,
+   "lng": -97.50273,
+   "geo_aprox": true,
    "flood_zona": null,
    "flood_riesgo": null,
-   "geo_v": 1
+   "geo_v": 2
   }
  ],
  "ganadas": []
