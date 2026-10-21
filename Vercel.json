@@ -1,6 +1,9 @@
 {
-  "buildCommand": "mkdir -p coach/subastas && cp -R subastas/. coach/subastas/",
-  "outputDirectory": "coach",
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "redirects": [
     {
       "source": "/1mc",
