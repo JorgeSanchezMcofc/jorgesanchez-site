@@ -1,0 +1,8 @@
+# GitHub Pages (jorgesanchez.me): no publicar el dashboard de subastas ni el bot.
+# El dashboard vive en Vercel con contraseña; jorgesanchez.me/subastas redirige ahí (subastas.html).
+exclude:
+  - subastas
+  - subastas-bot
+  - debug-listas
+  - middleware.js
+  - Vercel.json
