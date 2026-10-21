@@ -1,0 +1,1498 @@
+County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM   
+
+ LINEBARGER GOGGAN BLAIR & SAMPSON, LLP
+
+Report Synopsis
+
+A list of properties set for sale or resale for a given county and sale date
+
+Report Parameters
+
+Sale Date
+
+11/03/2026
+
+County Name
+
+CAMERON COUNTY
+
+Post To Web
+
+YES
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+1
+
+SALE
+
+2025-DCL-06671/107
+
+29-SEP-26
+
+CAMERON COUNTY, POINT ISABEL INDEPENDENT 
+SCHOOL DISTRICT, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND TEXAS SOUTHMOST COLLEGE
+DISTRICT VS GREGORY KREJCI, AKA  GREGORY 
+ALLEN KREJCI (DECEASED), ET AL
+
+Scheduled for Online Aucti
+
+9316100030005000
+
+06-AUG-26
+
+ $8,000.00
+
+ $7,170.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 5, Block 3, Block Subdivision, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Volume 17, Page 17, Map Records of Cameron County, Texas.
+
+2
+
+SALE
+
+2026-DCL-01477/103
+
+29-SEP-26
+
+CAMERON COUNTY, LOS FRESNOS CONSOLIDATED 
+INDEPENDENT SCHOOL DISTRICT, SOUTH TEXAS 
+INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS MARIA VICTORIA 
+VALENCIA ROMERO, AKA MARIA VICTORIA VALENCIA
+
+Scheduled for Online Aucti
+
+7471100030001000
+
+34607 FM 510
+
+27-AUG-26
+
+ $121,592.00
+
+ $8,350.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 1, Block 3, East Fresnos Subdivision, Phase 1, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Slot 1227-A, Map Records of Cameron County, Texas.
+
+4
+
+SALE
+
+2025-DCL-03643/197
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF BROWNSVILLE, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS ALFONSO 
+TREVINO, AKA ALFONSO-VELA TREVINO (DECEASED),
+ET AL
+
+Scheduled for Online Aucti
+
+0447400020009000
+
+2556 COTTAGE DR, BROWNSVILLE, TX 78521-8031
+
+05-AUG-26
+
+ $178,653.00
+
+ $6,390.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 9, Block 2, La Posada South Subdivision, Section V, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Pages 1043-B and 1044-A, Map Records of Cameron 
+County, Texas.
+
+5
+
+SALE
+
+2025-DCL-03186/107
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND SAN BENITO CONSOLIDATED 
+INDEPENDENT SCHOOL DISTRICT VS IDA ROSALES, 
+ET AL
+
+Scheduled for Online Aucti
+
+3900000190003000
+
+210 5TH AVE, SAN BENITO, TX 78586
+
+04-AUG-26
+
+ $154,500.00
+
+ $9,695.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lots 3 and 4, Block 19, Original Townsite Addition, an addition to the Town of Los Indios, Cameron County, Texas, as desribed in Volume 2676, Page 101, Official Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 1 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+6
+
+SALE
+
+2025-DCL-02761/107
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND TEXAS SOUTHMOST COLLEGE
+DISTRICT VS ALMA GABRIELA QUIROGA GONZALEZ, 
+AKA ALMA GABRIELA QUIROGA
+
+Status 
+Sale Notes
+
+Cancelled
+
+7355850010009000
+
+27422 GUELKER RD BROWNSVILLE, 78520
+
+04-AUG-26
+
+ $563,189.00
+
+ $22,435.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 9, Block 1, North Ranch Subdivision, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Page 2967-B, Map Records of Cameron County, Texas.
+
+7
+
+SALE
+
+2025-DCL-01300/197
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF BROWNSVILLE, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS MARIA 
+RODRIGUEZ
+
+Scheduled for Online Aucti
+
+7484000010014000
+
+258 EL VALLE DR BROWNSVILLE
+
+13-AUG-26
+
+ $159,046.00
+
+ $23,430.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 14, Block 1, El Valle North Subidvison, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Page 78-A, Map Records of Cameron County, Texas.
+
+8
+
+SALE
+
+2025-DCL-01246/107
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND SAN BENITO CONSOLIDATED 
+INDEPENDENT SCHOOL DISTRICT VS OMAR 
+VASQUEZ, ET AL
+
+Scheduled for Online Aucti
+
+9090400170029000
+
+504 CALLE SAN JOSE, SAN BENITO, TX 78586-8422
+
+06-AUG-26
+
+ $50,019.00
+
+ $7,250.00
+
+* Subject to year 2025 taxes and City Liens 
+not included in tax sale
+Land/bldg combined
+
+Lot 29, Block 17, Rancho Grande South Subdivision, Section VII, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Page 1685-A, Map Records of Cameron County, 
+Texas.
+
+10
+
+SALE
+
+2025-DCL-01077/197
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF BROWNSVILLE, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS JANIE MARIN
+
+Scheduled for Online Aucti
+
+7614100020026000
+
+114 ACAPULCO
+
+05-AUG-26
+
+ $255,461.00
+
+ $12,835.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 26, Block 2, Las Brisas Estates, Secton I, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Volume 26, Page 27, Map Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 2 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+12
+
+SALE
+
+2024-DCL-07482/197
+
+29-SEP-26
+
+CAMERON COUNTY, POINT ISABEL INDEPENDENT 
+SCHOOL DISTRICT, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND TEXAS SOUTHMOST COLLEGE
+DISTRICT VS ROSARIO QUINTANILLA, ET AL
+
+Scheduled for Online Aucti
+
+9396400030010000
+
+06-MAY-26
+
+ $28,990.00
+
+ $8,445.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 10, Block 3, Morningside Subdivision, an addition to the Town of South Padre Island, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 17, Page 51, Map Records of Cameron 
+County, Texas.
+
+13
+
+SALE
+
+2024-DCL-07466/444
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND SANTA ROSA INDEPENDENT 
+SCHOOL DISTRICT VS JOSEFINA MORENO, ET AL
+
+Scheduled for Online Aucti
+
+8415500070000000
+
+18013 PARKER RD SANTA ROSA
+
+11-JUN-26
+
+ $66,685.00
+
+ $6,800.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+Land/Bldg Combined
+
+Lot 7, Avila Estates Subdivision, an addition to Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Slot 554B, Map Records of Cameron County, Texas.
+
+17
+
+SALE
+
+2024-DCL-05099/138
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND RIO HONDO INDEPENDENT 
+SCHOOL DISTRICT VS MARTIN LOPEZ GARCIA, JR., ET 
+AL
+
+Scheduled for Online Aucti
+
+4100000040012000
+
+JEFFERSON AVE, TX
+
+22-JUL-26
+
+ $74,892.00
+
+ $11,850.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 12, Block 4, Town of Lozano, an addition to Cameron County, Texas, as described in Volume 845, Page 771, Deed Records of Cameron County, Texas.
+
+18
+
+SALE
+
+2024-DCL-05099/138
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND RIO HONDO INDEPENDENT 
+SCHOOL DISTRICT VS MARTIN LOPEZ GARCIA, JR., ET 
+AL
+
+Scheduled for Online Aucti
+
+4100000040010000
+
+JEFFERSON AVE RIO HONDO, TX
+
+22-JUL-26
+
+ $35,033.00
+
+ $5,645.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lots 10 and 11, Block 4, Original Townsite to the City of Lozano, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 7, Page 44, Map Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 3 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+19
+
+SALE
+
+2024-DCL-05099/138
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND RIO HONDO INDEPENDENT 
+SCHOOL DISTRICT VS MARTIN LOPEZ GARCIA, JR., ET 
+AL
+
+Scheduled for Online Aucti
+
+4100000040008000
+
+JEFFERSON AVE, TX
+
+22-JUL-26
+
+ $28,450.00
+
+ $4,480.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+LOZANO - ORIG TOWNSITE LOT 8-9 BLK 4
+
+20
+
+SALE
+
+2024-DCL-04912/357
+
+29-SEP-26
+
+CAMERON COUNTY, LOS FRESNOS CONSOLIDATED 
+INDEPENDENT SCHOOL DISTRICT, SOUTH TEXAS 
+INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS HWA-KEN CHEN
+
+Scheduled for Online Aucti
+
+7919200000049000
+
+25-AUG-26
+
+ $10,862.00
+
+ $6,235.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 49, Taiwan Shrimp Farm Development #1 Subdivision, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Cabine 1, Slot 910-A, Map Records of Cameron County, Texas.
+
+22
+
+SALE
+
+2024-DCL-04134/445
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND LA FERIA INDEPENDENT 
+SCHOOL DISTRICT VS MODESTO CAVAZOS 
+(DECEASED), ET AL
+
+Scheduled for Online Aucti
+
+8571400200010010
+
+23211 PARKER RD, SANTA ROSA, TX 78593-2215
+
+27-AUG-26
+
+ $144,000.00
+
+ $28,710.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+Combine Acct #8571400200010000 Be 
+sold together
+
+10.00 acres, more or less, out of Block 20, Parkers Subdivision, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 4, Page 74, Map Records of Cameron County, 
+Texas, combined with acct #857140020001000
+
+23
+
+SALE
+
+2024-DCL-02608/103
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF HARLINGEN, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND 
+HARLINGEN CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS ASENCION RODRIGUEZ (DECEASED), ET 
+AL
+
+Scheduled for Online Aucti
+
+2281800040042000
+
+810 MENDEZ ST HARLINGEN
+
+27-AUG-26
+
+ $119,433.00
+
+ $21,535.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 42, Block 4, Reyna Subdivision, an addition to Cameron County, Texas, as described in Volume 495, Page 422, Deed Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 4 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+24
+
+SALE
+
+2024-DCL-01412/404
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF BROWNSVILLE, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS PEDRO GARCIA, 
+ET AL
+
+Scheduled for Online Aucti
+
+0447300120031000
+
+1968 MONACO DR BROWNSVILLE, TX
+
+10-AUG-26
+
+ $131,140.00
+
+ $14,540.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 31, Block 12, La Posada South Subdivision, Section III, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Cabinet 1, Page 161-B and 162-A, Map Records of Cameron 
+County, Texas.
+
+25
+
+SALE
+
+2024-DCL-00449/445
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF SANTA ROSA, SANTA 
+ROSA INDEPENDENT SCHOOL DISTRICT AND SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT VS AMANDA 
+RODRIGUEZ, ET AL
+
+Scheduled for Online Aucti
+
+6565000210002000
+
+418 ARROYO AVE, SANTA ROSA, TX 78593
+
+10-MAR-25
+
+ $87,979.00
+
+ $8,025.00
+
+* Subject to year 2025 taxes and City Liens 
+not included in tax sale
+
+Lot 2, Block 21, T.R. Sibson Addition, an addition to the Town of Santa Rosa, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 6, Page 48, Map Records of Cameron County, Texas.
+
+26
+
+SALE
+
+2023-DCL-04997/138
+
+29-SEP-26
+
+CAMERON COUNTY, CITY OF BROWNSVILLE, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND TEXAS 
+SOUTHMOST COLLEGE DISTRICT VS CONSUELO 
+RODRIGUEZ, AKA CONSUELO G. RODRIGUEZ
+
+Scheduled for Online Aucti
+
+7490000030004000
+
+1015 MILPA VERDE, BROWNSVILLE, TX 78521-4675
+
+22-JUL-26
+
+ $71,622.00
+
+ $16,905.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+Lot 4, Block 3, Esperanza Estates Subdivision, an addition to the the City of Brownsville, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 33, Page 25, Map Records of Cameron 
+County, Texas.
+
+30
+
+SALE
+
+2024-DCL-05711/445
+
+29-SEP-26
+
+BROWNSVILLE INDEPENDENT SCHOOL DISTRICT VS 
+CRESCENCIO MONTALVO QUINTANA, ET AL.
+
+Cancelled
+
+7480950080014000
+
+6958 NANSA DR, BROWNSVILLE, TX 78526-6620
+
+30-SEP-25
+
+ $185,161.00
+
+ $8,960.00
+
+* Subject to year 2025 taxes and City Liens 
+not included in tax sale
+
+LOT 14 BLK 8 EL LAGO SUBDIVISION SECTION I
+
+31
+
+SALE
+
+2024-DCL-04492/103
+
+29-SEP-26
+
+BROWNSVILLE INDEPENDENT SCHOOL DISTRICT VS 
+KARLA A. GONZALEZ
+
+Scheduled for Online Aucti
+
+7475410030012000
+
+6264 MONTE BONITO, BROWNSVILLE, TX 78521-6219
+
+19-AUG-25
+
+ $147,715.00
+
+ $7,170.00
+
+* Subject to year 2025 taxes and City Liens 
+not included in tax sale
+
+MONTE VERDE SOUTH SUBD SECT I LOT 12 BLK 3
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 5 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+34
+
+SALE
+
+2022-DCL-05681/103
+
+29-SEP-26
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND SAN BENITO CONSOLIDATED 
+INDEPENDENT SCHOOL DISTRICT VS NOEMI M LOPEZ,
+ET AL
+
+Scheduled for Online Aucti
+
+9096800210031000
+
+1677 CALLE SAN PEDRO SAN BENITO, SAN BENITO, 
+TX 78586
+
+27-AUG-26
+
+ $242,700.00
+
+ $18,735.00
+
+* Subject to year(s) 2026 - 2025 taxes and 
+City Liens not included in tax sale
+
+RANCHO GRANDE SOUTH SECTION VIII BLK 21 LOT 31 (CAB 1 SLOT 2153-AB 2154-A CCMR)
+
+1
+
+RESALE
+
+2024-DCL-05685/107
+
+CAMERON COUNTY, CITY OF HARLINGEN, SOUTH 
+TEXAS INDEPENDENT SCHOOL DISTRICT AND 
+HARLINGEN CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS DORA CAPETILLO, AKA DORA VELA 
+CAPETILLO, ET AL
+
+Scheduled for Online Aucti
+
+2006600010021000
+
+718 N U ST, HARLINGEN, TX 78550-5254
+
+18-MAY-26
+
+ $72,517.00
+
+ $23,600.00
+
+* Subject to year 2026 taxes and City Liens 
+not included in tax sale
+
+Lot 22, Block 1, M.B.T. Subdivision No. 2, an addition to the City of Harlingen, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 14, Page 41, Map Records of Cameron County, 
+Texas.
+
+2
+
+RESALE
+
+2022-DCL-00979/107
+
+CAMERON COUNTY, CITY OF HARLINGEN AND 
+HARLINGEN CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS LEOPOLDO TORRES
+
+Scheduled for Online Aucti
+
+1980700020040000
+
+1106 S 5TH ST, HARLINGEN, TX 78550
+
+06-NOV-25
+
+ $45,550.00
+
+ $12,310.00
+
+* Subject to year(s) 2025 - 2026 taxes and 
+City Liens not included in tax sale
+Land/bldg combined
+
+Lots 40 and 41, Block 2, L and F Addition, an addition to the City of Harligen, Cameron County, Texas, as described in Volume 1113, Page 156, Deed Records of Cameron County, Texas. Combined with Bldg (Acct 
+#1980700020040500)
+
+4
+
+RESALE
+
+2024-DCL-00394/103
+
+CAMERON COUNTY, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND LA FERIA INDEPENDENT 
+SCHOOL DISTRICT VS ALLEN JACKSON, AKA ALLEN 
+RAY JACKSON
+
+Scheduled for Online Aucti
+
+7728601010012500
+
+11-MAY-26
+
+ $13,527.00
+
+ $2,600.00
+
+* Subject to year 2026 taxes and City Liens 
+not included in tax sale
+
+0.22 acre, more or less, out of Lot 12, Block 101, Palm Park Subdivision, a subdivision in Cameron County, Texas, as described in Volume 21314, Page 199, Official Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 6 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+5
+
+RESALE
+
+2017-DCL-04889/444
+
+CAMERON COUNTY, CITY OF HARLINGEN AND 
+HARLINGEN CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS JOSE CASAS, AKA JOSE DEJESUS 
+CASAS, ET AL
+
+Scheduled for Online Aucti
+
+2122500030001000
+
+413 N 9TH ST, HARLINGEN, TX 78550-5617
+
+09-JUN-21
+
+ $28,287.00
+
+ $17,800.00
+
+* Subject to year(s) 2021 - 2026 taxes and 
+City Liens not included in tax sale
+
+The South 1/2 of Lot 1, Block 3, Nicholson Place Addition, First Filing, an addition to the City of Harlingen, Cameron County, Texas, according to the map or plat thereof, recorded in Volume 6, Page 23, Map Records 
+of Cameron County, Texas and The South 1/2 of Lot 5, Block 5, Nicholson Place Addition, Fourth Filing, an addition to the City of Harlingen, Cameron County, Texas, according to the map or plat thereof, recorded in 
+Volume 6, Page 19, Map Records of Cameron County, Texas.
+
+6
+
+RESALE
+
+2020-DCL-04909/138
+
+CAMERON COUNTY AND SAN BENITO CONSOLIDATED
+INDEPENDENT SCHOOL DISTRICT VS GERTRUDIS G 
+TREVINO, ET AL
+
+Scheduled for Online Aucti
+
+8895000050013010
+
+00000 LAS RUSIAS, SAN BENITO, TX 78586
+
+22-SEP-25
+
+ $47,386.00
+
+ $8,895.00
+
+* Subject to year(s) 2025 - 2026 taxes and 
+City Liens not included in tax sale
+
+A  4.93 acre tract of land out of Block No. 13 of Share 5 more fully described in Volume 561 Page 80 Deed Records of Cameron County, Texas
+Save and Except
+a. 0.50 acre tract conveyed in Warranty Deed recorded in Voume 167 Page 158 Deed Records of Cameron County, Texas
+b. 0.08 acre tract conveyed out through Declaration of Taking recorded in Volume 16061 Page 263 Deed Records of Cameron County, Texas
+c. 1.00 acres awarded to Iduvijes T. Pena in Final Judgment under Cause No. 2002-06-2446-E and recorded in Volume 14226 Page 297 Deed Records of Cameron County, Texas
+Thereby leaving a residual of 3.35 acres, more or less 
+
+7
+
+RESALE
+
+2012DCL4037/445
+
+CAMERON COUNTY VS ANTONIO DE PONCE, A/K/A 
+ANTHONY DE PONCE
+
+Scheduled for Online Aucti
+
+8230003000002800
+
+16-SEP-14
+
+ $20,678.00
+
+ $5,200.00
+
+* Subject to year(s) 2014 - 2026 taxes and 
+City Liens not included in tax sale
+
+50.00 feet by 801.50 feet, containing 0.92 acre, more or less, being the adjoining Southern boundary line of the Monica Mobil Home Park Subdivision, a subdivision in Cameron County, Texas, according to the map 
+or plat thereof, recorded in Cabinet 1, Slide 17-A, Map Records of Cameron County, Texas.
+
+8
+
+RESALE
+
+2015-DCL-07092/444
+
+CAMERON COUNTY, CITY OF BROWNSVILLE AND 
+BROWNSVILLE INDEPENDENT SCHOOL DISTRICT VS 
+THE UNKNOWN SHAREHOLDERS, SUCCESSORS, 
+ASSIGNS AND/OR OWNERS OF, BROWNSVILLE 
+ASSOCIATES, A DISSOLVED TEXAS CORPORATION
+
+Scheduled for Online Aucti
+
+0408900010004300
+
+BROWNSVILLE, 78521
+
+09-AUG-16
+
+ $20,900.00
+
+ $7,180.00
+
+* Subject to year(s) 2016 - 2026 taxes and 
+City Liens not included in tax sale
+
+Being a 0.048 acre of land out of Lot 6, Block "A", The Jardin Terrace Subdivision in Paredes Tract 25, Cameron County Map Records, Volume 5, Page 38, Share 19, Espiritu Santo Grant, Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 7 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+9
+
+RESALE
+
+2022-DCL-00239/444
+
+CAMERON COUNTY AND POINT ISABEL INDEPENDENT
+SCHOOL DISTRICT VS HENRY J. RAK (DECEASED), ET 
+AL
+
+Scheduled for Online Aucti
+
+9388600050009000
+
+24-AUG-23
+
+ $13,000.00
+
+ $6,200.00
+
+* Subject to year(s) 2023 - 2026 taxes and 
+City Liens not included in tax sale
+
+Lot 9, Block 5, Kirksey-Bell Subdivision, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 17, Page 71, Map Records of Cameron County, Texas.
+
+10
+
+RESALE
+
+2023-DCL-05649/357
+
+CAMERON COUNTY, POINT ISABEL INDEPENDENT 
+SCHOOL DISTRICT, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND TEXAS SOUTHMOST COLLEGE
+DISTRICT VS GEORGE R. BOSTICK, ET AL
+
+Scheduled for Online Aucti
+
+9316100030002000
+
+17-SEP-24
+
+ $8,000.00
+
+ $2,180.00
+
+* Subject to year(s) 2024 - 2026 taxes and 
+City Liens not included in tax sale
+
+LOT 2 BLK 3 BLOCK SUBDIVISION ABST 260
+
+11
+
+RESALE
+
+2023-DCL-05649/357
+
+CAMERON COUNTY, POINT ISABEL INDEPENDENT 
+SCHOOL DISTRICT, SOUTH TEXAS INDEPENDENT 
+SCHOOL DISTRICT AND TEXAS SOUTHMOST COLLEGE
+DISTRICT VS GEORGE R. BOSTICK, ET AL
+
+Scheduled for Online Aucti
+
+9316100030003000
+
+17-SEP-24
+
+ $8,000.00
+
+ $2,060.00
+
+* Subject to year(s) 2024 - 2026 taxes and 
+City Liens not included in tax sale
+
+LOT 3 BLK 3 BLOCK SUBDIVISION ABST 260
+
+12
+
+RESALE
+
+2017-DCL-00502/103
+
+CAMERON COUNTY AND LOS FRESNOS 
+CONSOLIDATED INDEPENDENT SCHOOL DISTRICT VS 
+MARINA GUERRERO
+
+Scheduled for Online Aucti
+
+7502080000050304
+
+24-APR-18
+
+ $10,767.00
+
+ $3,065.00
+
+* Subject to year(s) 2018 - 2026 taxes and 
+City Liens not included in tax sale
+
+0.333 acre, more or less, out of Tract "D" of Tract 7, Block 208, Fresnos Land Irrigation Company Subdivision, a subdivision in Cameron County, Texas, as described in deed dated May 3, 1996, from Juan Perez etux
+to Marina Guerrero, in Volume 3854, Page 309, Official Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 8 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+14
+
+RESALE
+
+2015-DCL-00546/107
+
+CAMERON COUNTY AND BROWNSVILLE 
+INDEPENDENT SCHOOL DISTRICT VS THE KNOWN 
+AND UNKNOWN HEIRS OF ARMANDO SALAS 
+(DECEASED), AND ANY OTHER KNOWN OR UNKNOWN 
+PERSON HAVING A CLAIM AND/OR INTEREST TO THE 
+PROPERTY, ET AL
+
+Scheduled for Online Aucti
+
+7479701040010700
+
+ALABAMA AVE BROWNSVILLE
+
+06-FEB-18
+
+ $11,399.00
+
+ $3,200.00
+
+* Subject to year(s) 2017 - 2026 taxes and 
+City Liens not included in tax sale
+
+0.366 acre, more or less, out of 2.50 acres, Block 104, El Jardin Subdivision, a subdivision in Cameron County, Texas, as described in deed dated August 29, 1979, from Andres Salas, etux, to Armando Salas in 
+Volume 1168, Page 502, Deed Records of Cameron County, Texas.
+
+15
+
+RESALE
+
+2010042140/445
+
+CAMERON COUNTY AND LOS FRESNOS 
+CONSOLIDATED INDEPENDENT SCHOOL DISTRICT VS 
+JULIA ELIZARDO, A/K/A JULIA E. MONTESINOS, A/K/A 
+JULIA MONTESINOS
+
+Scheduled for Online Aucti
+
+7456000280020000
+
+28-MAR-13
+
+ $2,500.00
+
+ $1,300.00
+
+* Subject to year(s) 2013 - 2026 taxes and 
+City Liens not included in tax sale
+
+Lots 20, 21, 22, 23, 24, 25, 26, 27, 28, and 29, Block 28, Delmar Heights Subdivision, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 19, Page 36, Map Records of 
+Cameron County, Texas.
+
+16
+
+RESALE
+
+2012-DCL-06375/103
+
+POINT ISABEL INDEPENDENT SCHOOL DISTRICT VS 
+THE KNOWN AND UNKNOWN HEIRS OF BRUNO 
+GUDANOWSKI(DECEASED), AND ANY OTHER KNOWN 
+AND UNKNOWN PERSON HAVING A CLAIM AND/ OR 
+INTEREST TO THE PROPERTY, ET AL
+
+Scheduled for Online Aucti
+
+8240000880001000
+
+24-SEP-13
+
+ $3,830.00
+
+ $1,900.00
+
+LAGUNA MADRE BEACH SUBDIVISION LOT 1 BLK 88
+
+17
+
+RESALE
+
+2014-DCL-02126/107
+
+CAMERON COUNTY VS THE KNOWN AND UNKNOWN 
+HEIRS OF STANISLAW KIC (DECEASED), AND ANY 
+OTHER KNOWN OR UNKNOWN PERSON HAVING A 
+CLAIM AND/OR INTEREST TO THE PROPERTY, ET AL
+
+Scheduled for Online Aucti
+
+8240000960018000
+
+01-SEP-15
+
+ $420.00
+
+ $420.00
+
+* Subject to year(s) 2015 - 2026 taxes and 
+City Liens not included in tax sale
+
+ Lots 18 and 19, Block 96, Laguna Madre Beach Subdivision, Unit 1, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 20, Pages 11, 12, 13 and 14, Map Records of 
+Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 9 of 10
+
+Cameron County Property Sale List
+LITIGATION
+
+Run Tuesday, October 20, 2026 01:07 AM 
+
+Sale Number
+Account Number
+Legal Description
+
+Sale Type/Precinct
+Physical Address
+
+Cause Number/Court
+
+Order Issue Date
+Judgement Date
+
+Case Style
+Appraised Value
+
+Estimated Min Bid
+
+Status 
+Sale Notes
+
+18
+
+RESALE
+
+2009-11-006075/103
+
+CAMERON COUNTY, CITY OF BROWNSVILLE AND LOS 
+FRESNOS CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS KAY TAYLOR HENDERSON, A/K/A 
+PATRICIA KAY BROOKS, A/K/A KAY BROOKS
+
+Scheduled for Online Aucti
+
+7513300090001000
+
+BOX 1936, TX
+
+03-NOV-11
+
+ $390.00
+
+ $390.00
+
+* Subject to year(s) 2011 - 2026 taxes and 
+City Liens not included in tax sale
+
+Lots 1, 2 and 3, Block 9, Green Valley Estates, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 22, Page 32, Map Records of Cameron County, Texas.
+
+19
+
+RESALE
+
+2009-11-006075/103
+
+CAMERON COUNTY, CITY OF BROWNSVILLE AND LOS 
+FRESNOS CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS KAY TAYLOR HENDERSON, A/K/A 
+PATRICIA KAY BROOKS, A/K/A KAY BROOKS
+
+Scheduled for Online Aucti
+
+7513300100020000
+
+03-NOV-11
+
+ $130.00
+
+ $130.00
+
+* Subject to year(s) 2011 - 2026 taxes and 
+City Liens not included in tax sale
+
+Lot 20, Block 10, Green Valley Estates, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 22, Page 32, Map Records of Cameron County, Texas.
+
+20
+
+RESALE
+
+2009-11-006075/103
+
+CAMERON COUNTY, CITY OF BROWNSVILLE AND LOS 
+FRESNOS CONSOLIDATED INDEPENDENT SCHOOL 
+DISTRICT VS KAY TAYLOR HENDERSON, A/K/A 
+PATRICIA KAY BROOKS, A/K/A KAY BROOKS
+
+Scheduled for Online Aucti
+
+7513300170001000
+
+ASHLEY
+
+03-NOV-11
+
+ $2,450.00
+
+ $1,225.00
+
+* Subject to year(s) 2011 - 2026 taxes and 
+City Liens not included in tax sale
+
+Lots 1, 2, 3, 4, and 5, Block 17, Green Valley Estates, a subdivision in Cameron County, Texas, according to the map or plat thereof, recorded in Volume 22, Page 32, Map Records of Cameron County, Texas.
+
+LINEBARGER GOGGAN BLAIR & SAMPSON, LLP - Delinquent Tax Division
+
+Report: dts_lit_3704 (4271)
+
+Page 10 of 10
+
+
