@@ -26,6 +26,9 @@ def proximo_primer_martes(hoy=None):
     raise RuntimeError("sin fecha")
 
 
+DEBUG_DIR = None  # si se define, guarda el texto crudo de cada PDF para revisar el formato
+
+
 def _pdf_text(url):
     r = requests.get(url, headers=UA, timeout=60)
     if r.status_code == 404:
@@ -33,7 +36,19 @@ def _pdf_text(url):
     r.raise_for_status()
     if not r.content.startswith(b"%PDF"):
         return None
-    return extract_text(io.BytesIO(r.content))
+    txt = extract_text(io.BytesIO(r.content))
+    if DEBUG_DIR:
+        import json
+        import pathlib
+        import pdfplumber
+        d = pathlib.Path(DEBUG_DIR)
+        d.mkdir(parents=True, exist_ok=True)
+        name = url.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+        (d / f"{name}.pdfminer.txt").write_text(txt, encoding="utf-8")
+        with pdfplumber.open(io.BytesIO(r.content)) as pdf:
+            pages = [{"text": pg.extract_text() or "", "tables": pg.extract_tables()} for pg in pdf.pages]
+        (d / f"{name}.plumber.json").write_text(json.dumps(pages, ensure_ascii=False, indent=1), encoding="utf-8")
+    return txt
 
 
 def perdue(slug):

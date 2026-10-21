@@ -11,6 +11,8 @@ on:
   push:
     paths:
       - "subastas-bot/ganadas.yaml"   # al agregar una propiedad ganada, se actualiza el dashboard
+      - "subastas-bot/bot/**"         # al cambiar el bot, corre de nuevo
+      - "subastas-bot/config.yaml"
 
 permissions:
   contents: write
@@ -38,7 +40,7 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
         run: |
-          ARGS="--json ../subastas/data.json"
+          ARGS="--json ../subastas/data.json --debug-dir ../debug-listas"
           if [ -n "${{ github.event.inputs.fecha }}" ]; then ARGS="$ARGS --fecha ${{ github.event.inputs.fecha }}"; fi
           if [ "${{ github.event_name }}" = "push" ]; then ARGS="$ARGS --sin-correo"; fi
           python -m bot.main $ARGS
@@ -46,7 +48,7 @@ jobs:
         run: |
           git config user.name "subastas-bot"
           git config user.email "subastas-bot@users.noreply.github.com"
-          git add ../subastas/data.json
+          git add ../subastas/data.json ../debug-listas
           if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
           git commit -m "Subastas: actualizar datos"
           git pull --rebase

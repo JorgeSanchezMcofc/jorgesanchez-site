@@ -18,7 +18,9 @@ def main():
     ap.add_argument("--fecha", help="fecha de la subasta AAAA-MM-DD (default: próximo primer martes)")
     ap.add_argument("--sin-correo", action="store_true")
     ap.add_argument("--json", help="dónde escribir data.json para el dashboard")
+    ap.add_argument("--debug-dir", help="guardar el texto crudo de cada PDF aquí")
     args = ap.parse_args()
+    fuentes.DEBUG_DIR = args.debug_dir
 
     root = pathlib.Path(__file__).resolve().parent.parent
     cfg = yaml.safe_load((root / "config.yaml").read_text())
