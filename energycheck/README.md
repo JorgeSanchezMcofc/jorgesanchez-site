@@ -1,6 +1,6 @@
 # Energy Check-in ("What fills your bucket?")
 
-A 15-minute mental wellness check-in. People join on their phones with a room code, rate 12 energy sources from 1 (drains me) to 5 (fills me up), get a private profile with "do more of" and "watch your energy around" reminders, and can email it to themselves. The big screen only shows anonymous group averages.
+A 15-minute mental wellness check-in. People join on their phones with a room code, make 14 this-or-that picks (7 dimensions, 2 pairs each, left/right order randomized per person), get a private profile with "do more of" and "watch your energy around" reminders, and can email it to themselves. The big screen only shows anonymous group averages.
 
 - Participant link: https://jorgesanchez.me/energycheck/ (also energycheck.jorgesanchez.me)
 - Host screen: https://jorgesanchez.me/energycheck/#host
@@ -39,9 +39,9 @@ If EmailJS isn't set up, the button opens the person's own mail app with the rep
 | Min | What happens |
 |---|---|
 | 0:00 to 2:00 | Open `#host` on the projector. Frame it: "No right answers. Some of us refill alone, some with people. Let's see what fills our buckets." Everyone scans the QR. |
-| 2:00 to 6:00 | Everyone answers the 12 items (about 3 min). Names turn green as they finish. |
+| 2:00 to 6:00 | Everyone makes their 14 picks (about 2 min). The bucket fills as people finish. |
 | 6:00 to 7:00 | People read their own profile and reminders on their phone. |
-| 7:00 to 10:00 | Click **Reveal results**. Read the room: top 3, bottom 3, and the Inner/Social/Balanced split. |
+| 7:00 to 10:00 | Click **Reveal results**. Start on **Bubbles** (bigger = more people picked it), then flip to **This or that** to see the splits. |
 | 10:00 to 13:00 | Pairs: "What's one thing on your 'do more' list you've been skipping?" |
 | 13:00 to 15:00 | Everyone emails themselves the reminders. Close: "Pick one and try it before next Friday." |
 
