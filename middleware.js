@@ -1,7 +1,9 @@
 // Protege jorgesanchez.me/subastas con una contraseña (sin usuario).
 // La contraseña vive en Vercel: Settings → Environment Variables → SUBASTAS_PASSWORD.
 
-export const config = { matcher: ['/subastas', '/subastas/:path*'] };
+// También: energycheck.jorgesanchez.me → jorgesanchez.me/energycheck/ (y /host → pantalla del host).
+
+export const config = { matcher: ['/', '/host', '/subastas', '/subastas/:path*'] };
 
 const COOKIE = 'subastas_auth';
 
@@ -44,6 +46,16 @@ function page(error = '') {
 }
 
 export default async function middleware(request) {
+  const host = (request.headers.get('host') || new URL(request.url).hostname).toLowerCase();
+  if (host.startsWith('energycheck.')) {
+    const u = new URL(request.url);
+    const dest = u.pathname.startsWith('/host')
+      ? 'https://jorgesanchez.me/energycheck/#host'
+      : 'https://jorgesanchez.me/energycheck/' + u.search;
+    return new Response(null, { status: 307, headers: { location: dest, 'cache-control': 'no-store' } });
+  }
+  if (!new URL(request.url).pathname.startsWith('/subastas')) return; // resto del sitio: sin cambios
+
   const password = process.env.SUBASTAS_PASSWORD;
   if (!password) {
     return new Response('Falta configurar SUBASTAS_PASSWORD en Vercel.', { status: 503 });
