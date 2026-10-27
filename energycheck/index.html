@@ -313,7 +313,7 @@ async function join(){
   if (!name) return err.textContent="Add your first name.";
   $("#joinBtn").disabled = true;
   try{
-    if (!(await store.roomExists(code))) { err.textContent="That room code wasn't found. Check the screen."; return; }
+    if (USE_FB && !(await store.roomExists(code))) { err.textContent="That room code wasn't found. Check the screen."; return; }
     S = {code, name, id:uid(), i:0, ans:{}};
     await store.upsert(code, S.id, {name, done:false, t:Date.now()});
     renderQ(); show("q");
@@ -468,8 +468,8 @@ function renderHost(){
 /* =========================================================
    ROUTING
    ========================================================= */
-if (!USE_FB) $("#demoTag").hidden = false;
 if (location.hash === "#host"){
+  if (!USE_FB) $("#demoTag").hidden = false;
   show("host");
   $("#revealBtn").onclick = ()=>{ H.revealed=!H.revealed; $("#revealBtn").textContent = H.revealed?"Hide results":"Reveal results"; renderHost(); };
   $("#newRoom").onclick = ()=>newRoom(true);
