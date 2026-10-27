@@ -11,6 +11,17 @@
       "permanent": false
     },
     {
+      "source": "/host",
+      "has": [
+        {
+          "type": "host",
+          "value": "energycheck.jorgesanchez.me"
+        }
+      ],
+      "destination": "https://jorgesanchez.me/energycheck/#host",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [
         {
