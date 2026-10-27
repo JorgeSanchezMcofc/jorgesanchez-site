@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Energy Check-in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{
+  --bg:#F5F2EC; --card:#FFFFFF; --ink:#2E3833; --muted:#6C7670; --line:#E6DFD2;
+  --sage:#7FA38A; --sage-d:#56785F; --sand:#EDE5D6; --lav:#B9ADD8; --clay:#D49A7A;
+  --s1:#D49A7A; --s2:#DDB79A; --s3:#D9D2C3; --s4:#A9C4B0; --s5:#7FA38A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;min-height:100vh;
+  background-image:radial-gradient(circle at 15% 10%, #E8EFE8 0, transparent 40%),radial-gradient(circle at 90% 90%, #EEE9F6 0, transparent 40%)}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;margin:0}
+.wrap{max-width:520px;margin:0 auto;padding:28px 16px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;box-shadow:0 10px 30px -18px rgba(46,56,51,.25)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-d);font-weight:700}
+.lead{color:var(--muted);line-height:1.55}
+label{display:block;font-weight:500;margin:18px 0 6px}
+input{width:100%;font:inherit;font-size:18px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:#FBFAF7;color:var(--ink)}
+input:focus{outline:none;border-color:var(--sage)}
+#code{text-transform:uppercase;letter-spacing:.3em;font-weight:700;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:22px;padding:15px 18px;border:0;border-radius:14px;
+  background:var(--sage-d);color:#fff;font:inherit;font-weight:700;font-size:17px;cursor:pointer;transition:transform .1s, background .2s}
+.btn:hover{background:#4A6A53}.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--sage-d);border:1.5px solid var(--sage)}
+.btn:disabled{opacity:.5;cursor:default}
+.err{color:#B5583A;font-size:14px;min-height:20px;margin-top:10px}
+.bucket{font-size:44px;margin-bottom:6px}
+
+/* question */
+.progress{height:6px;background:var(--sand);border-radius:99px;overflow:hidden;margin:10px 0 26px}
+.progress i{display:block;height:100%;background:var(--sage);transition:width .35s}
+.qicon{font-size:56px;text-align:center;margin:6px 0 10px}
+.qtext{text-align:center;font-size:26px;line-height:1.25;min-height:66px}
+.qsub{text-align:center;color:var(--muted);margin:10px 0 24px;font-size:15px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale button{border:0;border-radius:16px;padding:16px 0 10px;font:inherit;cursor:pointer;color:var(--ink);transition:transform .12s, box-shadow .2s}
+.scale button b{display:block;font-size:24px;font-family:"Fraunces",serif}
+.scale button span{display:block;font-size:11px;line-height:1.2;margin-top:4px;padding:0 2px}
+.scale button:hover{transform:translateY(-3px);box-shadow:0 8px 16px -10px rgba(0,0,0,.35)}
+.scale button.sel{outline:3px solid var(--ink)}
+.qnav{display:flex;justify-content:space-between;margin-top:20px;font-size:14px;color:var(--muted)}
+.qnav button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline}
+.fade{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* results */
+.profile{text-align:center;padding:26px 20px;border-radius:20px;background:linear-gradient(135deg,#E5EEE7,#EEE9F6);margin-bottom:18px}
+.profile h2{font-size:30px;margin:6px 0 8px}
+.section{margin-top:22px}
+.section h3{font-size:19px;margin-bottom:10px}
+.item{display:flex;gap:12px;padding:12px 14px;border-radius:14px;background:#FBFAF7;border:1px solid var(--line);margin-bottom:8px}
+.item .ic{font-size:24px;line-height:1}
+.item b{display:block;margin-bottom:2px}
+.item small{color:var(--muted);line-height:1.45;font-size:14px}
+.more{border-left:4px solid var(--sage)}
+.less{border-left:4px solid var(--clay)}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+.ok{color:var(--sage-d);font-weight:700;margin-top:10px}
+
+/* host */
+.host{max-width:1280px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:360px 1fr;gap:24px}
+.host .card{padding:28px}
+.roomcode{font-family:"Fraunces",serif;font-size:64px;letter-spacing:.12em;text-align:center;margin:8px 0}
+#qr{display:flex;justify-content:center;margin:16px 0;padding:14px;background:#fff;border-radius:16px}
+.joinurl{text-align:center;font-size:13px;color:var(--muted);word-break:break-all}
+.stats{display:flex;gap:12px;margin-top:18px}
+.stat{flex:1;text-align:center;padding:14px;border-radius:14px;background:var(--sand)}
+.stat b{display:block;font-family:"Fraunces",serif;font-size:34px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{padding:6px 12px;border-radius:99px;background:#F0ECE4;font-size:14px;animation:fade .4s}
+.chip.done{background:#DCE8DF;color:var(--sage-d)}
+.bars{margin-top:18px}
+.bar{display:grid;grid-template-columns:34px 1fr 54px;align-items:center;gap:12px;margin:10px 0}
+.bar .lbl{font-size:15px;margin-bottom:5px}
+.track{height:18px;background:var(--sand);border-radius:99px;overflow:hidden}
+.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--lav),var(--sage));transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.val{font-family:"Fraunces",serif;font-size:20px;text-align:right}
+.profiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.pbox{text-align:center;padding:16px;border-radius:16px;background:linear-gradient(135deg,#E5EEE7,#EEE9F6)}
+.pbox b{display:block;font-family:"Fraunces",serif;font-size:40px}
+.veil{text-align:center;padding:60px 20px;color:var(--muted)}
+.veil .bucket{font-size:80px}
+.hostbar{display:flex;gap:10px}
+.hostbar .btn{margin-top:14px}
+.demo{position:fixed;bottom:10px;left:10px;pointer-events:none;max-width:280px;font-size:12px;background:#FFF4DE;border:1px solid #EAD9AF;padding:6px 12px;border-radius:99px;color:#7A6630}
+@media (max-width:900px){.host{grid-template-columns:1fr}.roomcode{font-size:48px}}
+@media (max-width:380px){.scale button span{font-size:10px}.qtext{font-size:22px}}
+</style>
+</head>
+<body>
+
+<!-- ============ PARTICIPANT: JOIN ============ -->
+<section id="join" class="view wrap" hidden>
+  <div class="card fade">
+    <div class="bucket">🪣</div>
+    <div class="eyebrow">Mental Wellness Check-in</div>
+    <h1 style="font-size:32px;margin:8px 0 10px">What fills your bucket?</h1>
+    <p class="lead">A 3-minute check-in on what gives you energy and what takes it. No right or wrong answers. Your individual answers stay private.</p>
+    <label for="code">Room code</label>
+    <input id="code" maxlength="4" autocomplete="off" placeholder="ABCD">
+    <label for="name">Your first name</label>
+    <input id="name" maxlength="30" autocomplete="given-name" placeholder="First name">
+    <button class="btn" id="joinBtn">Start</button>
+    <div class="err" id="joinErr"></div>
+  </div>
+</section>
+
+<!-- ============ PARTICIPANT: QUESTION ============ -->
+<section id="q" class="view wrap" hidden>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between" class="eyebrow"><span id="qcount"></span><span>Energy check-in</span></div>
+    <div class="progress"><i id="qbar"></i></div>
+    <div id="qbody"></div>
+    <div class="qnav"><button id="backBtn">Back</button><span>Go with your gut</span></div>
+  </div>
+</section>
+
+<!-- ============ PARTICIPANT: RESULTS ============ -->
+<section id="res" class="view wrap" hidden>
+  <div class="card fade" id="resBody"></div>
+</section>
+
+<!-- ============ HOST ============ -->
+<section id="host" class="view" hidden>
+  <div class="host">
+    <div class="card">
+      <div class="eyebrow">Join at the link or scan</div>
+      <div class="roomcode" id="hCode">····</div>
+      <div id="qr"></div>
+      <div class="joinurl" id="hUrl"></div>
+      <div class="stats">
+        <div class="stat"><b id="hJoined">0</b>joined</div>
+        <div class="stat"><b id="hDone">0</b>finished</div>
+      </div>
+      <div class="chips" id="hChips"></div>
+      <div class="hostbar">
+        <button class="btn ghost" id="newRoom">New room</button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+        <div>
+          <div class="eyebrow">The room's energy</div>
+          <h2 style="font-size:32px;margin-top:6px">What fills our buckets</h2>
+        </div>
+        <button class="btn" id="revealBtn" style="width:auto;margin:0">Reveal results</button>
+      </div>
+      <div id="hResults"></div>
+    </div>
+  </div>
+</section>
+
+<div class="demo" id="demoTag" hidden>Demo mode: data only syncs between tabs in this browser. Add Firebase config for live use.</div>
+
+<script>
+/* =========================================================
+   CONFIG: paste your keys here (see README)
+   ========================================================= */
+const CONFIG = {
+  firebase: {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",   // e.g. https://your-project-default-rtdb.firebaseio.com
+    projectId: ""
+  },
+  emailjs: {
+    publicKey: "",
+    serviceId: "",
+    templateId: ""
+  }
+};
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+const ITEMS = [
+  {k:"solo",     ic:"🌙", label:"Time alone to think and recharge"},
+  {k:"oneonone", ic:"☕", label:"A deep one-on-one conversation"},
+  {k:"group",    ic:"🎉", label:"Big group gatherings and events"},
+  {k:"family",   ic:"🏡", label:"Time with family or loved ones"},
+  {k:"move",     ic:"🏃", label:"Moving your body"},
+  {k:"nature",   ic:"🌿", label:"Being outdoors in nature"},
+  {k:"create",   ic:"🎨", label:"Making something with your hands or ideas"},
+  {k:"learn",    ic:"📚", label:"Learning something new"},
+  {k:"focus",    ic:"🎯", label:"A long stretch of focused, deep work"},
+  {k:"help",     ic:"🤝", label:"Helping or mentoring someone"},
+  {k:"rest",     ic:"🛋️", label:"Rest with zero agenda"},
+  {k:"play",     ic:"😄", label:"Play, humor, and fun for its own sake"}
+];
+const SCALE = ["Drains me","A bit draining","Neutral","Lifts me","Fills me up"];
+
+const MORE = {
+  solo:"Protect 30 minutes of solo time this week. Phone in another room, no agenda.",
+  oneonone:"Schedule one unhurried coffee or call with someone you trust.",
+  group:"Say yes to one gathering this month where you can just show up and enjoy people.",
+  family:"Put recurring time with family or loved ones on the calendar and treat it like a meeting you can't move.",
+  move:"Add a 20-minute walk or workout on three days this week.",
+  nature:"Take one call outside, or start a day with 10 minutes outdoors.",
+  create:"Make something just for you: cook, write, build, sketch. No audience needed.",
+  learn:"Pick one thing you're curious about and give it an hour this week.",
+  focus:"Block a two-hour, no-meetings window for deep work.",
+  help:"Make space to mentor or help one person, and notice how you feel after.",
+  rest:"Plan real rest: a night with nothing scheduled, or an earlier bedtime twice this week.",
+  play:"Add something fun with no goal attached: a game, a show, a laugh with friends."
+};
+const LESS = {
+  solo:"Long stretches alone cost you. When traveling or working remote, line up check-ins with people.",
+  oneonone:"Deep conversations take effort. Keep them shorter and leave room to reset after.",
+  group:"Big groups drain you. Plan a quiet buffer before and after events like this one.",
+  family:"Family time can feel heavy right now. Protect some recovery time around it, without guilt.",
+  move:"Exercise feels like a chore lately. Try gentler movement you actually enjoy.",
+  nature:"The outdoors isn't your recharge. That's fine. Find your calm indoors.",
+  create:"Making things feels like pressure. Keep creative work low-stakes or let it go for now.",
+  learn:"New information is wearing you out. Give yourself permission to go deep instead of wide.",
+  focus:"Long focus blocks wear you down. Work in shorter sprints with real breaks.",
+  help:"Helping others is costing you. Check your boundaries before the next yes.",
+  rest:"Doing nothing makes you restless. Try active rest: a walk, music, a hobby.",
+  play:"Unstructured fun isn't landing. Look for downtime that feels meaningful instead."
+};
+const PROFILES = {
+  inner:{name:"Inner Recharger", ic:"🌙", text:"You refill in quiet: space, rest, and time in your own head. Protect that time like it's part of the job, because it is."},
+  social:{name:"Social Recharger", ic:"🔥", text:"You refill through people. Connection isn't a distraction from the work, it's your fuel."},
+  balanced:{name:"Balanced Recharger", ic:"⚖️", text:"You draw energy from both people and quiet. The skill is noticing which one you need today."}
+};
+
+/* =========================================================
+   STORE (Firebase or local demo)
+   ========================================================= */
+const USE_FB = !!CONFIG.firebase.databaseURL;
+let db = null;
+if (USE_FB) { firebase.initializeApp(CONFIG.firebase); db = firebase.database(); }
+const EMAIL_ON = !!(CONFIG.emailjs.publicKey && CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId);
+if (EMAIL_ON) emailjs.init({publicKey: CONFIG.emailjs.publicKey});
+
+const local = {
+  key:c=>"energy_room_"+c,
+  read(c){ try{ return JSON.parse(localStorage.getItem(this.key(c))) }catch(e){ return null } },
+  write(c,v){ try{ localStorage.setItem(this.key(c), JSON.stringify(v)) }catch(e){} }
+};
+const listeners = {};
+const store = {
+  async createRoom(c){
+    if (USE_FB) return db.ref(`rooms/${c}/meta`).set({created:Date.now()});
+    local.write(c,{meta:{created:Date.now()},people:{}});
+  },
+  async roomExists(c){
+    if (USE_FB) return (await db.ref(`rooms/${c}/meta`).once("value")).exists();
+    return !!local.read(c);
+  },
+  async upsert(c,id,data){
+    if (USE_FB) return db.ref(`rooms/${c}/people/${id}`).update(data);
+    const r = local.read(c) || {meta:{},people:{}};
+    r.people[id] = Object.assign(r.people[id]||{}, data);
+    local.write(c,r);
+    (listeners[c]||[]).forEach(f=>f(r.people));
+  },
+  watch(c,cb){
+    if (USE_FB) return db.ref(`rooms/${c}/people`).on("value", s=>cb(s.val()||{}));
+    (listeners[c] = listeners[c]||[]).push(cb);
+    cb((local.read(c)||{}).people||{});
+    window.addEventListener("storage", e=>{ if(e.key===local.key(c)) cb((local.read(c)||{}).people||{}) });
+  }
+};
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function show(id){ document.querySelectorAll(".view").forEach(v=>v.hidden = v.id!==id); window.scrollTo(0,0); }
+const uid = ()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+function genCode(){ const a="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s=""; for(let i=0;i<4;i++) s+=a[Math.floor(Math.random()*a.length)]; return s; }
+const avg = a=>a.length? a.reduce((x,y)=>x+y,0)/a.length : 0;
+const joinUrl = c=>location.origin+location.pathname+"?room="+c;
+
+function analyze(ans){
+  const rows = ITEMS.map((it,i)=>({...it,v:ans[it.k]||3,i}));
+  const sorted = [...rows].sort((a,b)=>b.v-a.v || a.i-b.i);
+  let more = sorted.filter(x=>x.v>=4).slice(0,4);
+  if (more.length<3) more = sorted.slice(0,3);
+  const moreKeys = new Set(more.map(x=>x.k));
+  let less = [...sorted].reverse().filter(x=>x.v<=2 && !moreKeys.has(x.k)).slice(0,2);
+  const soft = less.length===0;
+  if (soft) less = [[...sorted].reverse().find(x=>!moreKeys.has(x.k))].filter(Boolean);
+  const inner = avg(["solo","rest","nature","create"].map(k=>ans[k]||3));
+  const outer = avg(["group","oneonone","family","play"].map(k=>ans[k]||3));
+  const d = inner-outer;
+  const profile = d>=0.75 ? "inner" : d<=-0.75 ? "social" : "balanced";
+  return {more, less, soft, profile};
+}
+
+/* =========================================================
+   PARTICIPANT FLOW
+   ========================================================= */
+let S = null;
+
+async function join(){
+  const code = $("#code").value.trim().toUpperCase();
+  const name = $("#name").value.trim();
+  const err = $("#joinErr"); err.textContent="";
+  if (code.length!==4) return err.textContent="Enter the 4-letter room code.";
+  if (!name) return err.textContent="Add your first name.";
+  $("#joinBtn").disabled = true;
+  try{
+    if (!(await store.roomExists(code))) { err.textContent="That room code wasn't found. Check the screen."; return; }
+    S = {code, name, id:uid(), i:0, ans:{}};
+    await store.upsert(code, S.id, {name, done:false, t:Date.now()});
+    renderQ(); show("q");
+  }catch(e){ err.textContent="Couldn't connect. Try again."; console.error(e); }
+  finally{ $("#joinBtn").disabled=false; }
+}
+
+function renderQ(){
+  const it = ITEMS[S.i];
+  $("#qcount").textContent = `${S.i+1} of ${ITEMS.length}`;
+  $("#qbar").style.width = `${(S.i/ITEMS.length)*100}%`;
+  $("#backBtn").style.visibility = S.i? "visible":"hidden";
+  const cur = S.ans[it.k];
+  $("#qbody").innerHTML = `<div class="fade">
+    <div class="qicon">${it.ic}</div>
+    <h2 class="qtext">${it.label}</h2>
+    <p class="qsub">How much does this fill your energy bucket?</p>
+    <div class="scale">${SCALE.map((s,n)=>`<button data-v="${n+1}" class="${cur===n+1?"sel":""}" style="background:var(--s${n+1})"><b>${n+1}</b><span>${s}</span></button>`).join("")}</div>
+  </div>`;
+  $("#qbody").querySelectorAll(".scale button").forEach(b=>b.onclick=()=>{
+    S.ans[it.k] = +b.dataset.v; b.classList.add("sel");
+    setTimeout(()=>{ S.i++; S.i<ITEMS.length ? renderQ() : finish(); }, 180);
+  });
+}
+
+async function finish(){
+  $("#qbar").style.width="100%";
+  S.result = analyze(S.ans);
+  try{ await store.upsert(S.code, S.id, {answers:S.ans, profile:S.result.profile, done:true}); }catch(e){ console.error(e); }
+  renderResults(); show("res");
+}
+
+function reportText(){
+  const r=S.result, p=PROFILES[r.profile];
+  return `Hi ${S.name},\n\nYour energy profile: ${p.name}\n${p.text}\n\nDO MORE OF\n`+
+    r.more.map(x=>`- ${x.label}: ${MORE[x.k]}`).join("\n")+
+    `\n\n${r.soft?"KEEP AN EYE ON":"WATCH YOUR ENERGY AROUND"}\n`+
+    r.less.map(x=>`- ${x.label}: ${LESS[x.k]}`).join("\n")+
+    `\n\nPick one "do more" and try it before next Friday. A sustainable pace beats a heroic one.\n`;
+}
+function reportHtml(){
+  const r=S.result, p=PROFILES[r.profile];
+  const li=(x,t)=>`<li style="margin-bottom:10px"><b>${esc(x.label)}</b><br><span style="color:#6C7670">${esc(t)}</span></li>`;
+  return `<div style="font-family:Arial,sans-serif;color:#2E3833;max-width:520px">
+  <p>Hi ${esc(S.name)},</p>
+  <div style="background:#E5EEE7;border-radius:14px;padding:18px;text-align:center">
+    <div style="font-size:12px;letter-spacing:2px;color:#56785F">YOUR ENERGY PROFILE</div>
+    <div style="font-size:24px;font-weight:bold;margin:6px 0">${p.ic} ${p.name}</div>
+    <div style="color:#6C7670">${esc(p.text)}</div></div>
+  <h3 style="color:#56785F">Do more of</h3><ul>${r.more.map(x=>li(x,MORE[x.k])).join("")}</ul>
+  <h3 style="color:#B5583A">${r.soft?"Keep an eye on":"Watch your energy around"}</h3><ul>${r.less.map(x=>li(x,LESS[x.k])).join("")}</ul>
+  <p>Pick one "do more" and try it before next Friday. A sustainable pace beats a heroic one.</p></div>`;
+}
+
+function renderResults(){
+  const r=S.result, p=PROFILES[r.profile];
+  $("#resBody").innerHTML = `
+    <div class="profile"><div style="font-size:46px">${p.ic}</div>
+      <div class="eyebrow">Your energy profile</div><h2>${p.name}</h2><p class="lead" style="margin:0">${p.text}</p></div>
+    <div class="section"><h3>Do more of</h3>
+      ${r.more.map(x=>`<div class="item more"><div class="ic">${x.ic}</div><div><b>${x.label}</b><small>${MORE[x.k]}</small></div></div>`).join("")}</div>
+    <div class="section"><h3>${r.soft?"Keep an eye on":"Watch your energy around"}</h3>
+      ${r.less.map(x=>`<div class="item less"><div class="ic">${x.ic}</div><div><b>${x.label}</b><small>${LESS[x.k]}</small></div></div>`).join("")}</div>
+    <div class="section"><h3>Send this to yourself</h3>
+      <p class="lead" style="margin-top:0">Get your reminders by email. Your email isn't saved anywhere.</p>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+      <button class="btn" id="sendBtn">Email my reminders</button>
+      <div id="sendMsg" class="err"></div></div>
+    <p class="note" style="text-align:center;margin-top:18px">Look up at the screen to see what fills the room's buckets.</p>`;
+  $("#sendBtn").onclick = sendEmail;
+}
+
+async function sendEmail(){
+  const to = $("#email").value.trim(), msg=$("#sendMsg");
+  msg.className="err"; msg.textContent="";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return msg.textContent="Enter a valid email.";
+  if (!EMAIL_ON){
+    location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("My energy check-in reminders")}&body=${encodeURIComponent(reportText())}`;
+    return;
+  }
+  $("#sendBtn").disabled=true; $("#sendBtn").textContent="Sending...";
+  try{
+    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateId, {
+      to_email:to, to_name:S.name, profile:PROFILES[S.result.profile].name,
+      report_text:reportText(), report_html:reportHtml()
+    });
+    msg.className="ok"; msg.textContent="Sent. Check your inbox (and spam, just in case).";
+    $("#sendBtn").textContent="Sent ✓";
+  }catch(e){
+    console.error(e); msg.textContent="Couldn't send. Try again in a moment.";
+    $("#sendBtn").disabled=false; $("#sendBtn").textContent="Email my reminders";
+  }
+}
+
+/* =========================================================
+   HOST FLOW
+   ========================================================= */
+let H = {code:null, people:{}, revealed:false};
+
+async function hostInit(){
+  let code = null;
+  try{ code = localStorage.getItem("energy_host_room"); }catch(e){}
+  if (!code || !(await store.roomExists(code))) code = await newRoom(false);
+  openRoom(code);
+}
+async function newRoom(open=true){
+  const code = genCode();
+  await store.createRoom(code);
+  try{ localStorage.setItem("energy_host_room", code); }catch(e){}
+  if (open) openRoom(code);
+  return code;
+}
+function openRoom(code){
+  H = {code, people:{}, revealed:false};
+  $("#hCode").textContent = code;
+  $("#hUrl").textContent = joinUrl(code);
+  $("#qr").innerHTML="";
+  try{ new QRCode($("#qr"), {text:joinUrl(code), width:220, height:220, colorDark:"#2E3833", colorLight:"#ffffff"}); }
+  catch(e){ $("#qr").innerHTML = `<p class="note">QR unavailable offline. Share the link below.</p>`; }
+  $("#revealBtn").textContent="Reveal results";
+  store.watch(code, p=>{ if(H.code===code){ H.people=p; renderHost(); } });
+  renderHost();
+}
+function renderHost(){
+  const ppl = Object.values(H.people||{});
+  const done = ppl.filter(p=>p.done && p.answers);
+  $("#hJoined").textContent = ppl.length;
+  $("#hDone").textContent = done.length;
+  $("#hChips").innerHTML = ppl.sort((a,b)=>(a.t||0)-(b.t||0))
+    .map(p=>`<span class="chip ${p.done?"done":""}">${p.done?"✓ ":""}${esc(p.name||"")}</span>`).join("");
+
+  if (!H.revealed){
+    $("#hResults").innerHTML = `<div class="veil"><div class="bucket">🪣</div>
+      <h2 style="font-size:26px;color:var(--ink)">Answers are coming in</h2>
+      <p>${done.length} of ${ppl.length} finished. Results stay hidden until you reveal them.</p></div>`;
+    return;
+  }
+  if (!done.length){ $("#hResults").innerHTML = `<div class="veil"><p>No finished check-ins yet.</p></div>`; return; }
+
+  const rows = ITEMS.map(it=>({...it, a:avg(done.map(p=>p.answers[it.k]||3))})).sort((x,y)=>y.a-x.a);
+  const counts = {inner:0,social:0,balanced:0};
+  done.forEach(p=>counts[p.profile] = (counts[p.profile]||0)+1);
+  $("#hResults").innerHTML = `
+    <div class="profiles">${Object.entries(PROFILES).map(([k,p])=>`<div class="pbox"><div style="font-size:26px">${p.ic}</div><b>${counts[k]||0}</b>${p.name}s</div>`).join("")}</div>
+    <div class="bars">${rows.map(r=>`<div class="bar"><div style="font-size:24px">${r.ic}</div>
+      <div><div class="lbl">${r.label}</div><div class="track"><div class="fill" data-w="${((r.a-1)/4)*100}" style="width:0"></div></div></div>
+      <div class="val">${r.a.toFixed(1)}</div></div>`).join("")}</div>
+    <p class="note">Average across ${done.length} people. 1 = drains me, 5 = fills me up. Individual answers are never shown.</p>`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll(".fill").forEach(f=>f.style.width=f.dataset.w+"%")));
+}
+
+/* =========================================================
+   ROUTING
+   ========================================================= */
+if (!USE_FB) $("#demoTag").hidden = false;
+if (location.hash === "#host"){
+  show("host");
+  $("#revealBtn").onclick = ()=>{ H.revealed=!H.revealed; $("#revealBtn").textContent = H.revealed?"Hide results":"Reveal results"; renderHost(); };
+  $("#newRoom").onclick = ()=>newRoom(true);
+  hostInit();
+} else {
+  show("join");
+  const rc = new URLSearchParams(location.search).get("room");
+  if (rc){ $("#code").value = rc.toUpperCase(); $("#name").focus(); }
+  $("#joinBtn").onclick = join;
+  $("#backBtn").onclick = ()=>{ if (S && S.i>0){ S.i--; renderQ(); } };
+  ["#code","#name"].forEach(s=>$(s).addEventListener("keydown",e=>{ if(e.key==="Enter") join(); }));
+}
+</script>
+</body>
+</html>
