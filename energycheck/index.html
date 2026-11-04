@@ -62,7 +62,7 @@ input:focus{outline:none;border-color:var(--mint)}
 .qtop .count{font-family:var(--display);font-weight:700;font-size:15px;color:var(--mist)}
 .qprompt{font-size:32px;font-weight:800;margin:26px 0 20px}
 .choices{display:grid;gap:12px;flex:1;align-content:start}
-.choice{position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;width:100%;text-align:left;min-height:120px;padding:22px;border-radius:22px;
+.choice{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;gap:16px;width:100%;min-height:110px;padding:22px;border-radius:22px;
   border:2px solid var(--line);background:var(--deep2);font-size:22px;font-weight:600;line-height:1.2;cursor:pointer;transition:border-color .2s,transform .12s}
 .choice:hover{border-color:var(--mist)}
 .choice:active{transform:scale(.985)}
@@ -123,12 +123,12 @@ input:focus{outline:none;border-color:var(--mint)}
 .bub small{display:block;font-family:var(--body);font-weight:700;font-size:.55em;opacity:.7;margin-top:2px}
 @keyframes rise{from{transform:translateY(140px) scale(.4);opacity:0}to{transform:none;opacity:1}}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -8px}}
-.splits{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:20px 0}
-.split{display:grid;grid-template-columns:1fr 2fr 1fr;align-items:center;gap:16px;font-size:17px}
+.splits{flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:14px 0}
+.split{display:grid;grid-template-columns:1fr 2fr 1fr;align-items:center;gap:16px;font-size:15px}
 .split .l{text-align:right}
 .split > div:first-child,.split > div:last-child{white-space:nowrap}
-.split b{font-family:var(--display);font-size:22px;margin:0 6px}
-.split .bar{display:flex;height:24px;border-radius:99px;overflow:hidden;background:rgba(0,0,0,.2)}
+.split b{font-family:var(--display);font-size:18px;margin:0 6px}
+.split .bar{display:flex;height:18px;border-radius:99px;overflow:hidden;background:rgba(0,0,0,.2)}
 .split .a{background:var(--mint);transition:width 1.1s cubic-bezier(.3,.9,.3,1)}
 .split .b{background:var(--amber);transition:width 1.1s cubic-bezier(.3,.9,.3,1)}
 .foot{font-size:14px;color:var(--mist);text-align:center}
@@ -146,7 +146,7 @@ input:focus{outline:none;border-color:var(--mint)}
     <h1>What fills your bucket?</h1>
     <div id="joinVessel"></div>
   </div>
-  <p class="muted">14 quick this-or-that picks about what recharges you. No right answers. Your picks stay private.</p>
+  <p class="muted">21 quick this-or-that picks about what recharges you. No right answers. Your picks stay private.</p>
   <label for="code">Room code</label>
   <input id="code" maxlength="4" autocomplete="off" placeholder="ABCD">
   <label for="name">First name</label>
@@ -241,7 +241,14 @@ const PAIRS = [
   {id:"p11", d:"pace",      a:{t:"Finishing a project",        ic:"🏁", w:"Finishing things"}, b:{t:"Taking a long nap",       ic:"😴", w:"Naps"}},
   {id:"p12", d:"structure", a:{t:"Knowing the agenda",         ic:"📋", w:"Agendas"},          b:{t:"Figuring it out as you go",ic:"🧭", w:"Winging it"}},
   {id:"p13", d:"novelty",   a:{t:"Learning something new",     ic:"📚", w:"Learning"},         b:{t:"Getting better at something you know", ic:"🎯", w:"Mastery"}},
-  {id:"p14", d:"mode",      a:{t:"Working with your hands",    ic:"🛠️", w:"Hands-on work"},    b:{t:"Working through an idea", ic:"💡", w:"Big ideas"}}
+  {id:"p14", d:"mode",      a:{t:"Working with your hands",    ic:"🛠️", w:"Hands-on work"},    b:{t:"Working through an idea", ic:"💡", w:"Big ideas"}},
+  {id:"p15", d:"social",    a:{t:"Brainstorming with a group", w:"Group brainstorms"},          b:{t:"Thinking it through on your own", w:"Solo thinking"}},
+  {id:"p16", d:"depth",     a:{t:"A long one-on-one with a mentor", w:"Mentor one-on-ones"},    b:{t:"A roundtable with lots of perspectives", w:"Roundtables"}},
+  {id:"p17", d:"stim",      a:{t:"Double espresso", w:"Double espresso"},                        b:{t:"Tea", w:"Tea"}},
+  {id:"p18", d:"pace",      a:{t:"Finishing the numbers tonight", w:"Finishing the numbers"},   b:{t:"Stepping away and coming back fresh", w:"Coming back fresh"}},
+  {id:"p19", d:"structure", a:{t:"A business plan with every section filled in", w:"Business plans"}, b:{t:"A napkin sketch and a gut feeling", w:"Napkin sketches"}},
+  {id:"p20", d:"novelty",   a:{t:"A class on something brand new to you", w:"New classes"},     b:{t:"Going deeper on something you already know", w:"Going deeper"}},
+  {id:"p21", d:"mode",      a:{t:"Building the prototype", w:"Prototypes"},                      b:{t:"Building the spreadsheet", w:"Spreadsheets"}}
 ];
 const POLE = {
   people:  {ic:"🎉", more:"Put one plan with people on the calendar this week, even a short coffee.",
@@ -335,7 +342,8 @@ function analyze(ans){
     const s = scores[d.k];
     return {dim:d, s, strength:Math.abs(s), pole: s<0? d.a : s>0? d.b : null, opp: s<0? d.b : s>0? d.a : null};
   }).filter(x=>x.pole).sort((x,y)=>y.strength-x.strength || DIMS.indexOf(x.dim)-DIMS.indexOf(y.dim));
-  let more = leanings.filter(x=>x.strength===2);
+  const PER_DIM = PAIRS.length/DIMS.length;
+  let more = leanings.filter(x=>x.strength===PER_DIM);
   if (more.length<3) more = leanings.slice(0,3);
   more = more.slice(0,4);
   const recover = leanings.slice(0,2);
@@ -390,7 +398,7 @@ function renderQ(){
   fill(qVesselId, .04 + S.i/ORDER.length*.96);
   $("#backBtn").style.visibility = S.i? "visible":"hidden";
   const sides = S.flip[p.id] ? ["b","a"] : ["a","b"];
-  const btn = side=>`<button class="choice ${S.ans[p.id]===side?"sel":""}" data-s="${side}"><span class="ic">${p[side].ic}</span><span class="tx">${p[side].t}</span></button>`;
+  const btn = side=>`<button class="choice ${S.ans[p.id]===side?"sel":""}" data-s="${side}"><span class="tx">${p[side].t}</span></button>`;
   $("#qbody").innerHTML = `${btn(sides[0])}<div class="or">or</div>${btn(sides[1])}`;
   let locked = false;
   $("#qbody").querySelectorAll(".choice").forEach(b=>b.onclick=()=>{
@@ -440,12 +448,12 @@ function renderResults(){
     <div class="reshead">${vessel(110, 1)}<h1>${headline(r)}</h1>
       <p class="muted">Neither side is better. This is where your energy comes from right now.</p></div>
     <div class="block"><h2>Where you lean</h2>
-      ${DIMS.map(d=>{const s=r.scores[d.k];return `<div class="lean"><div class="l ${s<0?"won":""}">${d.a.name}</div><div class="track"><i data-x="${50+s*23}" style="left:50%"></i></div><div class="${s>0?"won":""}">${d.b.name}</div></div>`}).join("")}</div>
+      ${DIMS.map(d=>{const s=r.scores[d.k];return `<div class="lean"><div class="l ${s<0?"won":""}">${d.a.name}</div><div class="track"><i data-x="${50+s*(46/(PAIRS.length/DIMS.length))}" style="left:50%"></i></div><div class="${s>0?"won":""}">${d.b.name}</div></div>`}).join("")}</div>
     <div class="block"><h2>Do more of</h2>
-      ${r.more.length? r.more.map(x=>`<div class="tip"><b>${POLE[x.pole.k].ic} ${x.pole.name}</b><span>${POLE[x.pole.k].more}</span></div>`).join("")
+      ${r.more.length? r.more.map(x=>`<div class="tip"><b>${x.pole.name}</b><span>${POLE[x.pole.k].more}</span></div>`).join("")
         : `<p class="muted">You land in the middle on everything. Notice day to day which side you need.</p>`}</div>
     ${r.recover.length?`<div class="block"><h2>Plan recovery around</h2>
-      ${r.recover.map(x=>`<div class="tip cost"><b>${POLE[x.opp.k].ic} ${x.opp.name}</b><span>${POLE[x.opp.k].cost}</span></div>`).join("")}</div>`:""}
+      ${r.recover.map(x=>`<div class="tip cost"><b>${x.opp.name}</b><span>${POLE[x.opp.k].cost}</span></div>`).join("")}</div>`:""}
     <div class="block"><h2>Email yourself these reminders</h2>
       <p class="muted" style="margin-top:0">We don't store your email.</p>
       <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
@@ -538,7 +546,7 @@ function renderHost(){
 
   if (H.tab==="cloud"){
     const words = [];
-    PAIRS.forEach(p=>["a","b"].forEach(s=>{ const n=counts[p.id][s]; if(n) words.push({w:p[s].w, ic:p[s].ic, n}); }));
+    PAIRS.forEach(p=>["a","b"].forEach(s=>{ const n=counts[p.id][s]; if(n) words.push({w:p[s].w, n}); }));
     const max = Math.max(...words.map(x=>x.n));
     // shrink bubbles so they always fit the stage
     const box = R.getBoundingClientRect();
@@ -548,16 +556,18 @@ function renderHost(){
     const fills = ["#7FE0C3","#FFC45C","#A9D8F5","#FF8A6B","#C9B8F2","#EEF6F3"];
     words.sort((x,y)=> (seeded(x.w)%101) - (seeded(y.w)%101));
     R.innerHTML = `<div class="bubbles">${words.map((x,i)=>{
-      const r = x.n/max, d = Math.round((78 + Math.pow(r,.9)*150)*k), fs = Math.round((13 + r*17)*Math.max(.75,k));
+      const r = x.n/max, d = Math.round((78 + Math.pow(r,.9)*150)*k);
+      const longest = Math.max(...x.w.split(' ').map(t=>t.length));
+      const fs = Math.max(9, Math.min(Math.round((13 + r*17)*Math.max(.75,k)), Math.floor(d*0.84/(longest*0.6))));
       return `<div class="bub" title="${x.n} people" style="width:${d}px;height:${d}px;font-size:${fs}px;background:${fills[seeded(x.w)%fills.length]};animation-delay:${i*55}ms, ${(seeded(x.w)%40)/10}s">
-        <div>${x.ic}<br>${esc(x.w)}<small>${x.n}</small></div></div>`;
+        <div>${esc(x.w)}<small>${x.n}</small></div></div>`;
     }).join("")}</div><p class="foot">Bigger bubble, more people picked it. ${done.length} ${done.length===1?"person":"people"} so far.</p>`;
   } else {
     R.innerHTML = `<div class="splits">${PAIRS.map(p=>{
       const c=counts[p.id], tot=c.a+c.b||1, pa=Math.round(c.a/tot*100), pb=100-pa;
-      return `<div class="split"><div class="l">${p.a.ic} ${esc(p.a.w)}<b>${pa}%</b></div>
+      return `<div class="split"><div class="l">${esc(p.a.w)}<b>${pa}%</b></div>
         <div class="bar"><div class="a" data-w="${pa}" style="width:50%"></div><div class="b" data-w="${pb}" style="width:50%"></div></div>
-        <div><b>${pb}%</b>${esc(p.b.w)} ${p.b.ic}</div></div>`;
+        <div><b>${pb}%</b>${esc(p.b.w)}</div></div>`;
     }).join("")}</div><p class="foot">${done.length} ${done.length===1?"person":"people"}. Individual answers are never shown.</p>`;
     requestAnimationFrame(()=>requestAnimationFrame(()=>R.querySelectorAll(".bar div").forEach(f=>f.style.width=f.dataset.w+"%")));
   }
