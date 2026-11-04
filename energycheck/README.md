@@ -38,11 +38,13 @@ If EmailJS isn't set up, the button opens the person's own mail app with the rep
 ## 15-minute run of show
 | Min | What happens |
 |---|---|
-| 0:00 to 2:00 | Open `#host` on the projector. Frame it: "No right answers. Some of us refill alone, some with people. Let's see what fills our buckets." Everyone scans the QR. |
-| 2:00 to 6:00 | Everyone makes their 21 picks (about 3 min). The bucket fills as people finish. |
-| 6:00 to 7:00 | People read their own profile and reminders on their phone. |
-| 7:00 to 10:00 | Click **Reveal results**. Start on **Bubbles** (bigger = more people picked it), then flip to **This or that** to see the splits. |
-| 10:00 to 13:00 | Pairs: "What's one thing on your 'do more' list you've been skipping?" |
-| 13:00 to 15:00 | Everyone emails themselves the reminders. Close: "Pick one and try it before next Friday." |
+| 0:00 to 2:00 | Open `energycheck.jorgesanchez.me/host` on the projector. Frame it: "No right answers. Some of us refill alone, some with people." Everyone scans the QR. |
+| 2:00 to 6:00 | Phones: 21 this-or-that picks, then "last week, how much did you get of each?" for their top 3, then "what drained you most this month?" (up to 2). The bucket fills as people finish. |
+| 6:00 to 7:00 | People read their results, including their gap. |
+| 7:00 to 10:00 | Click **Reveal results**. **Bubbles** (what recharges us), **Last week** (% who got little or none of their #1 recharge), **Drains** (what's draining us). Discuss. |
+| 10:00 to 13:00 | Click **Tips**. Every phone now asks for one thing that works for them. Tips pop onto the wall with no names. Click any tip to hide it. |
+| 13:00 to 15:00 | Everyone emails themselves their reminders. The email includes their gap, their tip, and tips from colleagues who recharge the same way. Close: "Pick one and try it before next Friday." |
 
-Tip: hit **New room** before the real session so test answers don't show up.
+**All picks** shows every this-or-that split if you want it.
+
+Tip: hit **Start a new room** before the real session so test answers don't show up.
