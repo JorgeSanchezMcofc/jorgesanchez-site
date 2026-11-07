@@ -1,3 +1,5 @@
+import { getOuraDays, chicagoToday, addDays } from './_oura.js';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
@@ -9,95 +11,23 @@ export default async function handler(req, res) {
   if (req.method === 'GET' && req.query.source === 'oura') {
     try {
       const token = process.env.OURA_ACCESS_TOKEN;
-      const today = new Date().toISOString().split('T')[0];
-      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-
-      // Fetch all Oura endpoints in parallel
-      const [sleepRes, sleepDetailRes, readinessRes, activityRes] = await Promise.all([
-        fetch(`https://api.ouraring.com/v2/usercollection/daily_sleep?start_date=${yesterday}&end_date=${today}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }),
-        fetch(`https://api.ouraring.com/v2/usercollection/sleep?start_date=${yesterday}&end_date=${today}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }),
-        fetch(`https://api.ouraring.com/v2/usercollection/daily_readiness?start_date=${yesterday}&end_date=${today}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }),
-        fetch(`https://api.ouraring.com/v2/usercollection/daily_activity?start_date=${yesterday}&end_date=${today}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-      ]);
-
-      const [sleepData, sleepDetailData, readinessData, activityData] = await Promise.all([
-        sleepRes.json(),
-        sleepDetailRes.json(),
-        readinessRes.json(),
-        activityRes.json()
-      ]);
-
-      // Latest daily sleep score
-      const latestSleep = sleepData.data?.[sleepData.data.length - 1] || {};
-
-      // Detailed sleep — find longest session (main sleep)
-      const sleepSessions = sleepDetailData.data || [];
-      const mainSleep = sleepSessions
-        .filter(s => s.type === 'long_sleep' || s.type === 'sleep')
-        .sort((a, b) => (b.total_sleep_duration || 0) - (a.total_sleep_duration || 0))[0] || {};
-
-      // Readiness
-      const latestReadiness = readinessData.data?.[readinessData.data.length - 1] || {};
-
-      // Activity
-      const latestActivity = activityData.data?.[activityData.data.length - 1] || {};
+      const today = chicagoToday();
+      const days = await getOuraDays(token, addDays(today, -1), today);
+      const sorted = Object.keys(days).sort().reverse();
+      // Last night's sleep is filed under today's date; fall back to yesterday if not synced yet
+      const sleepDay = sorted.find(d => days[d].totalSleep || days[d].readinessScore) || sorted[0];
+      const actDay   = sorted.find(d => days[d].steps) || sleepDay;
+      const s = days[sleepDay] || {}, a = days[actDay] || {};
 
       const ouraData = {
-        // Sleep — from daily_sleep (score) + sleep (details)
-        sleepScore: latestSleep.score || null,
-        totalSleep: mainSleep.total_sleep_duration
-          ? Math.round((mainSleep.total_sleep_duration / 3600) * 10) / 10
-          : null,
-        deepSleep: mainSleep.deep_sleep_duration
-          ? Math.round((mainSleep.deep_sleep_duration / 3600) * 10) / 10
-          : null,
-        remSleep: mainSleep.rem_sleep_duration
-          ? Math.round((mainSleep.rem_sleep_duration / 3600) * 10) / 10
-          : null,
-        lightSleep: mainSleep.light_sleep_duration
-          ? Math.round((mainSleep.light_sleep_duration / 3600) * 10) / 10
-          : null,
-        sleepEfficiency: mainSleep.efficiency || null,
-        sleepLatency: mainSleep.latency ? Math.round(mainSleep.latency / 60) : null,
-
-        // Readiness
-        readinessScore: latestReadiness.score || null,
-        // HRV real ms — from sleep session average_hrv (NOT hrv_balance which is 0-100 score)
-        hrv: mainSleep.average_hrv
-          ? Math.round(mainSleep.average_hrv)
-          : null,
-        // RHR — try multiple Oura v2 fields in order of accuracy
-        // lowest_heart_rate = lowest during sleep, most accurate for RHR
-        // average_hrv is on sleep session, not readiness
-        rhr: mainSleep.lowest_heart_rate
-          || latestReadiness.lowest_heart_rate
-          || null,
-        bodyTemp: latestReadiness.temperature_deviation || null,
-
-        // Activity
-        steps: latestActivity.steps || null,
-        activityScore: latestActivity.score || null,
-        activeCalories: latestActivity.active_calories || null,
-        totalCalories: latestActivity.total_calories || null,
-
-        // Debug — raw values to verify correct fields
-        _debug: {
-          sleep_lowest_hr: mainSleep.lowest_heart_rate,
-          readiness_lowest_hr: latestReadiness.lowest_heart_rate,
-          sleep_average_hrv: mainSleep.average_hrv,
-          readiness_hrv_balance: latestReadiness.contributors?.hrv_balance,
-        },
-
-        // Meta
-        date: yesterday,
+        sleepScore: s.sleepScore ?? null, totalSleep: s.totalSleep ?? null,
+        deepSleep: s.deepSleep ?? null, remSleep: s.remSleep ?? null, lightSleep: s.lightSleep ?? null,
+        sleepEfficiency: s.sleepEfficiency ?? null, sleepLatency: s.sleepLatency ?? null,
+        readinessScore: s.readinessScore ?? null, hrv: s.hrv ?? null, rhr: s.rhr ?? null,
+        bodyTemp: s.bodyTemp ?? null,
+        steps: a.steps ?? null, activityScore: a.activityScore ?? null,
+        activeCalories: a.activeCalories ?? null, totalCalories: a.totalCalories ?? null,
+        date: sleepDay || today,
         fetchedAt: new Date().toISOString()
       };
 
