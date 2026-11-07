@@ -9,7 +9,15 @@ export default async function handler(req, res) {
     const token    = process.env.OURA_ACCESS_TOKEN;
     const sheetUrl = process.env.SHEET_URL;
 
-    const today = new Date().toISOString().split('T')[0];
+    // Use Jorge's local date (America/Chicago). The cron fires at 11:59 PM CST,
+    // which is already the next day in UTC; using UTC asked Oura for a day with
+    // no data yet and wrote blank rows every night. ?date=YYYY-MM-DD backfills a day.
+    const today = /^\d{4}-\d{2}-\d{2}$/.test(req.query?.date || '')
+      ? req.query.date
+      : new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
+    const [y, m, d] = today.split('-').map(Number);
+    const MONS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const sheetDate = `${MONS[m - 1]} ${d}`; // same "Nov 6" format the app's manual log uses
 
     // Fetch all Oura endpoints in parallel
     const [sleepRes, sleepDetailRes, readinessRes, activityRes] = await Promise.all([
@@ -57,9 +65,14 @@ export default async function handler(req, res) {
       activeCalories:  latestActivity.active_calories || '',
     };
 
+    // Don't write an empty row if Oura returned nothing (e.g. expired token)
+    if (!Object.values(ouraFields).some(v => v !== '')) {
+      return res.status(200).json({ success: false, date: today, reason: 'No Oura data returned', status: [sleepRes.status, sleepDetailRes.status, readinessRes.status, activityRes.status] });
+    }
+
     // Send to Sheets with merge flag — Apps Script will handle upsert
     const payload = {
-      date:   today,
+      date:   sheetDate,
       day:    'auto',
       source: 'oura_auto',
       merge:  true,  // tells Apps Script to update existing row if date exists
