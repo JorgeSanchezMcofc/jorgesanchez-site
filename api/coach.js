@@ -54,6 +54,9 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const { system, prompt } = req.body;
+      // Private health context (blood work etc.) lives in a Vercel env var, never in the public repo
+      const privateCtx = process.env.COACH_PRIVATE_CONTEXT;
+      const fullSystem = privateCtx ? `${system}\n\nPRIVATE HEALTH CONTEXT (use it to personalize advice; never quote it unless relevant):\n${privateCtx}` : system;
 
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -65,7 +68,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
           max_tokens: 1000,
-          system: system,
+          system: fullSystem,
           messages: [{ role: 'user', content: prompt }]
         })
       });
