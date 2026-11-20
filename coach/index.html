@@ -1067,6 +1067,42 @@ body {
 }
 .tab.active .tab-name { color: var(--accent); }
 
+
+/* ─── PLAN ─── */
+.plan-hero{margin:20px 20px 8px;padding:20px;border-radius:16px;border:1px solid var(--accent-border);background:linear-gradient(135deg,var(--accent-dim),var(--surface));box-shadow:var(--shadow)}
+.plan-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase}
+.plan-title{font-family:var(--font-display);font-size:24px;font-weight:800;margin:6px 0 4px;letter-spacing:-.5px}
+.plan-sub{font-size:12px;color:var(--text-2);line-height:1.5}
+.plan-bar{height:6px;border-radius:3px;background:var(--surface3);margin-top:14px;overflow:hidden}
+.plan-bar>div{height:100%;background:var(--accent);border-radius:3px;transition:width .6s}
+.plan-barlbl{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-top:6px}
+.tgt-row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;padding:11px 20px;border-top:1px solid var(--border);align-items:center}
+.tgt-row:first-child{border-top:none}
+.tgt-row.head{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:var(--text-3);text-transform:uppercase;padding-top:14px}
+.tgt-name{font-size:12px;color:var(--text-2)}
+.tgt-now{font-family:var(--font-mono);font-size:13px;color:var(--text-1)}
+.tgt-goal{font-family:var(--font-mono);font-size:13px;color:var(--green)}
+.ms-item{margin:0 20px 6px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;box-shadow:var(--shadow)}
+.ms-check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-md);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px}
+.ms-item.done .ms-check{background:var(--green);border-color:var(--green);color:#000}
+.ms-item.done .ms-name{text-decoration:line-through;color:var(--text-3)}
+.ms-when{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.ms-name{font-size:13px;font-weight:500;color:var(--text-1)}
+.ms-desc{font-size:11px;color:var(--text-3);line-height:1.45;margin-top:2px}
+.pillar{padding:14px 20px;border-top:1px solid var(--border)}
+.pillar:first-child{border-top:none}
+.pillar-h{font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:6px}
+.pillar ul{list-style:none}
+.pillar li{font-size:12px;color:var(--text-2);line-height:1.55;padding-left:14px;position:relative;margin-bottom:3px}
+.pillar li:before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.pillar li b{color:var(--text-1);font-weight:500}
+.lab-row{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid var(--border);font-size:12px}
+.lab-row:first-child{border-top:none}
+.lab-name{color:var(--text-2)}
+.lab-val{font-family:var(--font-mono);font-size:12px}
+.lab-val.hi{color:var(--red)}.lab-val.ok{color:var(--green)}.lab-val.mid{color:var(--yellow)}
+.lab-note{font-size:11px;color:var(--text-3);padding:12px 20px 16px;line-height:1.5;border-top:1px solid var(--border)}
+
 /* ─── PAGES ─── */
 .page { display: none; }
 .page.active { display: block; }
@@ -1200,7 +1236,7 @@ body {
       <div class="tile">
         <div class="tile-label">Steps</div>
         <div class="tile-value" id="stepsVal">—</div>
-        <div class="tile-sub">Goal: 7,500</div>
+        <div class="tile-sub">Goal: 8,000</div>
       </div>
       <div class="tile">
         <div class="tile-label">Activity</div>
@@ -1431,6 +1467,81 @@ COMO ME SIENTO: __
     </div>
   </div>
 
+
+  <!-- ══════ PLAN ══════ -->
+  <div class="page" id="page-plan">
+    <div class="plan-hero fade">
+      <div class="plan-eyebrow">Plan · 8 semanas</div>
+      <div class="plan-title">Grasa visceral, hígado y glucosa</div>
+      <div class="plan-sub">Bajar grasa sin perder músculo, del 20 de noviembre a los estudios de mediados de enero.</div>
+      <div class="plan-bar"><div id="planBar" style="width:0%"></div></div>
+      <div class="plan-barlbl"><span id="planWeek">Semana 1 de 8</span><span id="planLeft">—</span></div>
+    </div>
+
+    <div class="section-label">Dónde estás → Meta enero</div>
+    <div class="card fade">
+      <div class="tgt-row head"><div>Métrica</div><div>Ahora</div><div>Meta</div></div>
+      <div class="tgt-row"><div class="tgt-name">Peso</div><div class="tgt-now" id="tgtWeight">178 lbs</div><div class="tgt-goal">168–170</div></div>
+      <div class="tgt-row"><div class="tgt-name">Pulso en reposo</div><div class="tgt-now" id="tgtRhr">80 bpm</div><div class="tgt-goal">&lt; 75</div></div>
+      <div class="tgt-row"><div class="tgt-name">HRV</div><div class="tgt-now" id="tgtHrv">—</div><div class="tgt-goal">Subiendo</div></div>
+      <div class="tgt-row"><div class="tgt-name">Grasa corporal</div><div class="tgt-now">34.3%</div><div class="tgt-goal">~31%</div></div>
+      <div class="tgt-row"><div class="tgt-name">Grasa visceral</div><div class="tgt-now">Nivel 13</div><div class="tgt-goal">Bajando</div></div>
+      <div class="tgt-row"><div class="tgt-name">Músculo (SMM)</div><div class="tgt-now">68.8 lbs</div><div class="tgt-goal">≥ 68.8</div></div>
+      <div class="tgt-row"><div class="tgt-name">ALT (hígado)</div><div class="tgt-now">74</div><div class="tgt-goal">Bajando, ≤ 50</div></div>
+      <div class="tgt-row"><div class="tgt-name">Glucosa ayunas</div><div class="tgt-now">103</div><div class="tgt-goal">&lt; 100</div></div>
+    </div>
+
+    <div class="section-label">Checklist</div>
+    <div id="msList"></div>
+
+    <div class="section-label">El plan</div>
+    <div class="card fade">
+      <div class="pillar"><div class="pillar-h">🍽️ Comida</div><ul>
+        <li><b>Proteína 150 g/día</b> en 3–4 comidas. Es lo que protege el músculo.</li>
+        <li><b>Calorías:</b> protocolo actual (1,258) hasta revisarlo con tu doctor. Está debajo de tu metabolismo basal (~1,560).</li>
+        <li><b>Cero bebidas azucaradas.</b> Menos pan, tortilla de harina, arroz y postres, sobre todo de noche.</li>
+        <li><b>Nada de alcohol hasta enero.</b> Lo más directo para bajar el ALT.</li>
+        <li>Cena 3+ horas antes de dormir.</li>
+      </ul></div>
+      <div class="pillar"><div class="pillar-h">💪 Ejercicio</div><ul>
+        <li><b>Fuerza 3x/semana</b> (lun, mié, vie). Sube poco a poco de 10 a 30–45 min, con mancuernas o gym.</li>
+        <li><b>8,000+ pasos diarios</b>, meta final 10,000.</li>
+        <li><b>Cardio Zona 2 2x/semana</b>, 30–40 min a un ritmo en que puedas platicar.</li>
+      </ul></div>
+      <div class="pillar"><div class="pillar-h">😴 Recuperación</div><ul>
+        <li><b>7.5 h de sueño.</b> Teléfono abajo a las 10:30.</li>
+        <li>Si el readiness sale bajo, cambia la fuerza por una caminata.</li>
+      </ul></div>
+      <div class="pillar"><div class="pillar-h">📊 Seguimiento</div><ul>
+        <li>Peso los lunes en Log (fíjate en la tendencia, no en un día).</li>
+        <li>Pulso en reposo y HRV: revisa el promedio semanal.</li>
+        <li>InBody cada 6–8 semanas, siempre igual: mañana, ayunas, sin ejercicio, mismo equipo.</li>
+      </ul></div>
+    </div>
+
+    <div class="section-label">Estudios · 9 oct 2026</div>
+    <div class="card fade">
+      <div class="lab-row"><div class="lab-name">ALT (hígado)</div><div class="lab-val hi">74 · alto</div></div>
+      <div class="lab-row"><div class="lab-name">AST (hígado)</div><div class="lab-val ok">33</div></div>
+      <div class="lab-row"><div class="lab-name">Glucosa</div><div class="lab-val hi">103 · alto</div></div>
+      <div class="lab-row"><div class="lab-name">Eosinófilos</div><div class="lab-val mid">0.58 · leve</div></div>
+      <div class="lab-row"><div class="lab-name">Vitamina D</div><div class="lab-val ok">33</div></div>
+      <div class="lab-row"><div class="lab-name">Riñón, electrolitos, biometría</div><div class="lab-val ok">Normal</div></div>
+      <div class="lab-note">En enero pide también: A1c, perfil de lípidos y TSH. Revisa ALT y glucosa con tu doctor.</div>
+    </div>
+
+    <div class="section-label">InBody · 14 sep 2026</div>
+    <div class="card fade">
+      <div class="lab-row"><div class="lab-name">Peso</div><div class="lab-val">185.2 lbs</div></div>
+      <div class="lab-row"><div class="lab-name">Grasa corporal</div><div class="lab-val hi">34.3% · 63.5 lbs</div></div>
+      <div class="lab-row"><div class="lab-name">Grasa visceral</div><div class="lab-val hi">Nivel 13</div></div>
+      <div class="lab-row"><div class="lab-name">Músculo esquelético</div><div class="lab-val ok">68.8 lbs</div></div>
+      <div class="lab-row"><div class="lab-name">Metabolismo basal</div><div class="lab-val">~1,560 kcal</div></div>
+      <div class="lab-row"><div class="lab-name">InBody Score</div><div class="lab-val mid">64</div></div>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+
 </div><!-- /app -->
 
 <!-- TAB BAR -->
@@ -1439,6 +1550,7 @@ COMO ME SIENTO: __
   <div class="tab" onclick="switchTab('workout',this)"><div class="tab-icon">💪</div><div class="tab-name">Workout</div></div>
   <div class="tab" onclick="switchTab('nutrition',this)"><div class="tab-icon">🍽️</div><div class="tab-name">Nutrition</div></div>
   <div class="tab" onclick="switchTab('log',this)"><div class="tab-icon">📝</div><div class="tab-name">Log</div></div>
+  <div class="tab" onclick="switchTab('plan',this)"><div class="tab-icon">🎯</div><div class="tab-name">Plan</div></div>
   <div class="tab" onclick="switchTab('reminders',this)"><div class="tab-icon">⏰</div><div class="tab-name">Reminders</div></div>
 </div>
 
@@ -1446,11 +1558,18 @@ COMO ME SIENTO: __
 // ══ CONFIG ══
 const CLAUDE_URL  = '/api/coach';
 const SHEET_WRITE = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
-const CAL=1258, PROT=122, CARB=90, FAT=46, SLEEP_T=7.5, STEPS_T=7500, SW=197.8, GW=170;
+const CAL=1258, PROT=150, CARB=75, FAT=40, SLEEP_T=7.5, STEPS_T=8000, SW=197.8, GW=170;
 
 const JORGE = `You are Jorge's personal AI Metabolic Performance Coach. Speak naturally — Spanglish welcome. McAllen TX.
 
-JORGE: 33yo Male, 5'5", Start 197.8 lbs, Goal 170 lbs. Desk job, no gym. Protocol: 1,258 kcal | 122g protein | 90g carbs | 46g fat. Eating window 11am-8pm. Steps 7,500/day. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
+JORGE: 34yo Male, 5'6", Start 197.8 lbs (Apr 2026), ~178 lbs Nov 20 2026, Goal 170 lbs. Desk job. Protocol: 1,258 kcal | 150g protein | 75g carbs | 40g fat. Eating window 11am-8pm. Steps 8,000+/day (building to 10,000).
+
+CURRENT 8-WEEK PLAN (Nov 20 2026 → mid-Jan 2027 labs): priority is cutting visceral fat while keeping muscle.
+- InBody Sep 14 2026: 185.2 lbs, 34.3% body fat, visceral fat level 13, skeletal muscle 68.8 lbs, BMR ~1,560 kcal, score 64.
+- Labs Oct 9 2026: ALT 74 (high), AST 33, fasting glucose 103 (high), eosinophils 0.58 (slightly high), vitamin D 33; kidneys/CBC normal.
+- Rules: no alcohol until January labs, no sugary drinks, fewer refined carbs at night, dinner 3h before bed, strength 3x/week progressing from 10 to 30-45 min, Zone 2 cardio 2x/week 30-40 min.
+- January targets: 168-170 lbs, RHR under 75, HRV trending up, muscle held at 68.8+ lbs, ALT down, glucose under 100.
+- Calorie target is pending review with his doctor; do not change it yourself. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
 
 WORKOUTS (10-min home, 3x/week): Mon=Upper body, Wed=Lower body, Fri=Full body. Other days: walk.
 
@@ -1506,7 +1625,7 @@ document.getElementById('dateBadge').textContent = `${dn} ${MONS[now.getMonth()]
 
 // ══ ZONES ══
 function zones(rhr) {
-  const max=220-33, hrr=max-rhr;
+  const max=220-34, hrr=max-rhr;
   return {z1:Math.round(rhr+hrr*.50),z2l:Math.round(rhr+hrr*.60),z2h:Math.round(rhr+hrr*.70),z3:Math.round(rhr+hrr*.80),z4:Math.round(rhr+hrr*.90)};
 }
 function setZones(rhr) {
@@ -1858,7 +1977,30 @@ function switchTab(name,el){
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
   if(name==='workout') buildWorkout();
+  if(name==='plan') buildPlan();
 }
+
+// ══ PLAN ══
+const PLAN_START=new Date(2026,10,20), PLAN_END=new Date(2027,0,15);
+const MILESTONES=[
+  {k:'inbody0',w:'Esta semana',n:'InBody nuevo (línea base)',d:'Mañana, ayunas, después del baño, sin ejercicio.'},
+  {k:'doctor',w:'Esta semana',n:'Cita con el doctor',d:'Revisar ALT 74 y glucosa 103. Preguntar por el objetivo de calorías.'},
+  {k:'labsorder',w:'Con el doctor',n:'Orden de estudios de enero',d:'Hígado, glucosa, A1c, lípidos y TSH.'},
+  {k:'alcohol',w:'Hasta enero',n:'Cero alcohol',d:'Marca cuando cumplas las 8 semanas.'},
+  {k:'inbody1',w:'Mediados de enero',n:'InBody de seguimiento',d:'Mismo equipo y mismas condiciones.'},
+  {k:'labs1',w:'Mediados de enero',n:'Estudios de sangre',d:'En ayunas, la misma semana del InBody.'},
+];
+let ms=st('jplan_ms_v1')||{};
+function buildPlan(){
+  const day=864e5, total=Math.round((PLAN_END-PLAN_START)/day), done=Math.max(0,Math.min(total,Math.floor((now-PLAN_START)/day)));
+  document.getElementById('planBar').style.width=Math.round(done/total*100)+'%';
+  document.getElementById('planWeek').textContent=`Semana ${Math.min(8,Math.floor(done/7)+1)} de 8`;
+  const left=total-done; document.getElementById('planLeft').textContent=left>0?`${left} días para enero`:'Hora de estudios';
+  const w=[...logs].reverse().find(l=>l.weight); if(w) document.getElementById('tgtWeight').textContent=w.weight+' lbs';
+  if(oura){ if(oura.rhr) document.getElementById('tgtRhr').textContent=oura.rhr+' bpm'; if(oura.hrv) document.getElementById('tgtHrv').textContent=oura.hrv+' ms'; }
+  document.getElementById('msList').innerHTML=MILESTONES.map(m=>`<div class="ms-item ${ms[m.k]?'done':''}" onclick="toggleMs('${m.k}')"><div class="ms-check">${ms[m.k]?'✓':''}</div><div><div class="ms-when">${m.w}</div><div class="ms-name">${m.n}</div><div class="ms-desc">${m.d}</div></div></div>`).join('');
+}
+function toggleMs(k){ms[k]=!ms[k];sv('jplan_ms_v1',ms);buildPlan();}
 
 // ══ INIT ══
 // Clear old morning cache keys from previous versions
