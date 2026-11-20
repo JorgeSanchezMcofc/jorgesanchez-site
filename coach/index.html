@@ -1472,7 +1472,7 @@ COMO ME SIENTO: __
   <div class="page" id="page-plan">
     <div class="plan-hero fade">
       <div class="plan-eyebrow">Plan · 8 semanas</div>
-      <div class="plan-title">Grasa visceral, hígado y glucosa</div>
+      <div class="plan-title">Bajar grasa, cuidar músculo</div>
       <div class="plan-sub">Bajar grasa sin perder músculo, del 20 de noviembre a los estudios de mediados de enero.</div>
       <div class="plan-bar"><div id="planBar" style="width:0%"></div></div>
       <div class="plan-barlbl"><span id="planWeek">Semana 1 de 8</span><span id="planLeft">—</span></div>
@@ -1487,8 +1487,6 @@ COMO ME SIENTO: __
       <div class="tgt-row"><div class="tgt-name">Grasa corporal</div><div class="tgt-now">34.3%</div><div class="tgt-goal">~31%</div></div>
       <div class="tgt-row"><div class="tgt-name">Grasa visceral</div><div class="tgt-now">Nivel 13</div><div class="tgt-goal">Bajando</div></div>
       <div class="tgt-row"><div class="tgt-name">Músculo (SMM)</div><div class="tgt-now">68.8 lbs</div><div class="tgt-goal">≥ 68.8</div></div>
-      <div class="tgt-row"><div class="tgt-name">ALT (hígado)</div><div class="tgt-now">74</div><div class="tgt-goal">Bajando, ≤ 50</div></div>
-      <div class="tgt-row"><div class="tgt-name">Glucosa ayunas</div><div class="tgt-now">103</div><div class="tgt-goal">&lt; 100</div></div>
     </div>
 
     <div class="section-label">Checklist</div>
@@ -1497,10 +1495,12 @@ COMO ME SIENTO: __
     <div class="section-label">El plan</div>
     <div class="card fade">
       <div class="pillar"><div class="pillar-h">🍽️ Comida</div><ul>
-        <li><b>Proteína 150 g/día</b> en 3–4 comidas. Es lo que protege el músculo.</li>
-        <li><b>Calorías:</b> protocolo actual (1,258) hasta revisarlo con tu doctor. Está debajo de tu metabolismo basal (~1,560).</li>
+        <li><b>Proteína primero:</b> 35–45 g por comida, 4 comidas. Nunca menos de 160 g.</li>
+        <li><b>1,600 kcal/día:</b> 160 g proteína · 115 g carbos · 55 g grasa.</li>
+        <li><b>30 g+ de fibra</b> y ~100 oz de agua.</li>
+        <li><b>Ajuste:</b> si bajas más de 2 lbs/semana 2 semanas seguidas, súbele 100–150. Si bajas menos de 0.5, bájale 100.</li>
         <li><b>Cero bebidas azucaradas.</b> Menos pan, tortilla de harina, arroz y postres, sobre todo de noche.</li>
-        <li><b>Nada de alcohol hasta enero.</b> Lo más directo para bajar el ALT.</li>
+        <li><b>Nada de alcohol hasta enero.</b> Ayuda directo al hígado y al sueño.</li>
         <li>Cena 3+ horas antes de dormir.</li>
       </ul></div>
       <div class="pillar"><div class="pillar-h">💪 Ejercicio</div><ul>
@@ -1517,17 +1517,6 @@ COMO ME SIENTO: __
         <li>Pulso en reposo y HRV: revisa el promedio semanal.</li>
         <li>InBody cada 6–8 semanas, siempre igual: mañana, ayunas, sin ejercicio, mismo equipo.</li>
       </ul></div>
-    </div>
-
-    <div class="section-label">Estudios · 9 oct 2026</div>
-    <div class="card fade">
-      <div class="lab-row"><div class="lab-name">ALT (hígado)</div><div class="lab-val hi">74 · alto</div></div>
-      <div class="lab-row"><div class="lab-name">AST (hígado)</div><div class="lab-val ok">33</div></div>
-      <div class="lab-row"><div class="lab-name">Glucosa</div><div class="lab-val hi">103 · alto</div></div>
-      <div class="lab-row"><div class="lab-name">Eosinófilos</div><div class="lab-val mid">0.58 · leve</div></div>
-      <div class="lab-row"><div class="lab-name">Vitamina D</div><div class="lab-val ok">33</div></div>
-      <div class="lab-row"><div class="lab-name">Riñón, electrolitos, biometría</div><div class="lab-val ok">Normal</div></div>
-      <div class="lab-note">En enero pide también: A1c, perfil de lípidos y TSH. Revisa ALT y glucosa con tu doctor.</div>
     </div>
 
     <div class="section-label">InBody · 14 sep 2026</div>
@@ -1558,18 +1547,18 @@ COMO ME SIENTO: __
 // ══ CONFIG ══
 const CLAUDE_URL  = '/api/coach';
 const SHEET_WRITE = 'https://script.google.com/macros/s/AKfycbxB6ZbHO03tcyAIUE9iHQPEGWe6tx-JMVuQ7fxlitglASveoJNeIw3aWfL6tZBEAdlf/exec';
-const CAL=1258, PROT=150, CARB=75, FAT=40, SLEEP_T=7.5, STEPS_T=8000, SW=197.8, GW=170;
+const CAL=1600, PROT=160, CARB=115, FAT=55, SLEEP_T=7.5, STEPS_T=8000, SW=197.8, GW=170;
 
 const JORGE = `You are Jorge's personal AI Metabolic Performance Coach. Speak naturally — Spanglish welcome. McAllen TX.
 
-JORGE: 34yo Male, 5'6", Start 197.8 lbs (Apr 2026), ~178 lbs Nov 20 2026, Goal 170 lbs. Desk job. Protocol: 1,258 kcal | 150g protein | 75g carbs | 40g fat. Eating window 11am-8pm. Steps 8,000+/day (building to 10,000).
+JORGE: 34yo Male, 5'6", Start 197.8 lbs (Apr 2026), ~178 lbs Nov 20 2026, Goal 170 lbs. Desk job. Protocol: 1,600 kcal | 160g protein | 115g carbs (fiber 30g+) | 55g fat. Water ~100 oz. Eating window 11am-8pm. Steps 8,000+/day (building to 10,000).
 
 CURRENT 8-WEEK PLAN (Nov 20 2026 → mid-Jan 2027 labs): priority is cutting visceral fat while keeping muscle.
 - InBody Sep 14 2026: 185.2 lbs, 34.3% body fat, visceral fat level 13, skeletal muscle 68.8 lbs, BMR ~1,560 kcal, score 64.
-- Labs Oct 9 2026: ALT 74 (high), AST 33, fasting glucose 103 (high), eosinophils 0.58 (slightly high), vitamin D 33; kidneys/CBC normal.
+- Has follow-up blood work in mid-January 2027 (details stay private).
 - Rules: no alcohol until January labs, no sugary drinks, fewer refined carbs at night, dinner 3h before bed, strength 3x/week progressing from 10 to 30-45 min, Zone 2 cardio 2x/week 30-40 min.
-- January targets: 168-170 lbs, RHR under 75, HRV trending up, muscle held at 68.8+ lbs, ALT down, glucose under 100.
-- Calorie target is pending review with his doctor; do not change it yourself. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
+- January targets: 168-170 lbs (~1-1.25 lb/week), RHR under 75, HRV trending up, muscle held at 68.8+ lbs.
+- Adjust rule: if he loses more than 2 lb/week for 2 weeks or muscle drops, suggest +100-150 kcal; if under 0.5 lb/week for 2 weeks, suggest -100 kcal. Protein never below 160g. Sleep 7.5hrs. Weigh-in MONDAY ONLY. Isopure Vanilla + Dymatize ISO100 Cocoa Pebbles. Oura Ring LIVE.
 
 WORKOUTS (10-min home, 3x/week): Mon=Upper body, Wed=Lower body, Fri=Full body. Other days: walk.
 
@@ -1984,8 +1973,8 @@ function switchTab(name,el){
 const PLAN_START=new Date(2026,10,20), PLAN_END=new Date(2027,0,15);
 const MILESTONES=[
   {k:'inbody0',w:'Esta semana',n:'InBody nuevo (línea base)',d:'Mañana, ayunas, después del baño, sin ejercicio.'},
-  {k:'doctor',w:'Esta semana',n:'Cita con el doctor',d:'Revisar ALT 74 y glucosa 103. Preguntar por el objetivo de calorías.'},
-  {k:'labsorder',w:'Con el doctor',n:'Orden de estudios de enero',d:'Hígado, glucosa, A1c, lípidos y TSH.'},
+  {k:'doctor',w:'Esta semana',n:'Cita con el doctor',d:'Revisar estudios de octubre y el plan de 1,600 kcal.'},
+  {k:'labsorder',w:'Con el doctor',n:'Orden de estudios de enero',d:'Panel completo + A1c, lípidos y TSH.'},
   {k:'alcohol',w:'Hasta enero',n:'Cero alcohol',d:'Marca cuando cumplas las 8 semanas.'},
   {k:'inbody1',w:'Mediados de enero',n:'InBody de seguimiento',d:'Mismo equipo y mismas condiciones.'},
   {k:'labs1',w:'Mediados de enero',n:'Estudios de sangre',d:'En ayunas, la misma semana del InBody.'},
